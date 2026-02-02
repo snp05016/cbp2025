@@ -17,9 +17,12 @@
 // This file provides a sample predictor integration based on the interface provided.
 
 #include "lib/sim_common_structs.h"
-#include "cbp2016_tage_sc_l.h"
+//#include "cbp2016_tage_sc_l.h"
+//#include "TAGESC_cbp2025.h"
+
 #include "my_cond_branch_predictor.h"
 #include <cassert>
+
 
 //
 // beginCondDirPredictor()
@@ -30,8 +33,8 @@
 void beginCondDirPredictor()
 {
     // setup sample_predictor
-    cbp2016_tage_sc_l.setup();
-    cond_predictor_impl.setup();
+    cbp2025.setup();
+    // cond_predictor_impl.setup();
 }
 
 //
@@ -53,8 +56,8 @@ void notify_instr_fetch(uint64_t seq_no, uint8_t piece, uint64_t pc, const uint6
 //
 bool get_cond_dir_prediction(uint64_t seq_no, uint8_t piece, uint64_t pc, const uint64_t pred_cycle)
 {
-    const bool tage_sc_l_pred =  cbp2016_tage_sc_l.predict(seq_no, piece, pc);
-    const bool my_prediction = cond_predictor_impl.predict(seq_no, piece, pc, tage_sc_l_pred);
+
+  const bool my_prediction =  cbp2025.predict(seq_no, piece, pc); //cond_predictor_impl.predict(seq_no, piece, pc, tage_sc_l_pred);
     return my_prediction;
 }
 
@@ -70,7 +73,7 @@ void spec_update(uint64_t seq_no, uint8_t piece, uint64_t pc, InstClass inst_cla
 {
     assert(is_br(inst_class));
     int br_type = 0;
-    switch(inst_class)
+ switch(inst_class)
     {
         case InstClass::condBranchInstClass:
             br_type = 1;
@@ -92,16 +95,16 @@ void spec_update(uint64_t seq_no, uint8_t piece, uint64_t pc, InstClass inst_cla
             break;
         default:
             assert(false);
-    }
+	    }
 
     if(inst_class == InstClass::condBranchInstClass)
     {
-        cbp2016_tage_sc_l.history_update(seq_no, piece, pc, br_type, pred_dir, resolve_dir, next_pc);
-        cond_predictor_impl.history_update(seq_no, piece, pc, resolve_dir, next_pc);
+        cbp2025.history_update(seq_no, piece, pc, br_type, resolve_dir, next_pc);
+	// cond_predictor_impl.history_update(seq_no, piece, pc, resolve_dir, next_pc);
     }
     else
     {
-        cbp2016_tage_sc_l.TrackOtherInst(pc, br_type, pred_dir, resolve_dir, next_pc);
+        cbp2025.TrackOtherInst(pc, br_type, resolve_dir, next_pc);
     }
 
 }
@@ -136,22 +139,21 @@ void notify_agen_complete(uint64_t seq_no, uint8_t piece, uint64_t pc, const Dec
 // For conditional branches, we use this information to update the predictor.
 // At the moment, we do not consider updating any other structure, but the contestants are allowed to  update any other predictor state.
 void notify_instr_execute_resolve(uint64_t seq_no, uint8_t piece, uint64_t pc, const bool pred_dir, const ExecuteInfo& _exec_info, const uint64_t execute_cycle)
-{
-    const bool is_branch = is_br(_exec_info.dec_info.insn_class);
+{const bool is_branch = is_br(_exec_info.dec_info.insn_class);
     if(is_branch)
     {
         if (is_cond_br(_exec_info.dec_info.insn_class))
         {
             const bool _resolve_dir = _exec_info.taken.value();
             const uint64_t _next_pc = _exec_info.next_pc;
-            cbp2016_tage_sc_l.update(seq_no, piece, pc, _resolve_dir, pred_dir, _next_pc);
-            cond_predictor_impl.update(seq_no, piece, pc, _resolve_dir, pred_dir, _next_pc);
+            cbp2025.update(seq_no, piece, pc, _resolve_dir, pred_dir, _next_pc);
+            //cond_predictor_impl.update(seq_no, piece, pc, _resolve_dir, pred_dir, _next_pc);
         }
         else
         {
             assert(pred_dir);
         }
-    }
+    } 
 }
 
 //
@@ -163,6 +165,7 @@ void notify_instr_execute_resolve(uint64_t seq_no, uint8_t piece, uint64_t pc, c
 // For the sample predictor implementation, we do not leverage commit information
 void notify_instr_commit(uint64_t seq_no, uint8_t piece, uint64_t pc, const bool pred_dir, const ExecuteInfo& _exec_info, const uint64_t commit_cycle)
 {
+ 
 }
 
 //
@@ -173,6 +176,6 @@ void notify_instr_commit(uint64_t seq_no, uint8_t piece, uint64_t pc, const bool
 //
 void endCondDirPredictor ()
 {
-    cbp2016_tage_sc_l.terminate();
-    cond_predictor_impl.terminate();
+   cbp2025.terminate();
+   //cond_predictor_impl.terminate();
 }

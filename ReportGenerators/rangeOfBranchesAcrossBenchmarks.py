@@ -1,5 +1,7 @@
 # Compare Branch Density (BrPerCyc) across benchmark categories
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Non-interactive backend - no popups
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -87,8 +89,11 @@ def print_analysis(stats_df, data):
     # Or equivalently: geomean = exp(mean(log(x)))
     
     def calculate_geomean(values):
-        """Calculate geometric mean using logarithms"""
-        return np.exp(np.mean(np.log(values)))
+        """Calculate geometric mean using logarithms, filtering out zeros and negatives"""
+        filtered = values[values > 0]
+        if len(filtered) == 0:
+            return 0.0
+        return np.exp(np.mean(np.log(filtered)))
     
     geomean_median = calculate_geomean(stats_df['Median'])
     geomean_mean = calculate_geomean(stats_df['Mean'])
@@ -149,8 +154,12 @@ def print_analysis(stats_df, data):
     print("="*120)
     
     def calculate_geomean(values):
-        """Calculate geometric mean using logarithms"""
-        return np.exp(np.mean(np.log(values)))
+        """Calculate geometric mean using logarithms, filtering out zeros and negatives"""
+        # Filter out zero and negative values
+        filtered = values[values > 0]
+        if len(filtered) == 0:
+            return 0.0
+        return np.exp(np.mean(np.log(filtered)))
     
     # Calculate geomeans for key metrics across all benchmarks
     all_brpercyc = data['BrPerCyc'].values
@@ -225,8 +234,11 @@ def plot_branch_density(stats_df, data):
     
     # Calculate geometric mean and std deviation for each category
     def calculate_geomean(values):
-        """Calculate geometric mean using logarithms"""
-        return np.exp(np.mean(np.log(values)))
+        """Calculate geometric mean using logarithms, filtering out zeros and negatives"""
+        filtered = values[values > 0]
+        if len(filtered) == 0:
+            return 0.0
+        return np.exp(np.mean(np.log(filtered)))
     
     geomeans = []
     stds = []
@@ -262,9 +274,15 @@ def plot_branch_density(stats_df, data):
                 ha='center', va='bottom', fontsize=10, fontweight='bold')
     
     plt.tight_layout()
-    filename = 'branch_density_geomean.png'
+    
+    # Save to Reports directory
+    import os
+    output_dir = '../Reports/02_branch_density/graphs'
+    os.makedirs(output_dir, exist_ok=True)
+    filename = f'{output_dir}/branch_density_geomean.png'
+    
     plt.savefig(filename, dpi=300, bbox_inches='tight')
-    plt.show()
+    plt.close()  # Close figure instead of showing
     
     print(f"\nVisualization saved as: {filename}")
 

@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: TAGE-SCL-Andrez-Seznec vs Register-Value-Aware-Toru
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         TAGE-SCL-Andrez-Seznec Register-Value-Aware-Toru Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.3918               3.3022               ↓ 2.64% better
+MR                             2.6687               2.5681               ↓ 3.77% better
+IPC                            3.5081               3.5450               ↑ 1.05% better
+Cycles                         14447201.9524        14401963.4667        ↓ 0.31% better
+BrPerCyc                       0.4257               0.4309               ↑ 1.24% better
+MispBrPerCyc                   0.0092               0.0089               ↓ 2.36% worse
+CycWPPKI                       151.7579             149.9141             ↓ 1.21% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+TAGE-SCL-Andrez-Seznec wins: 31 traces
+Register-Value-Aware-Toru wins: 74 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Register-Value-Aware-Toru better):
+--------------------------------------------------------------------------------
+  fp_8_trace                                 7.3856 →   3.6875 (↓ 3.6981)
+  web_7_trace                                6.1046 →   4.3005 (↓ 1.8041)
+  int_21_trace                              23.3263 →  21.6842 (↓ 1.6421)
+  int_1_trace                               10.5130 →   9.7511 (↓ 0.7619)
+  int_2_trace                                9.9876 →   9.2321 (↓ 0.7555)
+
+
+Biggest Regressions (Register-Value-Aware-Toru worse):
+--------------------------------------------------------------------------------
+  web_19_trace                               0.0000 →   5.0857 (↑ 5.0857)
+  web_15_trace                               5.0241 →   5.1194 (↑ 0.0953)
+  int_0_trace                                4.7498 →   4.8418 (↑ 0.0920)
+  web_20_trace                               3.1562 →   3.2357 (↑ 0.0795)
+  web_14_trace                               3.3625 →   3.4365 (↑ 0.0740)

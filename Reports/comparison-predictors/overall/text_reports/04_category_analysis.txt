@@ -1,0 +1,64 @@
+================================================================================
+TRACE CATEGORY ANALYSIS
+================================================================================
+
+
+Compress Traces:
+--------------------------------------------------------------------------------
+Predictor                           Count    Avg MPKI     Avg IPC     
+--------------------------------------------------------------------------------
+Baseline                            8        2.7988       4.5330      
+TAGE-SC-L-Alberto-Ros               8        2.7579       4.5435      
+TAGE-SCL-Andrez-Seznec              8        2.6943       4.5529      
+Load-Value-Correlator-Man           8        2.7149       4.5605      
+Register-Value-Aware-Toru           8        2.5599       4.5892      
+
+Floating Point Traces:
+--------------------------------------------------------------------------------
+Predictor                           Count    Avg MPKI     Avg IPC     
+--------------------------------------------------------------------------------
+Baseline                            14       4.0147       4.1688      
+TAGE-SC-L-Alberto-Ros               14       3.8181       3.7186      
+TAGE-SCL-Andrez-Seznec              14       3.8536       4.2262      
+Load-Value-Correlator-Man           14       3.7863       4.2423      
+Register-Value-Aware-Toru           14       3.5205       4.2761      
+
+Infrastructure Traces:
+--------------------------------------------------------------------------------
+Predictor                           Count    Avg MPKI     Avg IPC     
+--------------------------------------------------------------------------------
+Baseline                            16       2.6313       2.8581      
+TAGE-SC-L-Alberto-Ros               16       2.5587       2.8709      
+TAGE-SCL-Andrez-Seznec              16       2.5307       2.8741      
+Load-Value-Correlator-Man           16       2.4703       2.8817      
+Register-Value-Aware-Toru           16       2.3935       2.8903      
+
+Integer Traces:
+--------------------------------------------------------------------------------
+Predictor                           Count    Avg MPKI     Avg IPC     
+--------------------------------------------------------------------------------
+Baseline                            37       4.6999       3.5913      
+TAGE-SC-L-Alberto-Ros               37       4.1811       3.5760      
+TAGE-SCL-Andrez-Seznec              37       4.1605       3.6734      
+Load-Value-Correlator-Man           37       4.2343       3.6535      
+Register-Value-Aware-Toru           37       4.0274       3.6859      
+
+Media Traces:
+--------------------------------------------------------------------------------
+Predictor                           Count    Avg MPKI     Avg IPC     
+--------------------------------------------------------------------------------
+Baseline                            4        1.0621       5.9037      
+TAGE-SC-L-Alberto-Ros               4        0.9639       5.9543      
+TAGE-SCL-Andrez-Seznec              4        0.9573       5.9661      
+Load-Value-Correlator-Man           4        1.0638       5.8983      
+Register-Value-Aware-Toru           4        0.9515       5.9640      
+
+Web Traces:
+--------------------------------------------------------------------------------
+Predictor                           Count    Avg MPKI     Avg IPC     
+--------------------------------------------------------------------------------
+Baseline                            26       3.8844       2.5704      
+TAGE-SC-L-Alberto-Ros               26       3.1122       2.3717      
+TAGE-SCL-Andrez-Seznec              26       3.1682       2.5768      
+Load-Value-Correlator-Man           26       3.4244       2.6311      
+Register-Value-Aware-Toru           26       3.3020       2.6605      

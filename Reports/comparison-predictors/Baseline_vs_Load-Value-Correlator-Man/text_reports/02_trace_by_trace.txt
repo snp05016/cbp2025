@@ -1,0 +1,111 @@
+====================================================================================================
+TRACE-BY-TRACE COMPARISON: Baseline vs Load-Value-Correlator-Man
+====================================================================================================
+
+Trace                                    Baseline MPKI Load-Value-Correlator-Man MPKI Diff         Status              
+----------------------------------------------------------------------------------------------------
+int_16_trace                             8.1253       5.8167       -2.3086      ✓ Load-Value-Correlator-Man better
+web_7_trace                              7.7526       6.1216       -1.6310      ✓ Load-Value-Correlator-Man better
+int_17_trace                             6.3949       4.8546       -1.5403      ✓ Load-Value-Correlator-Man better
+int_8_trace                              7.1931       5.8525       -1.3406      ✓ Load-Value-Correlator-Man better
+int_7_trace                              5.7589       4.4331       -1.3258      ✓ Load-Value-Correlator-Man better
+fp_8_trace                               7.8738       6.6877       -1.1861      ✓ Load-Value-Correlator-Man better
+int_30_trace                             12.9427      11.7655      -1.1772      ✓ Load-Value-Correlator-Man better
+int_9_trace                              4.8555       3.7634       -1.0921      ✓ Load-Value-Correlator-Man better
+int_29_trace                             12.4572      11.3760      -1.0812      ✓ Load-Value-Correlator-Man better
+web_11_trace                             5.7895       4.7179       -1.0716      ✓ Load-Value-Correlator-Man better
+int_36_trace                             3.9821       2.9848       -0.9973      ✓ Load-Value-Correlator-Man better
+int_1_trace                              11.6458      10.6773      -0.9685      ✓ Load-Value-Correlator-Man better
+web_15_trace                             6.1054       5.1507       -0.9547      ✓ Load-Value-Correlator-Man better
+web_20_trace                             4.2180       3.2987       -0.9193      ✓ Load-Value-Correlator-Man better
+int_2_trace                              10.9652      10.0902      -0.8750      ✓ Load-Value-Correlator-Man better
+web_19_trace                             6.0075       5.1496       -0.8579      ✓ Load-Value-Correlator-Man better
+fp_13_trace                              12.6898      11.9520      -0.7378      ✓ Load-Value-Correlator-Man better
+infra_4_trace                            2.4790       1.8311       -0.6479      ✓ Load-Value-Correlator-Man better
+int_21_trace                             24.1502      23.5688      -0.5814      ✓ Load-Value-Correlator-Man better
+web_25_trace                             6.3793       5.8123       -0.5670      ✓ Load-Value-Correlator-Man better
+int_22_trace                             5.3965       4.8609       -0.5356      ✓ Load-Value-Correlator-Man better
+web_10_trace                             3.3660       2.8788       -0.4872      ✓ Load-Value-Correlator-Man better
+web_8_trace                              5.1087       4.6254       -0.4833      ✓ Load-Value-Correlator-Man better
+int_0_trace                              5.1327       4.6538       -0.4789      ✓ Load-Value-Correlator-Man better
+web_13_trace                             3.3938       2.9187       -0.4751      ✓ Load-Value-Correlator-Man better
+fp_9_trace                               4.5518       4.1005       -0.4513      ✓ Load-Value-Correlator-Man better
+web_12_trace                             4.4363       3.9974       -0.4389      ✓ Load-Value-Correlator-Man better
+int_20_trace                             2.7912       2.3580       -0.4332      ✓ Load-Value-Correlator-Man better
+web_9_trace                              2.9326       2.5072       -0.4254      ✓ Load-Value-Correlator-Man better
+fp_12_trace                              1.2157       0.8073       -0.4084      ✓ Load-Value-Correlator-Man better
+web_5_trace                              4.7119       4.3200       -0.3919      ✓ Load-Value-Correlator-Man better
+web_1_trace                              3.5186       3.1357       -0.3829      ✓ Load-Value-Correlator-Man better
+web_3_trace                              3.9790       3.6024       -0.3766      ✓ Load-Value-Correlator-Man better
+int_33_trace                             7.9877       7.6336       -0.3541      ✓ Load-Value-Correlator-Man better
+int_28_trace                             3.6745       3.3205       -0.3540      ✓ Load-Value-Correlator-Man better
+web_4_trace                              4.4385       4.0909       -0.3476      ✓ Load-Value-Correlator-Man better
+web_2_trace                              4.1660       3.8193       -0.3467      ✓ Load-Value-Correlator-Man better
+web_24_trace                             2.0456       1.7205       -0.3251      ✓ Load-Value-Correlator-Man better
+infra_0_trace                            1.2832       0.9872       -0.2960      ✓ Load-Value-Correlator-Man better
+infra_7_trace                            1.4983       1.2093       -0.2890      ✓ Load-Value-Correlator-Man better
+int_32_trace                             6.9551       6.6835       -0.2716      ✓ Load-Value-Correlator-Man better
+int_4_trace                              4.1379       3.8723       -0.2656      ✓ Load-Value-Correlator-Man better
+web_6_trace                              4.8893       4.6256       -0.2637      ✓ Load-Value-Correlator-Man better
+infra_3_trace                            1.0632       0.8049       -0.2583      ✓ Load-Value-Correlator-Man better
+int_34_trace                             3.0703       2.8241       -0.2462      ✓ Load-Value-Correlator-Man better
+web_16_trace                             1.8538       1.6099       -0.2439      ✓ Load-Value-Correlator-Man better
+web_17_trace                             1.7267       1.4879       -0.2388      ✓ Load-Value-Correlator-Man better
+int_11_trace                             4.2059       3.9954       -0.2105      ✓ Load-Value-Correlator-Man better
+infra_13_trace                           4.2404       4.0586       -0.1818      ✓ Load-Value-Correlator-Man better
+web_14_trace                             3.6627       3.4933       -0.1694      ✓ Load-Value-Correlator-Man better
+fp_10_trace                              2.1174       1.9704       -0.1470      ✓ Load-Value-Correlator-Man better
+web_21_trace                             1.7274       1.5863       -0.1411      ✓ Load-Value-Correlator-Man better
+infra_10_trace                           5.3543       5.2171       -0.1372      ✓ Load-Value-Correlator-Man better
+web_23_trace                             1.1539       1.0186       -0.1353      ✓ Load-Value-Correlator-Man better
+infra_14_trace                           5.4033       5.2684       -0.1349      ✓ Load-Value-Correlator-Man better
+compress_7_trace                         2.0480       1.9181       -0.1299      ✓ Load-Value-Correlator-Man better
+infra_15_trace                           8.4547       8.3267       -0.1280      ✓ Load-Value-Correlator-Man better
+infra_5_trace                            2.2119       2.0907       -0.1212      ✓ Load-Value-Correlator-Man better
+web_22_trace                             3.3895       3.2715       -0.1180      ✓ Load-Value-Correlator-Man better
+compress_3_trace                         8.2499       8.1504       -0.0995      ≈ Similar           
+int_35_trace                             2.4647       2.3653       -0.0994      ≈ Similar           
+fp_11_trace                              0.6989       0.6056       -0.0933      ≈ Similar           
+fp_7_trace                               1.1277       1.0370       -0.0907      ≈ Similar           
+int_12_trace                             0.4566       0.3669       -0.0897      ≈ Similar           
+web_18_trace                             2.8461       2.7595       -0.0866      ≈ Similar           
+infra_11_trace                           1.0885       1.0022       -0.0863      ≈ Similar           
+int_6_trace                              2.9584       2.8740       -0.0844      ≈ Similar           
+compress_5_trace                         1.9322       1.8485       -0.0837      ≈ Similar           
+compress_6_trace                         1.9036       1.8222       -0.0814      ≈ Similar           
+web_0_trace                              1.3961       1.3157       -0.0804      ≈ Similar           
+infra_12_trace                           1.0706       0.9932       -0.0774      ≈ Similar           
+int_23_trace                             3.4824       3.4064       -0.0760      ≈ Similar           
+compress_4_trace                         1.8228       1.7475       -0.0753      ≈ Similar           
+compress_1_trace                         1.6834       1.6120       -0.0714      ≈ Similar           
+compress_0_trace                         3.2681       3.1984       -0.0697      ≈ Similar           
+int_24_trace                             0.5662       0.4979       -0.0683      ≈ Similar           
+infra_1_trace                            0.3574       0.2923       -0.0651      ≈ Similar           
+compress_2_trace                         1.4826       1.4219       -0.0607      ≈ Similar           
+int_18_trace                             0.8474       0.7882       -0.0592      ≈ Similar           
+int_19_trace                             0.8482       0.7913       -0.0569      ≈ Similar           
+infra_2_trace                            0.4838       0.4288       -0.0550      ≈ Similar           
+int_5_trace                              2.8550       2.8042       -0.0508      ≈ Similar           
+infra_6_trace                            1.2642       1.2138       -0.0504      ≈ Similar           
+int_26_trace                             1.3377       1.2961       -0.0416      ≈ Similar           
+fp_6_trace                               1.0193       0.9790       -0.0403      ≈ Similar           
+infra_9_trace                            4.5907       4.5513       -0.0394      ≈ Similar           
+int_13_trace                             0.9248       0.8864       -0.0384      ≈ Similar           
+int_27_trace                             0.8728       0.8447       -0.0281      ≈ Similar           
+fp_4_trace                               0.5736       0.5457       -0.0279      ≈ Similar           
+int_14_trace                             0.3966       0.3692       -0.0274      ≈ Similar           
+int_3_trace                              0.8818       0.8552       -0.0266      ≈ Similar           
+fp_2_trace                               2.5615       2.5381       -0.0234      ≈ Similar           
+int_31_trace                             0.8411       0.8205       -0.0206      ≈ Similar           
+int_15_trace                             0.4788       0.4652       -0.0136      ≈ Similar           
+int_10_trace                             0.5363       0.5250       -0.0113      ≈ Similar           
+infra_8_trace                            1.2568       1.2484       -0.0084      ≈ Similar           
+media_1_trace                            1.1590       1.1521       -0.0069      ≈ Similar           
+fp_5_trace                               0.9364       0.9302       -0.0062      ≈ Similar           
+fp_3_trace                               2.0315       2.0291       -0.0024      ≈ Similar           
+media_2_trace                            0.5317       0.5296       -0.0021      ≈ Similar           
+int_25_trace                             1.3243       1.3277       0.0034       ≈ Similar           
+fp_1_trace                               15.5816      15.5856      0.0040       ≈ Similar           
+media_0_trace                            1.1764       1.1808       0.0044       ≈ Similar           
+media_3_trace                            1.3813       1.3927       0.0114       ≈ Similar           
+fp_0_trace                               3.2270       3.2399       0.0129       ≈ Similar           

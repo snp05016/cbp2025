@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: TAGE-SC-L-Alberto-Ros vs Register-Value-Aware-Toru
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         TAGE-SC-L-Alberto-Ros Register-Value-Aware-Toru Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.3898               3.3022               ↓ 2.58% better
+MR                             2.6697               2.5681               ↓ 3.81% better
+IPC                            3.3537               3.5450               ↑ 5.71% better
+Cycles                         14106643.7238        14401963.4667        ↑ 2.09% worse
+BrPerCyc                       0.4012               0.4309               ↑ 7.42% better
+MispBrPerCyc                   0.0089               0.0089               ↑ 0.00% better
+CycWPPKI                       151.4364             149.9141             ↓ 1.01% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+TAGE-SC-L-Alberto-Ros wins: 21 traces
+Register-Value-Aware-Toru wins: 84 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Register-Value-Aware-Toru better):
+--------------------------------------------------------------------------------
+  fp_8_trace                                 7.4670 →   3.6875 (↓ 3.7795)
+  int_21_trace                              23.7948 →  21.6842 (↓ 2.1106)
+  web_7_trace                                6.0090 →   4.3005 (↓ 1.7085)
+  int_1_trace                               11.4406 →   9.7511 (↓ 1.6895)
+  int_2_trace                               10.7227 →   9.2321 (↓ 1.4906)
+
+
+Biggest Regressions (Register-Value-Aware-Toru worse):
+--------------------------------------------------------------------------------
+  int_9_trace                                0.0000 →   3.6499 (↑ 3.6499)
+  web_3_trace                                0.0000 →   3.5768 (↑ 3.5768)
+  web_14_trace                               0.0000 →   3.4365 (↑ 3.4365)
+  fp_6_trace                                 0.0000 →   0.9122 (↑ 0.9122)
+  int_16_trace                               5.5268 →   5.7002 (↑ 0.1734)

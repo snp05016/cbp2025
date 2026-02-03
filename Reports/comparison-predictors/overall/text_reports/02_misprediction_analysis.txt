@@ -1,0 +1,37 @@
+================================================================================
+MISPREDICTION ANALYSIS - ALL PREDICTORS
+================================================================================
+
+Average Misprediction Metrics:
+--------------------------------------------------------------------------------
+Predictor                           MPKI         Miss Rate %  Mispred/Cyc 
+--------------------------------------------------------------------------------
+Baseline                            3.8080       2.9679       0.009956    
+TAGE-SC-L-Alberto-Ros               3.3898       2.6697       0.008938    
+TAGE-SCL-Andrez-Seznec              3.3918       2.6687       0.009154    
+Load-Value-Correlator-Man           3.4687       2.7183       0.009303    
+Register-Value-Aware-Toru           3.3022       2.5681       0.008938    
+
+
+Best and Worst Cases:
+--------------------------------------------------------------------------------
+
+Baseline:
+  Best:  infra_1_trace                  MPKI = 0.3574
+  Worst: int_21_trace                   MPKI = 24.1502
+
+TAGE-SC-L-Alberto-Ros:
+  Best:  web_14_trace                   MPKI = 0.0000
+  Worst: int_21_trace                   MPKI = 23.7948
+
+TAGE-SCL-Andrez-Seznec:
+  Best:  web_19_trace                   MPKI = 0.0000
+  Worst: int_21_trace                   MPKI = 23.3263
+
+Load-Value-Correlator-Man:
+  Best:  infra_1_trace                  MPKI = 0.2923
+  Worst: int_21_trace                   MPKI = 23.5688
+
+Register-Value-Aware-Toru:
+  Best:  infra_1_trace                  MPKI = 0.2954
+  Worst: int_21_trace                   MPKI = 21.6842

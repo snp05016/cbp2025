@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Load-Value-Correlator-Man vs Register-Value-Aware-Toru
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Load-Value-Correlator-Man Register-Value-Aware-Toru Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.4687               3.3022               ↓ 4.80% better
+MR                             2.7183               2.5681               ↓ 5.53% better
+IPC                            3.5159               3.5450               ↑ 0.83% better
+Cycles                         14561854.8381        14401963.4667        ↓ 1.10% better
+BrPerCyc                       0.4274               0.4309               ↑ 0.83% better
+MispBrPerCyc                   0.0093               0.0089               ↓ 3.92% worse
+CycWPPKI                       153.8107             149.9141             ↓ 2.53% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Load-Value-Correlator-Man wins: 13 traces
+Register-Value-Aware-Toru wins: 92 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Register-Value-Aware-Toru better):
+--------------------------------------------------------------------------------
+  fp_8_trace                                 6.6877 →   3.6875 (↓ 3.0002)
+  int_21_trace                              23.5688 →  21.6842 (↓ 1.8846)
+  web_7_trace                                6.1216 →   4.3005 (↓ 1.8211)
+  int_22_trace                               4.8609 →   3.9029 (↓ 0.9580)
+  int_1_trace                               10.6773 →   9.7511 (↓ 0.9262)
+
+
+Biggest Regressions (Register-Value-Aware-Toru worse):
+--------------------------------------------------------------------------------
+  fp_13_trace                               11.9520 →  12.2224 (↑ 0.2704)
+  fp_12_trace                                0.8073 →   1.0294 (↑ 0.2221)
+  int_0_trace                                4.6538 →   4.8418 (↑ 0.1880)
+  infra_4_trace                              1.8311 →   2.0099 (↑ 0.1788)
+  int_12_trace                               0.3669 →   0.4177 (↑ 0.0508)

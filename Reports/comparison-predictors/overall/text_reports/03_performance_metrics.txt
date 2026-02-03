@@ -1,0 +1,46 @@
+================================================================================
+PERFORMANCE METRICS COMPARISON
+================================================================================
+
+Instructions Per Cycle (IPC) Analysis:
+--------------------------------------------------------------------------------
+Predictor                           Avg IPC      Median       Std Dev     
+--------------------------------------------------------------------------------
+Baseline                            3.4636       3.1982       1.5829      
+TAGE-SC-L-Alberto-Ros               3.3537       3.0955       1.6929      
+TAGE-SCL-Andrez-Seznec              3.5081       3.2655       1.6214      
+Load-Value-Correlator-Man           3.5159       3.2762       1.5805      
+Register-Value-Aware-Toru           3.5450       3.2718       1.5969      
+
+
+Cycle Count Analysis:
+--------------------------------------------------------------------------------
+Predictor                           Avg Cycles      Total Cycles   
+--------------------------------------------------------------------------------
+Baseline                            14,824,661      1,556,589,396  
+TAGE-SC-L-Alberto-Ros               14,106,644      1,481,197,591  
+TAGE-SCL-Andrez-Seznec              14,447,202      1,516,956,205  
+Load-Value-Correlator-Man           14,561,855      1,528,994,758  
+Register-Value-Aware-Toru           14,401,963      1,512,206,164  
+
+
+Branches Per Cycle Analysis:
+--------------------------------------------------------------------------------
+Predictor                           Avg BrPerCyc   
+--------------------------------------------------------------------------------
+Baseline                            0.420251       
+TAGE-SC-L-Alberto-Ros               0.401188       
+TAGE-SCL-Andrez-Seznec              0.425669       
+Load-Value-Correlator-Man           0.427386       
+Register-Value-Aware-Toru           0.430940       
+
+
+Wasted Cycles Analysis (CycWPPKI):
+--------------------------------------------------------------------------------
+Predictor                           Avg CycWPPKI   
+--------------------------------------------------------------------------------
+Baseline                            161.6047       
+TAGE-SC-L-Alberto-Ros               151.4364       
+TAGE-SCL-Andrez-Seznec              151.7579       
+Load-Value-Correlator-Man           153.8107       
+Register-Value-Aware-Toru           149.9141       

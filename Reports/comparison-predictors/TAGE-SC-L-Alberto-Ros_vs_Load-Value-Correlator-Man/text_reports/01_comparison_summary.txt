@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: TAGE-SC-L-Alberto-Ros vs Load-Value-Correlator-Man
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         TAGE-SC-L-Alberto-Ros Load-Value-Correlator-Man Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.3898               3.4687               ↑ 2.33% worse
+MR                             2.6697               2.7183               ↑ 1.82% worse
+IPC                            3.3537               3.5159               ↑ 4.84% better
+Cycles                         14106643.7238        14561854.8381        ↑ 3.23% worse
+BrPerCyc                       0.4012               0.4274               ↑ 6.53% better
+MispBrPerCyc                   0.0089               0.0093               ↑ 4.08% better
+CycWPPKI                       151.4364             153.8107             ↑ 1.57% worse
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+TAGE-SC-L-Alberto-Ros wins: 59 traces
+Load-Value-Correlator-Man wins: 46 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Load-Value-Correlator-Man better):
+--------------------------------------------------------------------------------
+  fp_8_trace                                 7.4670 →   6.6877 (↓ 0.7793)
+  int_1_trace                               11.4406 →  10.6773 (↓ 0.7633)
+  int_2_trace                               10.7227 →  10.0902 (↓ 0.6325)
+  infra_4_trace                              2.4266 →   1.8311 (↓ 0.5955)
+  fp_13_trace                               12.4504 →  11.9520 (↓ 0.4984)
+
+
+Biggest Regressions (Load-Value-Correlator-Man worse):
+--------------------------------------------------------------------------------
+  int_9_trace                                0.0000 →   3.7634 (↑ 3.7634)
+  web_3_trace                                0.0000 →   3.6024 (↑ 3.6024)
+  web_14_trace                               0.0000 →   3.4933 (↑ 3.4933)
+  fp_6_trace                                 0.0000 →   0.9790 (↑ 0.9790)
+  int_16_trace                               5.5268 →   5.8167 (↑ 0.2899)

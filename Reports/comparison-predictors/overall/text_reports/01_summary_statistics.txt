@@ -1,0 +1,64 @@
+================================================================================
+OVERALL SUMMARY STATISTICS - ALL PREDICTORS
+================================================================================
+
+
+Baseline
+--------------------------------------------------------------------------------
+  Total Traces                  :             105
+  Avg MPKI                      :          3.8080
+  Median MPKI                   :          2.8550
+  Std MPKI                      :          3.6997
+  Avg Miss Rate (%)             :          2.9679
+  Avg IPC                       :          3.4636
+  Total Branches                :     570,601,974
+  Total Mispredictions          :      17,074,615
+  Avg Cycles                    :   14824660.9143
+
+TAGE-SC-L-Alberto-Ros
+--------------------------------------------------------------------------------
+  Total Traces                  :             105
+  Avg MPKI                      :          3.3898
+  Median MPKI                   :          2.4266
+  Std MPKI                      :          3.6085
+  Avg Miss Rate (%)             :          2.6697
+  Avg IPC                       :          3.3537
+  Total Branches                :     540,688,496
+  Total Mispredictions          :      15,291,112
+  Avg Cycles                    :   14106643.7238
+
+TAGE-SCL-Andrez-Seznec
+--------------------------------------------------------------------------------
+  Total Traces                  :             105
+  Avg MPKI                      :          3.3918
+  Median MPKI                   :          2.5338
+  Std MPKI                      :          3.4881
+  Avg Miss Rate (%)             :          2.6687
+  Avg IPC                       :          3.5081
+  Total Branches                :     568,039,972
+  Total Mispredictions          :      15,477,354
+  Avg Cycles                    :   14447201.9524
+
+Load-Value-Correlator-Man
+--------------------------------------------------------------------------------
+  Total Traces                  :             105
+  Avg MPKI                      :          3.4687
+  Median MPKI                   :          2.7595
+  Std MPKI                      :          3.4880
+  Avg Miss Rate (%)             :          2.7183
+  Avg IPC                       :          3.5159
+  Total Branches                :     570,601,974
+  Total Mispredictions          :      15,714,127
+  Avg Cycles                    :   14561854.8381
+
+Register-Value-Aware-Toru
+--------------------------------------------------------------------------------
+  Total Traces                  :             105
+  Avg MPKI                      :          3.3022
+  Median MPKI                   :          2.6603
+  Std MPKI                      :          3.3073
+  Avg Miss Rate (%)             :          2.5681
+  Avg IPC                       :          3.5450
+  Total Branches                :     570,601,974
+  Total Mispredictions          :      14,949,267
+  Avg Cycles                    :   14401963.4667

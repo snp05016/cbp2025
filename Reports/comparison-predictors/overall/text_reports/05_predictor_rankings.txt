@@ -1,0 +1,55 @@
+================================================================================
+PREDICTOR RANKINGS
+================================================================================
+
+
+Mispredictions Per Kilo Instructions (lower is better):
+--------------------------------------------------------------------------------
+  1. 🥇 Register-Value-Aware-Toru                      3.3022
+  2. 🥈 TAGE-SC-L-Alberto-Ros                          3.3898
+  3. 🥉 TAGE-SCL-Andrez-Seznec                         3.3918
+  4.    Load-Value-Correlator-Man                      3.4687
+  5.    Baseline                                       3.8080
+
+Miss Rate (lower is better):
+--------------------------------------------------------------------------------
+  1. 🥇 Register-Value-Aware-Toru                      2.5681
+  2. 🥈 TAGE-SCL-Andrez-Seznec                         2.6687
+  3. 🥉 TAGE-SC-L-Alberto-Ros                          2.6697
+  4.    Load-Value-Correlator-Man                      2.7183
+  5.    Baseline                                       2.9679
+
+Instructions Per Cycle (higher is better):
+--------------------------------------------------------------------------------
+  1. 🥇 Register-Value-Aware-Toru                      3.5450
+  2. 🥈 Load-Value-Correlator-Man                      3.5159
+  3. 🥉 TAGE-SCL-Andrez-Seznec                         3.5081
+  4.    Baseline                                       3.4636
+  5.    TAGE-SC-L-Alberto-Ros                          3.3537
+
+Average Cycles (lower is better):
+--------------------------------------------------------------------------------
+  1. 🥇 TAGE-SC-L-Alberto-Ros                    14106643.7238
+  2. 🥈 Register-Value-Aware-Toru                14401963.4667
+  3. 🥉 TAGE-SCL-Andrez-Seznec                   14447201.9524
+  4.    Load-Value-Correlator-Man                14561854.8381
+  5.    Baseline                                 14824660.9143
+
+Cycles Wasted Per Kilo Instructions (lower is better):
+--------------------------------------------------------------------------------
+  1. 🥇 Register-Value-Aware-Toru                    149.9141
+  2. 🥈 TAGE-SC-L-Alberto-Ros                        151.4364
+  3. 🥉 TAGE-SCL-Andrez-Seznec                       151.7579
+  4.    Load-Value-Correlator-Man                    153.8107
+  5.    Baseline                                     161.6047
+
+
+================================================================================
+COMPOSITE RANKING (Lower score is better)
+================================================================================
+
+  1. 🥇 Register-Value-Aware-Toru                Score: 6
+  2. 🥈 TAGE-SC-L-Alberto-Ros                    Score: 13
+  3. 🥉 TAGE-SCL-Andrez-Seznec                   Score: 14
+  4.    Load-Value-Correlator-Man                Score: 18
+  5.    Baseline                                 Score: 24

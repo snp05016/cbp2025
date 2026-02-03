@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: TAGE-SCL-Andrez-Seznec vs Load-Value-Correlator-Man
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         TAGE-SCL-Andrez-Seznec Load-Value-Correlator-Man Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.3918               3.4687               ↑ 2.27% worse
+MR                             2.6687               2.7183               ↑ 1.86% worse
+IPC                            3.5081               3.5159               ↑ 0.22% better
+Cycles                         14447201.9524        14561854.8381        ↑ 0.79% worse
+BrPerCyc                       0.4257               0.4274               ↑ 0.40% better
+MispBrPerCyc                   0.0092               0.0093               ↑ 1.62% better
+CycWPPKI                       151.7579             153.8107             ↑ 1.35% worse
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+TAGE-SCL-Andrez-Seznec wins: 71 traces
+Load-Value-Correlator-Man wins: 34 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Load-Value-Correlator-Man better):
+--------------------------------------------------------------------------------
+  fp_8_trace                                 7.3856 →   6.6877 (↓ 0.6979)
+  infra_4_trace                              2.3855 →   1.8311 (↓ 0.5544)
+  fp_13_trace                               12.3153 →  11.9520 (↓ 0.3633)
+  fp_12_trace                                1.0969 →   0.8073 (↓ 0.2896)
+  infra_0_trace                              1.2453 →   0.9872 (↓ 0.2581)
+
+
+Biggest Regressions (Load-Value-Correlator-Man worse):
+--------------------------------------------------------------------------------
+  web_19_trace                               0.0000 →   5.1496 (↑ 5.1496)
+  int_22_trace                               4.2827 →   4.8609 (↑ 0.5782)
+  compress_3_trace                           7.7625 →   8.1504 (↑ 0.3879)
+  int_35_trace                               2.0167 →   2.3653 (↑ 0.3486)
+  int_32_trace                               6.3487 →   6.6835 (↑ 0.3348)

@@ -1,0 +1,111 @@
+====================================================================================================
+TRACE-BY-TRACE COMPARISON: TAGE-SCL-Andrez-Seznec vs Load-Value-Correlator-Man
+====================================================================================================
+
+Trace                                    TAGE-SCL-Andrez-Seznec MPKI Load-Value-Correlator-Man MPKI Diff         Status              
+----------------------------------------------------------------------------------------------------
+fp_8_trace                               7.3856       6.6877       -0.6979      ✓ Load-Value-Correlator-Man better
+infra_4_trace                            2.3855       1.8311       -0.5544      ✓ Load-Value-Correlator-Man better
+fp_13_trace                              12.3153      11.9520      -0.3633      ✓ Load-Value-Correlator-Man better
+fp_12_trace                              1.0969       0.8073       -0.2896      ✓ Load-Value-Correlator-Man better
+infra_0_trace                            1.2453       0.9872       -0.2581      ✓ Load-Value-Correlator-Man better
+infra_3_trace                            1.0135       0.8049       -0.2086      ✓ Load-Value-Correlator-Man better
+infra_7_trace                            1.4041       1.2093       -0.1948      ✓ Load-Value-Correlator-Man better
+int_30_trace                             11.9056      11.7655      -0.1401      ✓ Load-Value-Correlator-Man better
+infra_5_trace                            2.2161       2.0907       -0.1254      ✓ Load-Value-Correlator-Man better
+compress_7_trace                         2.0263       1.9181       -0.1082      ✓ Load-Value-Correlator-Man better
+int_29_trace                             11.4747      11.3760      -0.0987      ≈ Similar           
+int_0_trace                              4.7498       4.6538       -0.0960      ≈ Similar           
+infra_1_trace                            0.3743       0.2923       -0.0820      ≈ Similar           
+web_1_trace                              3.1889       3.1357       -0.0532      ≈ Similar           
+int_6_trace                              2.9270       2.8740       -0.0530      ≈ Similar           
+infra_2_trace                            0.4805       0.4288       -0.0517      ≈ Similar           
+web_13_trace                             2.9612       2.9187       -0.0425      ≈ Similar           
+int_12_trace                             0.4037       0.3669       -0.0368      ≈ Similar           
+compress_6_trace                         1.8582       1.8222       -0.0360      ≈ Similar           
+fp_10_trace                              2.0052       1.9704       -0.0348      ≈ Similar           
+compress_4_trace                         1.7816       1.7475       -0.0341      ≈ Similar           
+compress_5_trace                         1.8820       1.8485       -0.0335      ≈ Similar           
+int_20_trace                             2.3835       2.3580       -0.0255      ≈ Similar           
+int_34_trace                             2.8455       2.8241       -0.0214      ≈ Similar           
+compress_1_trace                         1.6330       1.6120       -0.0210      ≈ Similar           
+int_5_trace                              2.8235       2.8042       -0.0193      ≈ Similar           
+compress_2_trace                         1.4407       1.4219       -0.0188      ≈ Similar           
+fp_9_trace                               4.1168       4.1005       -0.0163      ≈ Similar           
+int_36_trace                             3.0001       2.9848       -0.0153      ≈ Similar           
+int_24_trace                             0.5115       0.4979       -0.0136      ≈ Similar           
+int_16_trace                             5.8279       5.8167       -0.0112      ≈ Similar           
+infra_8_trace                            1.2587       1.2484       -0.0103      ≈ Similar           
+int_14_trace                             0.3781       0.3692       -0.0089      ≈ Similar           
+int_25_trace                             1.3297       1.3277       -0.0020      ≈ Similar           
+int_10_trace                             0.5222       0.5250       0.0028       ≈ Similar           
+int_15_trace                             0.4620       0.4652       0.0032       ≈ Similar           
+fp_2_trace                               2.5338       2.5381       0.0043       ≈ Similar           
+fp_5_trace                               0.9252       0.9302       0.0050       ≈ Similar           
+web_0_trace                              1.3052       1.3157       0.0105       ≈ Similar           
+int_17_trace                             4.8436       4.8546       0.0110       ≈ Similar           
+web_11_trace                             4.7055       4.7179       0.0124       ≈ Similar           
+int_8_trace                              5.8380       5.8525       0.0145       ≈ Similar           
+web_7_trace                              6.1046       6.1216       0.0170       ≈ Similar           
+web_16_trace                             1.5904       1.6099       0.0195       ≈ Similar           
+fp_4_trace                               0.5247       0.5457       0.0210       ≈ Similar           
+fp_0_trace                               3.2161       3.2399       0.0238       ≈ Similar           
+infra_6_trace                            1.1900       1.2138       0.0238       ≈ Similar           
+media_2_trace                            0.5057       0.5296       0.0239       ≈ Similar           
+fp_11_trace                              0.5807       0.6056       0.0249       ≈ Similar           
+web_9_trace                              2.4821       2.5072       0.0251       ≈ Similar           
+int_13_trace                             0.8585       0.8864       0.0279       ≈ Similar           
+compress_0_trace                         3.1701       3.1984       0.0283       ≈ Similar           
+int_19_trace                             0.7618       0.7913       0.0295       ≈ Similar           
+web_10_trace                             2.8471       2.8788       0.0317       ≈ Similar           
+fp_1_trace                               15.5537      15.5856      0.0319       ≈ Similar           
+int_7_trace                              4.3978       4.4331       0.0353       ≈ Similar           
+web_22_trace                             3.2300       3.2715       0.0415       ≈ Similar           
+web_5_trace                              4.2738       4.3200       0.0462       ≈ Similar           
+web_8_trace                              4.5779       4.6254       0.0475       ≈ Similar           
+web_18_trace                             2.7095       2.7595       0.0500       ≈ Similar           
+web_3_trace                              3.5523       3.6024       0.0501       ≈ Similar           
+infra_15_trace                           8.2764       8.3267       0.0503       ≈ Similar           
+infra_11_trace                           0.9468       1.0022       0.0554       ≈ Similar           
+web_23_trace                             0.9623       1.0186       0.0563       ≈ Similar           
+infra_12_trace                           0.9276       0.9932       0.0656       ≈ Similar           
+web_17_trace                             1.4197       1.4879       0.0682       ≈ Similar           
+int_3_trace                              0.7862       0.8552       0.0690       ≈ Similar           
+int_27_trace                             0.7727       0.8447       0.0720       ≈ Similar           
+fp_7_trace                               0.9648       1.0370       0.0722       ≈ Similar           
+infra_10_trace                           5.1442       5.2171       0.0729       ≈ Similar           
+infra_14_trace                           5.1953       5.2684       0.0731       ≈ Similar           
+web_4_trace                              4.0140       4.0909       0.0769       ≈ Similar           
+infra_9_trace                            4.4643       4.5513       0.0870       ≈ Similar           
+web_6_trace                              4.5376       4.6256       0.0880       ≈ Similar           
+infra_13_trace                           3.9686       4.0586       0.0900       ≈ Similar           
+web_25_trace                             5.7130       5.8123       0.0993       ≈ Similar           
+int_9_trace                              3.6628       3.7634       0.1006       ✗ TAGE-SCL-Andrez-Seznec better
+int_26_trace                             1.1950       1.2961       0.1011       ✗ TAGE-SCL-Andrez-Seznec better
+int_2_trace                              9.9876       10.0902      0.1026       ✗ TAGE-SCL-Andrez-Seznec better
+int_23_trace                             3.3033       3.4064       0.1031       ✗ TAGE-SCL-Andrez-Seznec better
+int_28_trace                             3.2163       3.3205       0.1042       ✗ TAGE-SCL-Andrez-Seznec better
+web_2_trace                              3.7103       3.8193       0.1090       ✗ TAGE-SCL-Andrez-Seznec better
+web_24_trace                             1.6105       1.7205       0.1100       ✗ TAGE-SCL-Andrez-Seznec better
+int_11_trace                             3.8809       3.9954       0.1145       ✗ TAGE-SCL-Andrez-Seznec better
+web_12_trace                             3.8768       3.9974       0.1206       ✗ TAGE-SCL-Andrez-Seznec better
+int_18_trace                             0.6654       0.7882       0.1228       ✗ TAGE-SCL-Andrez-Seznec better
+fp_6_trace                               0.8550       0.9790       0.1240       ✗ TAGE-SCL-Andrez-Seznec better
+media_1_trace                            1.0257       1.1521       0.1264       ✗ TAGE-SCL-Andrez-Seznec better
+web_15_trace                             5.0241       5.1507       0.1266       ✗ TAGE-SCL-Andrez-Seznec better
+web_21_trace                             1.4569       1.5863       0.1294       ✗ TAGE-SCL-Andrez-Seznec better
+media_0_trace                            1.0511       1.1808       0.1297       ✗ TAGE-SCL-Andrez-Seznec better
+web_14_trace                             3.3625       3.4933       0.1308       ✗ TAGE-SCL-Andrez-Seznec better
+web_20_trace                             3.1562       3.2987       0.1425       ✗ TAGE-SCL-Andrez-Seznec better
+media_3_trace                            1.2465       1.3927       0.1462       ✗ TAGE-SCL-Andrez-Seznec better
+fp_3_trace                               1.8767       2.0291       0.1524       ✗ TAGE-SCL-Andrez-Seznec better
+int_1_trace                              10.5130      10.6773      0.1643       ✗ TAGE-SCL-Andrez-Seznec better
+int_4_trace                              3.6946       3.8723       0.1777       ✗ TAGE-SCL-Andrez-Seznec better
+int_33_trace                             7.4416       7.6336       0.1920       ✗ TAGE-SCL-Andrez-Seznec better
+int_31_trace                             0.6011       0.8205       0.2194       ✗ TAGE-SCL-Andrez-Seznec better
+int_21_trace                             23.3263      23.5688      0.2425       ✗ TAGE-SCL-Andrez-Seznec better
+int_32_trace                             6.3487       6.6835       0.3348       ✗ TAGE-SCL-Andrez-Seznec better
+int_35_trace                             2.0167       2.3653       0.3486       ✗ TAGE-SCL-Andrez-Seznec better
+compress_3_trace                         7.7625       8.1504       0.3879       ✗ TAGE-SCL-Andrez-Seznec better
+int_22_trace                             4.2827       4.8609       0.5782       ✗ TAGE-SCL-Andrez-Seznec better
+web_19_trace                             0.0000       5.1496       5.1496       ✗ TAGE-SCL-Andrez-Seznec better

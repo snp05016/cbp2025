@@ -66,8 +66,11 @@ def analyze_baseline_difficulty(data):
               f"{'Mean:':>6} {cat_data['BrPerCyc'].mean():>5.4f}")
         
         def calculate_geomean(values):
-            """Calculate geometric mean using logarithms"""
-            return np.exp(np.mean(np.log(values)))
+            """Calculate geometric mean using logarithms, filtering out zeros and negatives"""
+            filtered = values[values > 0]
+            if len(filtered) == 0:
+                return 0.0
+            return np.exp(np.mean(np.log(filtered)))
         
         geomean_mpki = calculate_geomean(cat_data['MPKI'])
         geomean_cycwppki = calculate_geomean(cat_data['CycWPPKI'])
@@ -105,7 +108,10 @@ def analyze_baseline_difficulty(data):
             continue
         
         def calculate_geomean(values):
-            return np.exp(np.mean(np.log(values)))
+            filtered = values[values > 0]
+            if len(filtered) == 0:
+                return 0.0
+            return np.exp(np.mean(np.log(filtered)))
         
         geomean_mpki = calculate_geomean(cat_data['MPKI'])
         geomean_cycwppki = calculate_geomean(cat_data['CycWPPKI'])

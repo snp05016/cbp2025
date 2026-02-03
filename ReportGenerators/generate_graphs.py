@@ -1,4 +1,6 @@
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Non-interactive backend - no popups
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -280,7 +282,7 @@ def create_benchmark_analysis(df, output_dir):
                     for cat in categories_of_interest if cat in df_filtered['BenchCategory'].values]
     labels = [cat.upper() for cat in categories_of_interest if cat in df_filtered['BenchCategory'].values]
     
-    bp = plt.boxplot(data_to_plot, labels=labels, patch_artist=True, showmeans=True)
+    bp = plt.boxplot(data_to_plot, tick_labels=labels, patch_artist=True, showmeans=True)
     
     for patch, cat in zip(bp['boxes'], [c for c in categories_of_interest if c in df_filtered['BenchCategory'].values]):
         patch.set_facecolor(colors_map[cat])
@@ -320,7 +322,10 @@ def create_benchmark_analysis(df, output_dir):
         
         # Calculate geomean for ALL benchmarks in category
         def calculate_geomean(values):
-            return np.exp(np.mean(np.log(values)))
+            filtered = values[values > 0]
+            if len(filtered) == 0:
+                return 0.0
+            return np.exp(np.mean(np.log(filtered)))
         
         geomean_mpki = calculate_geomean(cat_data['MPKI'])
         
@@ -367,7 +372,10 @@ def create_benchmark_analysis(df, output_dir):
     table_data = [['Category', 'Mean MPKI', 'Geomean MPKI', 'Std MPKI', 'Min MPKI', 'Max MPKI', 'Count']]
     
     def calculate_geomean(values):
-        return np.exp(np.mean(np.log(values)))
+        filtered = values[values > 0]
+        if len(filtered) == 0:
+            return 0.0
+        return np.exp(np.mean(np.log(filtered)))
     
     for category in categories_of_interest:
         if category in mpki_stats['BenchCategory'].values:
@@ -491,7 +499,10 @@ def create_aggregate_comparison_graphs(df, output_dir):
 
 def main():
     csv_path = 'results.csv'
-    output_dir = 'analysis_graphs'
+    output_dir = '../Reports/04_performance_metrics/graphs'
+    
+    # Ensure output directory exists
+    os.makedirs(output_dir, exist_ok=True)
     
     print(f'Loading {csv_path}...')
     df = load_results(csv_path)

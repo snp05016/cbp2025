@@ -1,0 +1,72 @@
+
+====================================================================================================
+MPKI CONSISTENCY ANALYSIS FOR INT BENCHMARKS
+====================================================================================================
+
+Criteria:
+  - SIMILAR (≈): Relative difference ≤ 10.0% (consistent throughout execution)
+  - DIFFERENT (≠): Relative difference ≥ 20.0% (phase behavior detected)
+  - Formula: |MPKI - 50PercMPKI| / max(MPKI, 50PercMPKI)
+----------------------------------------------------------------------------------------------------
+
+                             CONSISTENT BENCHMARKS (MPKI ≈ 50PercMPKI)                              
+====================================================================================================
+Found 24 benchmark(s) with consistent MPKI throughout execution:
+
+Rank   Benchmark                       MPKI    50%MPKI      Diff%           MR        50%MR
+----------------------------------------------------------------------------------------------------
+1      int_11                        3.8809     3.9207      1.02%      5.6373%      5.6974%
+2      int_1                        10.5130    10.3836      1.23%      5.9495%      5.8934%
+3      int_32                        6.3487     6.2434      1.66%      5.5267%      5.4311%
+4      int_5                         2.8235     2.7731      1.79%      3.3023%      3.2052%
+5      int_33                        7.4416     7.5980      2.06%      5.0962%      5.4194%
+6      int_2                         9.9876     9.7715      2.16%      5.5835%      5.4651%
+7      int_16                        5.8279     5.9605      2.22%      3.4620%      3.5435%
+8      int_21                       23.3263    23.8938      2.38%     10.2996%     10.6090%
+9      int_0                         4.7498     4.6302      2.52%      3.0529%      3.0100%
+10     int_6                         2.9270     2.8528      2.54%      2.8145%      2.7307%
+11     int_34                        2.8455     2.9349      3.05%      1.7840%      1.8925%
+12     int_29                       11.4747    11.0499      3.70%     11.3362%     10.8796%
+13     int_23                        3.3033     3.1754      3.87%      2.4794%      2.3793%
+14     int_4                         3.6946     3.5446      4.06%      2.8849%      2.7055%
+15     int_10                        0.5222     0.5009      4.08%      0.4455%      0.4294%
+16     int_30                       11.9056    11.4117      4.15%     11.2853%     10.8686%
+17     int_20                        2.3835     2.2712      4.71%      1.4957%      1.3971%
+18     int_22                        4.2827     4.0809      4.71%      2.5676%      2.4626%
+19     int_35                        2.0167     1.8771      6.92%      1.4223%      1.3206%
+20     int_13                        0.8585     0.7963      7.25%      0.8091%      0.7543%
+21     int_3                         0.7862     0.8530      7.83%      0.6659%      0.7584%
+22     int_28                        3.2163     2.9565      8.08%      3.2113%      2.9648%
+23     int_36                        3.0001     2.7559      8.14%      2.0798%      1.8584%
+24     int_26                        1.1950     1.0967      8.23%      2.2437%      2.0541%
+
+   INSIGHT: These benchmarks show uniform misprediction behavior across the entire trace.
+            No significant phase changes detected.
+
+
+                           PHASE-BEHAVIOR BENCHMARKS (MPKI ≠ 50PercMPKI)                            
+====================================================================================================
+Found 6 benchmark(s) with significant phase behavior:
+
+Rank   Benchmark                       MPKI    50%MPKI      Diff%           MR        50%MR
+----------------------------------------------------------------------------------------------------
+1      int_15                        0.4620     0.8748     47.19%      0.3518%      0.6557%  ↑ Harder
+2      int_12                        0.4037     0.7396     45.42%      0.3810%      0.5070%  ↑ Harder
+3      int_25                        1.3297     2.3258     42.83%      1.9227%      3.0171%  ↑ Harder
+4      int_31                        0.6011     0.4214     29.90%      0.5037%      0.3573%  ↓ Easier
+5      int_18                        0.6654     0.4926     25.97%      0.2814%      0.2075%  ↓ Easier
+6      int_19                        0.7618     0.5989     21.38%      0.5207%      0.4089%  ↓ Easier
+
+   INSIGHT: These benchmarks show distinct phase changes:
+            - '↑ Harder' = Second half has MORE mispredictions (becomes harder to predict)
+            - '↓ Easier' = Second half has FEWER mispredictions (becomes easier to predict)
+
+
+                                         SUMMARY STATISTICS                                         
+====================================================================================================
+Total INT benchmarks analyzed: 30
+  - Consistent behavior (≈):      24 benchmarks (80.0%)
+  - Phase behavior (≠):            6 benchmarks (20.0%)
+====================================================================================================
+
+Plot saved as: ../Reports/03_phase_behavior/graphs/mpki_consistency_int.png

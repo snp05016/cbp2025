@@ -6,3 +6,4 @@ cond_branch_predictor_interface.o
 traces/
 ReportGenerators/generatorinfo.md
 results/baseline/
+copyImportantFiles.sh

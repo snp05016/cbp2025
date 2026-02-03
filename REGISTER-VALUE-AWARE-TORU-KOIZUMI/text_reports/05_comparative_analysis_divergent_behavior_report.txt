@@ -1,0 +1,24 @@
+Finding benchmark discrepancies...
+================================================================================
+
+Category: FP
+Finding benchmarks with:
+  - Similar MPKI (±7.5% for FP (auto), using |val₁-val₂|/max formula)
+  - Very different CycWPPKI (at least 20.0% difference)
+--------------------------------------------------------------------------------
+
+Found 3 discrepancy pairs:
+
+1. fp_5_trace vs fp_7_trace:
+   MPKI: 0.9250 vs 0.9805 (diff: 5.66%)
+   CycWPPKI: 32 vs 44 (diff: 27.01%)
+
+2. fp_12_trace vs fp_7_trace:
+   MPKI: 1.0294 vs 0.9805 (diff: 4.75%)
+   CycWPPKI: 69 vs 44 (diff: 36.73%)
+
+3. fp_7_trace vs fp_6_trace:
+   MPKI: 0.9805 vs 0.9122 (diff: 6.97%)
+   CycWPPKI: 44 vs 35 (diff: 20.12%)
+
+Plot saved as: ../Reports/05_comparative_analysis/divergent_behavior/discrepancy_fp_CycWPPKI_vs_MPKI.png

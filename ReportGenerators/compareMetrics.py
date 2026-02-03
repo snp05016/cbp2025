@@ -1,5 +1,7 @@
 # Find benchmarks within same category with similar metric but very different another metric
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Non-interactive backend - no popups
 import matplotlib.pyplot as plt
 
 
@@ -160,9 +162,15 @@ def plot_comparison(comparison_results, category, similar_metric, different_metr
                   fontsize=12, fontweight='bold')
     
     plt.tight_layout()
-    filename = f'discrepancy_{category}_{different_metric}_vs_{similar_metric}.png'
+    
+    # Save to Reports directory
+    import os
+    output_dir = '../Reports/05_comparative_analysis/divergent_behavior'
+    os.makedirs(output_dir, exist_ok=True)
+    filename = f'{output_dir}/discrepancy_{category}_{different_metric}_vs_{similar_metric}.png'
+    
     plt.savefig(filename, dpi=300, bbox_inches='tight')
-    plt.show()
+    plt.close()  # Close figure instead of showing
     
     print(f"\nPlot saved as: {filename}")
 

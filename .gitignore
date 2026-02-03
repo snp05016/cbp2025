@@ -4,3 +4,5 @@ my_cond_branch_predictor.o
 cond_branch_predictor_interface.o
 .vscode/
 traces/
+ReportGenerators/generatorinfo.md
+results/baseline/

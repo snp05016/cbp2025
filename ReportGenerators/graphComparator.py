@@ -1,4 +1,6 @@
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Non-interactive backend - no popups
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -54,8 +56,13 @@ def generate_comparison_plot(data, workload_type, full_data=None):
     ax.legend()
     ax.grid(axis='y', linestyle='--', alpha=0.4)
     plt.subplots_adjust(bottom=0.25)
-    plt.savefig(f'mpki_comparison_{workload_type}.png')
-    plt.show()
+    
+    # Save to Reports directory
+    import os
+    output_dir = '../Reports/01_misprediction_analysis/graphs'
+    os.makedirs(output_dir, exist_ok=True)
+    plt.savefig(f'{output_dir}/mpki_comparison_{workload_type}.png')
+    plt.close()  # Close figure instead of showing
 
 # --- FIX STARTS HERE ---
 selected_runs = []

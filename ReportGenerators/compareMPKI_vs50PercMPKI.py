@@ -1,5 +1,7 @@
 # Compare MPKI vs 50PercMPKI for benchmarks within same category
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Non-interactive backend - no popups
 import matplotlib.pyplot as plt
 
 
@@ -209,9 +211,15 @@ def plot_comparison(results, category):
     ax2.grid(axis='y', alpha=0.3)
     
     plt.tight_layout()
-    filename = f'mpki_consistency_{category}.png'
+    
+    # Save to Reports directory
+    import os
+    output_dir = '../Reports/03_phase_behavior/graphs'
+    os.makedirs(output_dir, exist_ok=True)
+    filename = f'{output_dir}/mpki_consistency_{category}.png'
+    
     plt.savefig(filename, dpi=300, bbox_inches='tight')
-    plt.show()
+    plt.close()  # Close figure instead of showing
     
     print(f"Plot saved as: {filename}")
 

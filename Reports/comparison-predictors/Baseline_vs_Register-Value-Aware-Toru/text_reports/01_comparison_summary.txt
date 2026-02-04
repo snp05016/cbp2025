@@ -22,6 +22,19 @@ Register-Value-Aware-Toru wins: 105 traces
 Ties: 0 traces
 
 
+Better performances in how many frameworks of each type :
+--------------------------------------------------------------------------------
+Framework | Improve/Total | Succes Ratio                                       
+Web       |  25/26        |   96.2  %                                            
+Fp        |  11/14        |   78.6  %                                            
+Int       |  28/37        |   75.7  %                                            
+Infra     |  14/16        |   87.5  %                                            
+Compress  |  8/8          |   100.0 %                                            
+Media     |  3/4          |   75.0  %    
+--------------------------------------                                        
+Average   |  89/105       |   84.8  %
+
+
 Biggest Improvements (Register-Value-Aware-Toru better):
 --------------------------------------------------------------------------------
   fp_8_trace                                 7.8738 →   3.6875 (↓ 4.1863)

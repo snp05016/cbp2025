@@ -11,7 +11,7 @@ MR                             2.9679               2.6687               ↓ 10.
 IPC                            3.4636               3.5081               ↑ 1.28% better
 Cycles                         14824660.9143        14447201.9524        ↓ 2.55% better
 BrPerCyc                       0.4203               0.4257               ↑ 1.29% better
-MispBrPerCyc                   0.0100               0.0092               ↓ 8.05% worse
+MispBrPerCyc                   0.0100               0.0092               ↑ 8.05% better 
 CycWPPKI                       161.6047             151.7579             ↓ 6.09% better
 
 
@@ -21,6 +21,18 @@ Baseline wins: 4 traces
 TAGE-SCL-Andrez-Seznec wins: 101 traces
 Ties: 0 traces
 
+
+Better performances in how many frameworks of each type :
+--------------------------------------------------------------------------------
+Framework | Improve/Total | Succes Ratio                                       
+Web       |  25/26        |   96.2 %                                            
+Fp        |  9/14         |   64.3 %                                            
+Int       |  25/37        |   67.6 %                                            
+Infra     |  7/16         |   43.8 %                                            
+Compress  |  1/8          |   12.5 %                                            
+Media     |  3/4          |   75.0 %
+--------------------------------------
+Average   |  70/105       |   66.7 %
 
 Biggest Improvements (TAGE-SCL-Andrez-Seznec better):
 --------------------------------------------------------------------------------

@@ -22,6 +22,18 @@ Load-Value-Correlator-Man wins: 100 traces
 Ties: 0 traces
 
 
+Better performances in how many frameworks of each type :
+--------------------------------------------------------------------------------
+Framework | Improve/Total | Success Ratio | Total MPKI Improvement               
+Web       |  23/26        |   88.5        |   -10.4414                           
+Int       |  20/37        |   54.1        |   -14.4377                           
+Fp        |  5/14         |   35.7        |   -2.9306                            
+Infra     |  9/16         |   56.3        |   -2.1943                            
+Compress  |  1/8          |   12.5        |   -0.1299                            
+Media     |  0/4          |   0.0         |   0.0000                             
+
+
+
 Biggest Improvements (Load-Value-Correlator-Man better):
 --------------------------------------------------------------------------------
   int_16_trace                               8.1253 →   5.8167 (↓ 2.3086)

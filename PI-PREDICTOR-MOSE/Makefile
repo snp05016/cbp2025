@@ -53,18 +53,6 @@ ifeq ($(NO_IDIOT), 1)
     FLAGS += -DNO_IDIOT
 endif
 
-
-### edit --> made by saumya for darwin os systems ie macos 
-UNAME_S := $(shell uname -s)
-
-ifeq ($(UNAME_S),Darwin)
-  LD_GC_SECTIONS := -Wl,-dead_strip
-else
-  LD_GC_SECTIONS := -Wl,--gc-sections
-  # optional but recommended when using --gc-sections
-  CXXFLAGS += -ffunction-sections -fdata-sections
-endif
-
 .PHONY: clean lib
 
 all: cbp
@@ -73,7 +61,7 @@ lib:
 	make -C $@ DEBUG=$(DEBUG)
 
 cbp: $(OBJ) | lib
-	$(CC) $(FLAGS) $(LD_GC_SECTIONS) -fwhole-program -o $@ $^
+	$(CC) $(FLAGS) -Wl,--gc-sections -fwhole-program -o $@ $^
 
 %.o: %.cc $(DEPS)
 	$(CC) $(FLAGS) -c -o $@ $<

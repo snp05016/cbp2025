@@ -23,6 +23,7 @@ plt.rcParams['font.size'] = 10
 # Define predictor files and names
 PREDICTORS = {
     'Baseline': 'baseline.csv',
+    'Programming Idiom Predictor-Mose': 'programming-idiom-predictor-mose.csv',
     'TAGE-SC-L-Alberto-Ros': 'tage-sc-l-alberto-ros-results.csv',
     'TAGE-SCL-Andrez-Seznec': 'tage-scl-andrez-seznec-results.csv',
     'Load-Value-Correlator-Man': 'load-value-correlator-man-results.csv',

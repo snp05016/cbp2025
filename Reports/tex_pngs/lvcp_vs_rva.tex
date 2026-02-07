@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{LVCP vs RVA-Toru: Performance Delta Analysis}
+
+\begin{table}[h]
+\centering
+\caption{Delta Statistics ($\Delta = \mathrm{MPKI}_{\mathrm{LVCP}} - \mathrm{MPKI}_{\mathrm{RVA\text{-}Toru}}$)}
+\begin{tabular}{lc}
+\toprule
+Statistic & Value (MPKI) \\
+\midrule
+Average   & +0.1664 \\
+Std Dev   & 0.4111 \\
+Median    & +0.0722 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Improvement Analysis:} \\
+RVA-Toru outperforms LVCP on 92 out of 105 traces, which represents a success rate of 87.6\%.
+
+\textbf{Worst-Case MPKI Comparison:} \\
+LVCP: 23.5688 \\
+RVA-Toru: 21.6842
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\textwidth]{delta_scatter_lvcp_vs_rvatoru.png}
+    \caption{Per-trace $\Delta$ MPKI: LVCP relative to RVA-Toru}
+\end{figure}
+
+\textbf{Conclusion:} 
+
+The results suggest that RVA-Toru largely subsumes the functionality of LVCP, providing superior prediction accuracy across nearly 88\% of the tested workloads. This performance gap is logical given the design differences between the two predictors. RVA-Toru utilizes register values to determine branch outcomes and employs hashing techniques for multiple values. Additionally, it accounts for register renaming and reuse, which likely explains its broader effectiveness.
+
+
+
+While LVCP is more specialized, it may still perform well in specific scenarios where there is a high frequency of memory loads immediately preceding conditional branches. LVCP is specifically tuned to track values driven by memory loads. In contrast, RVA-Toru considers all register values and utilizes a clever "digest" system, which involves 12-bit encodings, to manage data efficiently.
+
+\end{document}

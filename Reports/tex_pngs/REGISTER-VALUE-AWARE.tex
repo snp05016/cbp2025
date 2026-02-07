@@ -1,0 +1,79 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{longtable}
+
+% Code listing setup
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10}
+}
+
+\title{Register-Value-Aware Branch Predictor Analysis}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Overview of the Register-Value-Aware Predictor}
+
+The Register-Value-Aware predictor, specifically the Runlts implementation, presents several sophisticated methods for improving branch accuracy. Built upon the foundation of the TAGE predictor, it utilizes multiple tagged tables and a statistical correlator. Notably, the design increases the size of the bimodal predictor to 128k entries to provide a more robust baseline for simpler branches.
+
+The defining innovation of this predictor is its awareness of register values. Initially, one might assume that constantly comparing full register values would be prohibitively expensive due to the significant overhead of register reads and comparisons in the critical path. However, the techniques used here are remarkably efficient. It is impressive to note that this design achieves a quality of branch prediction that surpasses even the TAGE SC-L predictor from 2025, which has long been considered a top-tier design.
+
+One of the more interesting aspects of the design is the use of a "digest." While this is essentially a summary of data, it serves a specific purpose: a digest is a 12-bit condensation of a 64-bit register value. These digests track correlations between specific data patterns, such as loop counters or state flags, and branch outcomes. The generation of a digest depends on the data type. For integer registers, the digest includes a count of leading zeros to capture magnitude and scale. In contrast, for floating-point registers, it uses the most significant bits of the exponent.
+
+
+
+Once generated, these digests are fed into the statistical register, which organizes them into banks and maintains a usefulness table to select the most relevant register for a given branch. The selected digest is then used to look up a prediction in the main table, which ultimately outputs the predicted branch direction. This register component provided the most significant and consistent gains across all features and was the only optimization that improved accuracy for every single benchmark in the set.
+
+Additionally, Runlts introduces a new allocation policy where entries are flagged as newly allocated rather than using traditional "u bits" to prevent eviction. This allows the system to track outcomes specifically as either "success" or "waste." Beyond register-level optimizations, the predictor combines arithmetic and geometric progressions for near-optimal results, improves the Inner Most Loop Iterator (IMLI), and adds a call stack component to the statistical correlator. This last addition is particularly useful for differentiating between identical branches that are called from different functions, which often exhibit different behaviors.
+
+\section{Performance Analysis: RVA vs. Baseline}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{register_value_aware_predictor_vs_baseline_plots.png}
+    \caption{Register-Value-Aware Predictor vs. Baseline Comparison}
+\end{figure}
+
+Analysis of the performance data reveals a significant gain in Mispredictions Per Kilo-Instruction (MPKI). Specifically, the RVA predictor achieves a 13.28\% improvement over the baseline. While the gain in Instructions Per Cycle (IPC) is more modest, the reduction in the overall misprediction rate is clear and consistent. The IPC improvements suggest that the gains are primarily concentrated on branches that are traditionally hard to predict.
+
+Since most real-world branches are ultimately data-dependent, this predictor succeeds by sitting on top of TAGE and using register values to resolve cases where history alone is insufficient. The graphs show almost zero regressions, which indicates that the predictor is exceptionally robust. It contributes when useful and effectively falls back to standard TAGE behavior when register correlations are weak or absent. This ensures that the added complexity does not penalize the system in workloads where data awareness provides no extra benefit.
+
+Approximately 15 out of 112 benchmarks reported similar MPKIs to the baseline, while the remainder showed substantial improvements. It is not surprising that the most significant gains, specifically where the MPKI difference exceeds 1.0, belong to integer benchmarks. These workloads involve heavy integer computation, array indexing, and complex control flow decisions. The success rate of 75\% for integer benchmarks reflects the wide variety of these workloads. While the speedups can be noisy, they lean heavily toward the side of improvement, demonstrating that RVA-Toru performs well on integer tasks because it effectively exploits value-based patterns.
+
+\subsection{Summary Statistics}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{Baseline} & \textbf{Register-Value-Aware-Toru} & \textbf{Difference} \\
+\midrule
+MPKI           & 3.8080      & 3.3022      & 13.28\% Improvement \\
+MR             & 2.9679      & 2.5681      & 13.47\% Improvement \\
+IPC            & 3.4636      & 3.5450      & 2.35\% Improvement \\
+Cycles         & 14824660.91 & 14401963.47 & 2.85\% Improvement \\
+BrPerCyc       & 0.4203      & 0.4309      & 2.54\% Improvement \\
+MispBrPerCyc   & 0.0100      & 0.0089      & 10.23\% Improvement \\
+CycWPPKI       & 161.6047    & 149.9141    & 7.23\% Improvement \\
+\bottomrule
+\end{tabular}
+\caption{Comparative summary of key performance metrics}
+\end{table}
+
+The reduction in mispredictions per cycle is a natural consequence of the improved MPKI. Most benchmarks show visible progress, even if some results fall within the margin of error or noise. Notably, the most dramatic MPKI reductions occur in traces where the baseline performance was already poor. This suggests the predictor is particularly effective at "clutching" branches where traditional history-based correlation is at its weakest.
+
+The variance in integer benchmark performance highlights the heterogeneity of these workloads. While value-dependent control flow benefits significantly from register correlation, pointer-driven or indirect branches can limit the effectiveness of these mechanisms. Overall, the ability of the predictor to defer to TAGE when correlations are weak ensures that it provides broad benefits without degrading performance on simpler code.
+
+\end{document}

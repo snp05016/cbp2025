@@ -1,0 +1,127 @@
+% filepath: /Users/saumya/Desktop/Winter26/Cmput429/cbp2025/Reports/comparison-predictors/markdown_version_reports/TAGE-SC-ROS-REPORT.tex
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{longtable}
+
+\title{TAGE-SC-L Alberto Ros Predictor Analysis}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Outline of the Predictor}
+
+The TAGE-SC-L predictor by Alberto Ros, while similar to André Seznec's implementation, introduces distinct optimizations on top of the base TAGE architecture.
+
+Key differences include:
+
+\begin{itemize}
+    \item \textbf{Hybrid Sequence Design}: The predictor employs a quadratic sequence initially, then transitions to a generalized geometric sequence with increasing multipliers. This design leverages the rapid growth of quadratic sequences early on, followed by the more moderate progression of geometric sequences. This approach simplifies hardware implementation by allowing direct-mapped tables instead of set-associative ones, reducing MPKI.
+    
+    \item \textbf{Enhanced Confidence Mechanism}: The confidence rates have been improved to better balance decisions between the statistical correlator and TAGE components. The loop predictor is treated as the most confident component with final, non-overridable decisions—a departure from the 2016 predictor which allowed conflicts between the SC and loop predictor. The loop predictor is only selected when confidence level is $\geq 2$.
+\end{itemize}
+
+\section{Predictor vs Baseline Predictor}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{tage_sc_l_alberto_vs_baseline_plots.png}
+    \caption{Performance comparison plots}
+\end{figure}
+
+Upon analyzing the performance graphs, minimal differences were observed between this predictor and André Seznec's implementation. The improvements are nearly identical, if not slightly worse in some cases.
+
+\subsection{Framework Performance Comparison}
+
+\begin{table}[h]
+\centering
+\caption{Side-by-Side Framework Performance Comparison}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Framework} & \multicolumn{2}{c}{\textbf{TAGE Alberto Ros}} & \multicolumn{2}{c}{\textbf{TAGE Seznec}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+ & Improve/Total & Success \% & Improve/Total & Success \% \\
+\midrule
+Web       & 25/26  & 96.2\%  & 25/26  & 96.2\% \\
+Fp        & 8/14   & 57.1\%  & 9/14   & 64.3\% \\
+Int       & 20/37  & 54.1\%  & 25/37  & 67.6\% \\
+Infra     & 4/16   & 25.0\%  & 7/16   & 43.8\% \\
+Compress  & 1/8    & 12.5\%  & 1/8    & 12.5\% \\
+Media     & 3/4    & 75.0\%  & 3/4    & 75.0\% \\
+\midrule
+Average   & 61/109 & 55.96\% & 70/105 & 66.7\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Direct Predictor Comparison}
+
+Even when comparing overall MPKI differences, there is minimal variance between the two implementations.
+
+\subsection{Summary Statistics}
+
+\begin{table}[h]
+\centering
+\caption{TAGE-SC-L Alberto Ros vs TAGE-SCL André Seznec}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{Alberto Ros} & \textbf{Seznec} & \textbf{Difference} \\
+\midrule
+MPKI         & 3.3898  & 3.3918  & $\uparrow$ 0.06\% worse \\
+MR           & 2.6697  & 2.6687  & $\downarrow$ 0.04\% better \\
+IPC          & 3.3537  & 3.5081  & $\uparrow$ 4.60\% better \\
+Cycles       & 14106643.7238 & 14447201.9524 & $\uparrow$ 2.41\% worse \\
+BrPerCyc     & 0.4012  & 0.4257  & $\uparrow$ 6.10\% better \\
+MispBrPerCyc & 0.0089  & 0.0092  & $\uparrow$ 2.42\% better \\
+CycWPPKI     & 151.4364 & 151.7579 & $\uparrow$ 0.21\% worse \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Trace-by-Trace Comparison (MPKI)}
+
+\begin{itemize}
+    \item TAGE-SC-L Alberto Ros wins: 27 traces
+    \item TAGE-SCL André Seznec wins: 78 traces
+    \item Ties: 0 traces
+\end{itemize}
+
+\subsection{Biggest Improvements (Seznec Better)}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Trace} & \textbf{Alberto Ros} & \textbf{Seznec} & \textbf{Improvement} \\
+\midrule
+web\_19\_trace  & 5.0555  & 0.0000  & $\downarrow$ 5.0555 \\
+int\_1\_trace   & 11.4406 & 10.5130 & $\downarrow$ 0.9276 \\
+int\_2\_trace   & 10.7227 & 9.9876  & $\downarrow$ 0.7351 \\
+int\_22\_trace  & 4.8095  & 4.2827  & $\downarrow$ 0.5268 \\
+int\_21\_trace  & 23.7948 & 23.3263 & $\downarrow$ 0.4685 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Biggest Regressions (Seznec Worse)}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Trace} & \textbf{Alberto Ros} & \textbf{Seznec} & \textbf{Regression} \\
+\midrule
+int\_9\_trace   & 0.0000 & 3.6628 & $\uparrow$ 3.6628 \\
+web\_3\_trace   & 0.0000 & 3.5523 & $\uparrow$ 3.5523 \\
+web\_14\_trace  & 0.0000 & 3.3625 & $\uparrow$ 3.3625 \\
+fp\_6\_trace    & 0.0000 & 0.8550 & $\uparrow$ 0.8550 \\
+int\_16\_trace  & 5.5268 & 5.8279 & $\uparrow$ 0.3011 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

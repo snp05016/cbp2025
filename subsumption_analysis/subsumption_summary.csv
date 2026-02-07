@@ -1,0 +1,11 @@
+Predictor_A, Predictor_B, Valid_Traces, Skipped_Traces, Avg_Delta_MPKI       , Pct_B_Better       , Worst_MPKI_A, Worst_MPKI_B, Classification
+Baseline   , LVCP       ,          105,              0, 0.33928571428571436  ,  95.23809523809524 ,      24.1502,      23.5688, B strictly subsumes A
+Baseline   , RVA-Toru   ,          105,              0, 0.5057247619047619   , 100.0              ,      24.1502,      21.6842, B strictly subsumes A
+Baseline   , TAGE-SC-L  ,          101,              4, 0.3009               ,  97.02970297029702 ,      24.1502,      23.7948, B strictly subsumes A
+Baseline   , TAGE-SCL   ,          104,              1, 0.36241826923076925  ,  96.15384615384616 ,      24.1502,      23.3263, B strictly subsumes A
+LVCP       , RVA-Toru   ,          105,              0, 0.1664390476190476   ,  87.61904761904762 ,      23.5688,      21.6842, B mostly subsumes A
+LVCP       , TAGE-SC-L  ,          101,              4, -0.035204950495049486,  54.45544554455446 ,      23.5688,      23.7948, A and B are complementary
+LVCP       , TAGE-SCL   ,          104,              1, 0.02811923076923079  ,  67.3076923076923  ,      23.5688,      23.3263, A and B are complementary
+RVA-Toru   , TAGE-SC-L  ,          101,              4, -0.20563465346534646 ,  16.831683168316832,      21.6842,      23.7948, A weakly dominates B
+RVA-Toru   , TAGE-SCL   ,          104,              1, -0.13930576923076918 ,  28.846153846153847,      21.6842,      23.3263, A weakly dominates B
+TAGE-SC-L  , TAGE-SCL   ,          100,              5, 0.06168699999999999  ,  77.0              ,      23.7948,      23.3263, B mostly subsumes A

@@ -1,0 +1,15 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{titlesec}[2026/02/06 Local stub fallback]
+
+% No-op fallbacks for common titlesec commands.
+\makeatletter
+\providecommand{\titleformat}{\@ifstar{\titlesec@tf@star}{\titlesec@tf@nostar}}
+\providecommand{\titlesec@tf@star}[5][]{}
+\providecommand{\titlesec@tf@nostar}[6][]{}
+
+\providecommand{\titlespacing}{\@ifstar{\titlesec@ts@star}{\titlesec@ts@nostar}}
+\providecommand{\titlesec@ts@star}[4][]{}
+\providecommand{\titlesec@ts@nostar}[4][]{}
+\makeatother
+
+\endinput

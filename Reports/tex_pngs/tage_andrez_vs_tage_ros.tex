@@ -1,0 +1,51 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{Comparative Analysis: TAGE-SCL (Andrez) vs. TAGE-SC-L (Alberto Ros)}
+
+This report evaluates the performance differences between André Seznec's TAGE-SCL and Alberto Ros's TAGE-SC-L. Both predictors are sophisticated evolutions of the original TAGE architecture, and this analysis aims to determine if one implementation provides a statistically significant advantage over the other.
+
+\textbf{Data Quality and Methodology}
+
+The comparison was conducted using a dataset of 105 traces. Out of these, 100 traces were considered valid for this analysis. Five traces were skipped because they reported a zero MPKI, which would have introduced division errors or meaningless ratios in a relative performance context.
+
+\begin{table}[h]
+\centering
+\caption{Delta Statistics ($\Delta = \mathrm{MPKI}_{\mathrm{TAGE\text{-}SC\text{-}L}} - \mathrm{MPKI}_{\mathrm{TAGE\text{-}SCL}}$)}
+\begin{tabular}{lc}
+\toprule
+Statistic & Value (MPKI) \\
+\midrule
+Average   & +0.0617 \\
+Std Dev   & 0.1539 \\
+Median    & +0.0233 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Improvement Analysis and Comparison}
+
+When looking at the head-to-head results, TAGE-SCL (Andrez) outperformed TAGE-SC-L (Alberto Ros) on 77 out of the 100 valid traces. This suggests that Seznec’s implementation is more consistent across a wider variety of workloads, achieving a 77.0\% success rate in this specific comparison.
+
+\textbf{Worst-Case Performance}
+
+The worst-case MPKI observed for each predictor also shows a slight edge for the Seznec implementation:
+\begin{itemize}
+    \item TAGE-SC-L (Alberto Ros): 23.7948
+    \item TAGE-SCL (Andrez): 23.3263
+\end{itemize}
+While the difference is small, it indicates that the Seznec predictor handles high-misprediction workloads slightly more efficiently.
+
+
+
+\textbf{Conclusion}
+
+The data indicates that there is very little practical difference between these two predictors. An average MPKI delta of approximately 0.06 is minimal, and in many real-world scenarios, this would be considered within the margin of error or execution noise. Both designs are built upon the same fundamental TAGE baseline. While they each introduce unique optimizations, such as different table indexing or update policies, these specialized features do not seem to drastically change the overall performance profile.
+
+If the goal is to identify even the most marginal gains, André Seznec’s implementation is the clear winner, as it performs better on 77\% of the benchmarks. Therefore, it is fair to conclude that TAGE-SCL (Andrez) weakly subsumes the Alberto Ros version. It provides a more robust and slightly more accurate prediction across the majority of the trace set without any significant drawbacks in worst-case scenarios.
+
+\end{document}

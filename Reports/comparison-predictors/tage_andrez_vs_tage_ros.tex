@@ -1,0 +1,38 @@
+% filepath: /Users/saumya/Desktop/Winter26/Cmput429/cbp2025/Reports/comparison-predictors/tage_andrez_vs_tage_ros.tex
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{TAGE-SCL (Andrez) vs TAGE-SC-L (Alberto Ros)}
+
+\textbf{Data Quality:} \\
+Valid traces: 100 \\
+Skipped traces: 5 (zero MPKI)
+
+\begin{table}[h]
+\centering
+\caption{Delta Statistics ($\Delta = \mathrm{MPKI}_{\mathrm{TAGE\text{-}SC\text{-}L}} - \mathrm{MPKI}_{\mathrm{TAGE\text{-}SCL}}$)}
+\begin{tabular}{lc}
+\toprule
+Statistic & Value (MPKI) \\
+\midrule
+Average   & +0.0617 \\
+Std Dev   & 0.1539 \\
+Median    & +0.0233 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Improvement Analysis:} \\
+TAGE-SCL (Andrez) beats TAGE-SC-L (Alberto Ros) on 77 out of 100 traces (77.0\%).
+
+\textbf{Worst-Case MPKI:} \\
+TAGE-SC-L: 23.7948 \\
+TAGE-SCL: 23.3263
+
+\textbf{Conclusion:} \\
+i can conclude that there isnt much of a difference of mpki prolly like 0.06 which is very less to even conclude somrthing. they are literally based on the baseline and both provide optimizations and even though they are diffferent optimizations it looks likes they arent doing much overall. if we are worried about the smallest of the smallest improvements then definitely tage andrez wins and it wins on 77% of the benchmarks, so ideally tage andrez very weakly subsumes tage alberto ros. 
+\end{document}

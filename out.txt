@@ -1,0 +1,329 @@
+================================================================================
+AUTOMATED SUBSUMPTION ANALYSIS
+================================================================================
+
+Discovering predictor CSV files...
+✓ Found: baseline.csv
+✓ Found: load-value-correlator-man-results.csv
+✓ Found: register-value-aware-toru-results.csv
+✓ Found: tage-sc-l-alberto-ros-results.csv
+✓ Found: tage-scl-andrez-seznec-results.csv
+
+Found 5 CSV file(s)
+
+Loading and combining data...
+  Loaded 105 entries from baseline.csv
+  Loaded 105 entries from load-value-correlator-man-results.csv
+  Loaded 105 entries from register-value-aware-toru-results.csv
+  Loaded 105 entries from tage-sc-l-alberto-ros-results.csv
+  Loaded 105 entries from tage-scl-andrez-seznec-results.csv
+
+Combined dataset:
+  Total entries: 525
+  Predictors: 5
+  Traces: 105
+  Predictor names: Baseline, LVCP, RVA-Toru, TAGE-SC-L, TAGE-SCL
+
+✓ Saved combined dataset to: subsumption_analysis/combined_predictor_results.csv
+
+================================================================================
+PERFORMING SUBSUMPTION ANALYSIS
+================================================================================
+
+================================================================================
+SUBSUMPTION ANALYSIS: Baseline vs LVCP
+================================================================================
+
+Data Quality:
+  Valid traces:   105
+  Skipped traces: 0 (zero MPKI)
+
+Delta Statistics (Δ = MPKI_Baseline - MPKI_LVCP):
+  Average:  +0.3393 MPKI
+  Std Dev:  0.4294 MPKI
+  Median:   +0.1372 MPKI
+
+Improvement Analysis:
+  LVCP beats Baseline: 100/105 traces (95.2%)
+
+Worst-Case MPKI:
+  Baseline: 24.1502
+  LVCP: 23.5688
+
+────────────────────────────────────────────────────────────────────────────────
+CONCLUSION: B strictly subsumes A
+────────────────────────────────────────────────────────────────────────────────
+
+Paper-Ready Interpretation:
+  After excluding 0 invalid zero-MPKI traces, 
+  LVCP strictly subsumes Baseline. Across 105 valid traces, LVCP achieves an average MPKI reduction of 0.3393, improving performance on 95.2% of workloads. The worst-case MPKI of LVCP (23.5688) is no worse than Baseline (24.1502), indicating that LVCP captures all predictive patterns of Baseline plus additional architectural dependencies.
+
+================================================================================
+SUBSUMPTION ANALYSIS: Baseline vs RVA-Toru
+================================================================================
+
+Data Quality:
+  Valid traces:   105
+  Skipped traces: 0 (zero MPKI)
+
+Delta Statistics (Δ = MPKI_Baseline - MPKI_RVA-Toru):
+  Average:  +0.5057 MPKI
+  Std Dev:  0.6765 MPKI
+  Median:   +0.2909 MPKI
+
+Improvement Analysis:
+  RVA-Toru beats Baseline: 105/105 traces (100.0%)
+
+Worst-Case MPKI:
+  Baseline: 24.1502
+  RVA-Toru: 21.6842
+
+────────────────────────────────────────────────────────────────────────────────
+CONCLUSION: B strictly subsumes A
+────────────────────────────────────────────────────────────────────────────────
+
+Paper-Ready Interpretation:
+  After excluding 0 invalid zero-MPKI traces, 
+  RVA-Toru strictly subsumes Baseline. Across 105 valid traces, RVA-Toru achieves an average MPKI reduction of 0.5057, improving performance on 100.0% of workloads. The worst-case MPKI of RVA-Toru (21.6842) is no worse than Baseline (24.1502), indicating that RVA-Toru captures all predictive patterns of Baseline plus additional architectural dependencies.
+
+================================================================================
+SUBSUMPTION ANALYSIS: Baseline vs TAGE-SC-L
+================================================================================
+
+Data Quality:
+  Valid traces:   101
+  Skipped traces: 4 (zero MPKI)
+
+Delta Statistics (Δ = MPKI_Baseline - MPKI_TAGE-SC-L):
+  Average:  +0.3009 MPKI
+  Std Dev:  0.4348 MPKI
+  Median:   +0.1278 MPKI
+
+Improvement Analysis:
+  TAGE-SC-L beats Baseline: 98/101 traces (97.0%)
+
+Worst-Case MPKI:
+  Baseline: 24.1502
+  TAGE-SC-L: 23.7948
+
+────────────────────────────────────────────────────────────────────────────────
+CONCLUSION: B strictly subsumes A
+────────────────────────────────────────────────────────────────────────────────
+
+Paper-Ready Interpretation:
+  After excluding 4 invalid zero-MPKI traces, 
+  TAGE-SC-L strictly subsumes Baseline. Across 101 valid traces, TAGE-SC-L achieves an average MPKI reduction of 0.3009, improving performance on 97.0% of workloads. The worst-case MPKI of TAGE-SC-L (23.7948) is no worse than Baseline (24.1502), indicating that TAGE-SC-L captures all predictive patterns of Baseline plus additional architectural dependencies.
+
+================================================================================
+SUBSUMPTION ANALYSIS: Baseline vs TAGE-SCL
+================================================================================
+
+Data Quality:
+  Valid traces:   104
+  Skipped traces: 1 (zero MPKI)
+
+Delta Statistics (Δ = MPKI_Baseline - MPKI_TAGE-SCL):
+  Average:  +0.3624 MPKI
+  Std Dev:  0.4294 MPKI
+  Median:   +0.1806 MPKI
+
+Improvement Analysis:
+  TAGE-SCL beats Baseline: 100/104 traces (96.2%)
+
+Worst-Case MPKI:
+  Baseline: 24.1502
+  TAGE-SCL: 23.3263
+
+────────────────────────────────────────────────────────────────────────────────
+CONCLUSION: B strictly subsumes A
+────────────────────────────────────────────────────────────────────────────────
+
+Paper-Ready Interpretation:
+  After excluding 1 invalid zero-MPKI traces, 
+  TAGE-SCL strictly subsumes Baseline. Across 104 valid traces, TAGE-SCL achieves an average MPKI reduction of 0.3624, improving performance on 96.2% of workloads. The worst-case MPKI of TAGE-SCL (23.3263) is no worse than Baseline (24.1502), indicating that TAGE-SCL captures all predictive patterns of Baseline plus additional architectural dependencies.
+
+================================================================================
+SUBSUMPTION ANALYSIS: LVCP vs RVA-Toru
+================================================================================
+
+Data Quality:
+  Valid traces:   105
+  Skipped traces: 0 (zero MPKI)
+
+Delta Statistics (Δ = MPKI_LVCP - MPKI_RVA-Toru):
+  Average:  +0.1664 MPKI
+  Std Dev:  0.4111 MPKI
+  Median:   +0.0722 MPKI
+
+Improvement Analysis:
+  RVA-Toru beats LVCP: 92/105 traces (87.6%)
+
+Worst-Case MPKI:
+  LVCP: 23.5688
+  RVA-Toru: 21.6842
+
+────────────────────────────────────────────────────────────────────────────────
+CONCLUSION: B mostly subsumes A
+────────────────────────────────────────────────────────────────────────────────
+
+Paper-Ready Interpretation:
+  After excluding 0 invalid zero-MPKI traces, 
+  RVA-Toru mostly subsumes LVCP. On 105 valid traces, RVA-Toru provides superior prediction on 87.6% of workloads with an average MPKI improvement of 0.1664. While LVCP may offer marginal benefits on select traces, RVA-Toru represents a more robust general-purpose solution.
+
+================================================================================
+SUBSUMPTION ANALYSIS: LVCP vs TAGE-SC-L
+================================================================================
+
+Data Quality:
+  Valid traces:   101
+  Skipped traces: 4 (zero MPKI)
+
+Delta Statistics (Δ = MPKI_LVCP - MPKI_TAGE-SC-L):
+  Average:  -0.0352 MPKI
+  Std Dev:  0.1786 MPKI
+  Median:   +0.0080 MPKI
+
+Improvement Analysis:
+  TAGE-SC-L beats LVCP: 55/101 traces (54.5%)
+
+Worst-Case MPKI:
+  LVCP: 23.5688
+  TAGE-SC-L: 23.7948
+
+────────────────────────────────────────────────────────────────────────────────
+CONCLUSION: A and B are complementary
+────────────────────────────────────────────────────────────────────────────────
+
+Paper-Ready Interpretation:
+  After excluding 4 invalid zero-MPKI traces, 
+  LVCP and TAGE-SC-L exhibit complementary behavior. TAGE-SC-L outperforms LVCP on 54.5% of 101 valid traces, suggesting that different workload characteristics favor different prediction mechanisms. A hybrid approach may be warranted.
+
+================================================================================
+SUBSUMPTION ANALYSIS: LVCP vs TAGE-SCL
+================================================================================
+
+Data Quality:
+  Valid traces:   104
+  Skipped traces: 1 (zero MPKI)
+
+Delta Statistics (Δ = MPKI_LVCP - MPKI_TAGE-SCL):
+  Average:  +0.0281 MPKI
+  Std Dev:  0.1550 MPKI
+  Median:   +0.0289 MPKI
+
+Improvement Analysis:
+  TAGE-SCL beats LVCP: 70/104 traces (67.3%)
+
+Worst-Case MPKI:
+  LVCP: 23.5688
+  TAGE-SCL: 23.3263
+
+────────────────────────────────────────────────────────────────────────────────
+CONCLUSION: A and B are complementary
+────────────────────────────────────────────────────────────────────────────────
+
+Paper-Ready Interpretation:
+  After excluding 1 invalid zero-MPKI traces, 
+  LVCP and TAGE-SCL exhibit complementary behavior. TAGE-SCL outperforms LVCP on 67.3% of 104 valid traces, suggesting that different workload characteristics favor different prediction mechanisms. A hybrid approach may be warranted.
+
+================================================================================
+SUBSUMPTION ANALYSIS: RVA-Toru vs TAGE-SC-L
+================================================================================
+
+Data Quality:
+  Valid traces:   101
+  Skipped traces: 4 (zero MPKI)
+
+Delta Statistics (Δ = MPKI_RVA-Toru - MPKI_TAGE-SC-L):
+  Average:  -0.2056 MPKI
+  Std Dev:  0.5078 MPKI
+  Median:   -0.0578 MPKI
+
+Improvement Analysis:
+  TAGE-SC-L beats RVA-Toru: 17/101 traces (16.8%)
+
+Worst-Case MPKI:
+  RVA-Toru: 21.6842
+  TAGE-SC-L: 23.7948
+
+────────────────────────────────────────────────────────────────────────────────
+CONCLUSION: A weakly dominates B
+────────────────────────────────────────────────────────────────────────────────
+
+Paper-Ready Interpretation:
+  After excluding 4 invalid zero-MPKI traces, 
+  The relationship between RVA-Toru and TAGE-SC-L is inconclusive across 101 valid traces. Further analysis or workload-specific evaluation may be required.
+
+================================================================================
+SUBSUMPTION ANALYSIS: RVA-Toru vs TAGE-SCL
+================================================================================
+
+Data Quality:
+  Valid traces:   104
+  Skipped traces: 1 (zero MPKI)
+
+Delta Statistics (Δ = MPKI_RVA-Toru - MPKI_TAGE-SCL):
+  Average:  -0.1393 MPKI
+  Std Dev:  0.4437 MPKI
+  Median:   -0.0298 MPKI
+
+Improvement Analysis:
+  TAGE-SCL beats RVA-Toru: 30/104 traces (28.8%)
+
+Worst-Case MPKI:
+  RVA-Toru: 21.6842
+  TAGE-SCL: 23.3263
+
+────────────────────────────────────────────────────────────────────────────────
+CONCLUSION: A weakly dominates B
+────────────────────────────────────────────────────────────────────────────────
+
+Paper-Ready Interpretation:
+  After excluding 1 invalid zero-MPKI traces, 
+  The relationship between RVA-Toru and TAGE-SCL is inconclusive across 104 valid traces. Further analysis or workload-specific evaluation may be required.
+
+================================================================================
+SUBSUMPTION ANALYSIS: TAGE-SC-L vs TAGE-SCL
+================================================================================
+
+Data Quality:
+  Valid traces:   100
+  Skipped traces: 5 (zero MPKI)
+
+Delta Statistics (Δ = MPKI_TAGE-SC-L - MPKI_TAGE-SCL):
+  Average:  +0.0617 MPKI
+  Std Dev:  0.1539 MPKI
+  Median:   +0.0233 MPKI
+
+Improvement Analysis:
+  TAGE-SCL beats TAGE-SC-L: 77/100 traces (77.0%)
+
+Worst-Case MPKI:
+  TAGE-SC-L: 23.7948
+  TAGE-SCL: 23.3263
+
+────────────────────────────────────────────────────────────────────────────────
+CONCLUSION: B mostly subsumes A
+────────────────────────────────────────────────────────────────────────────────
+
+Paper-Ready Interpretation:
+  After excluding 5 invalid zero-MPKI traces, 
+  TAGE-SCL mostly subsumes TAGE-SC-L. On 100 valid traces, TAGE-SCL provides superior prediction on 77.0% of workloads with an average MPKI improvement of 0.0617. While TAGE-SC-L may offer marginal benefits on select traces, TAGE-SCL represents a more robust general-purpose solution.
+
+================================================================================
+EXPORTING RESULTS
+================================================================================
+
+✓ Exported delta values to: subsumption_analysis/pairwise_deltas.csv
+✓ Exported summary table to: subsumption_analysis/subsumption_summary.csv
+
+================================================================================
+ANALYSIS COMPLETE
+================================================================================
+
+All outputs saved to: /Users/saumya/Desktop/Winter26/Cmput429/cbp2025/subsumption_analysis
+
+Generated files:
+  - combined_predictor_results.csv
+  - pairwise_deltas.csv
+  - subsumption_summary.csv

@@ -1,0 +1,143 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{hyperref}
+
+\title{Comparative Analysis: TAGE-SC-L Alberto Ros Predictor}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Overview of the Predictor Architecture}
+
+The TAGE-SC-L predictor developed by Alberto Ros is built upon the foundational TAGE architecture. While it shares many similarities with André Seznec's implementation, it introduces several distinct optimizations designed to improve hardware efficiency and prediction accuracy.
+
+Key architectural differences include:
+
+\begin{itemize}
+    \item \textbf{Hybrid History Sequence Design}: One of the most interesting aspects of this predictor is how it manages history lengths. It utilizes a quadratic sequence during the initial stages and then transitions into a generalized geometric sequence with increasing multipliers. This specific design is intended to leverage the rapid expansion of quadratic sequences early on, followed by the more controlled and moderate progression of geometric sequences. From a hardware perspective, this approach is quite clever because it simplifies implementation. It allows for the use of direct-mapped tables rather than more complex set-associative ones, which helps in reducing the overall Mispredictions Per Kilo-Instruction (MPKI).
+    
+    \item \textbf{Refined Confidence Mechanism}: The confidence scoring system has been overhauled to better balance the final decision-making process between the statistical correlator (SC) and the core TAGE components. Unlike the 2016 model, which occasionally allowed for conflicts between the SC and the loop predictor, Ros’s design treats the loop predictor as the ultimate authority. If the loop predictor reaches a confidence level of 2 or higher, its decision is final and cannot be overridden by other components. This hierarchy ensures that highly regular patterns are not accidentally disrupted by noisier statistical correlations.
+\end{itemize}
+
+\section{Performance Evaluation: Alberto Ros vs. Baseline}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{tage_sc_l_alberto_vs_baseline_plots.png}
+    \caption{Performance comparison plots: Alberto Ros vs. Baseline}
+\end{figure}
+
+
+
+When examining the performance graphs, the results are quite telling. There are minimal differences between this implementation and the one provided by André Seznec. The improvements over the baseline are nearly identical across most benchmarks, though Seznec’s version holds a slight edge in several specific cases.
+
+\subsection{Workload Performance Breakdown}
+
+The following table provides a side-by-side comparison of how many frameworks showed improvement under each predictor. This breakdown helps identify which types of code patterns favor specific optimizations.
+
+\begin{table}[h]
+\centering
+\caption{Side-by-Side Framework Performance Comparison}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Framework} & \multicolumn{2}{c}{\textbf{TAGE Alberto Ros}} & \multicolumn{2}{c}{\textbf{TAGE Seznec}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+ & Improve/Total & Success \% & Improve/Total & Success \% \\
+\midrule
+Web       & 25/26  & 96.2\%  & 25/26  & 96.2\% \\
+Fp        & 8/14   & 57.1\%  & 9/14   & 64.3\% \\
+Int       & 20/37  & 54.1\%  & 25/37  & 67.6\% \\
+Infra     & 4/16   & 25.0\%  & 7/16   & 43.8\% \\
+Compress  & 1/8    & 12.5\%  & 1/8    & 12.5\% \\
+Media     & 3/4    & 75.0\%  & 3/4    & 75.0\% \\
+\midrule
+Average   & 61/109 & 55.96\% & 70/105 & 66.7\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Detailed Statistical Comparison}
+
+Even when we look at the raw MPKI data, the variance between the two implementations is remarkably small. This suggests that while their internal optimizations differ in theory, their practical impact on modern workloads is similar.
+
+\subsection{Key Performance Metrics}
+
+\begin{table}[h]
+\centering
+\caption{Summary Statistics: TAGE-SC-L Alberto Ros vs. TAGE-SCL André Seznec}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric} & \textbf{Alberto Ros} & \textbf{Seznec} & \textbf{Relative Difference} \\
+\midrule
+MPKI         & 3.3898  & 3.3918  & 0.06\% worse \\
+MR           & 2.6697  & 2.6687  & 0.04\% better \\
+IPC          & 3.3537  & 3.5081  & 4.60\% better \\
+Cycles       & 14106643.72 & 14447201.95 & 2.41\% worse \\
+BrPerCyc     & 0.4012  & 0.4257  & 6.10\% better \\
+MispBrPerCyc & 0.0089  & 0.0092  & 2.42\% better \\
+CycWPPKI     & 151.4364 & 151.7579 & 0.21\% worse \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Trace-by-Trace Analysis}
+
+A more granular look at the individual traces reveals a clear preference for the Seznec implementation across the majority of the test suite. 
+
+\begin{itemize}
+    \item TAGE-SC-L Alberto Ros outperformed Seznec on 27 traces.
+    \item TAGE-SCL André Seznec outperformed Ros on 78 traces.
+    \item No ties were recorded in this comparison.
+\end{itemize}
+
+This distribution suggests that Seznec's optimizations are generally more robust across a wider range of trace behaviors.
+
+\subsection{Significant Trace Improvements (Seznec Superior)}
+
+The following traces represent the instances where the Seznec implementation provided the most substantial gains over the Alberto Ros model.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Trace} & \textbf{Alberto Ros MPKI} & \textbf{Seznec MPKI} & \textbf{Net Improvement} \\
+\midrule
+web\_19\_trace  & 5.0555  & 0.0000  & $\downarrow$ 5.0555 \\
+int\_1\_trace   & 11.4406 & 10.5130 & $\downarrow$ 0.9276 \\
+int\_2\_trace   & 10.7227 & 9.9876  & $\downarrow$ 0.7351 \\
+int\_22\_trace  & 4.8095  & 4.2827  & $\downarrow$ 0.5268 \\
+int\_21\_trace  & 23.7948 & 23.3263 & $\downarrow$ 0.4685 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Notable Regressions (Seznec Inferior)}
+
+Conversely, there were several cases where the Alberto Ros predictor clearly handled the workload better, resulting in zero mispredictions for certain traces where Seznec still struggled.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Trace} & \textbf{Alberto Ros MPKI} & \textbf{Seznec MPKI} & \textbf{Net Regression} \\
+\midrule
+int\_9\_trace   & 0.0000 & 3.6628 & $\uparrow$ 3.6628 \\
+web\_3\_trace   & 0.0000 & 3.5523 & $\uparrow$ 3.5523 \\
+web\_14\_trace  & 0.0000 & 3.3625 & $\uparrow$ 3.3625 \\
+fp\_6\_trace    & 0.0000 & 0.8550 & $\uparrow$ 0.8550 \\
+int\_16\_trace  & 5.5268 & 5.8279 & $\uparrow$ 0.3011 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Conclusion}
+
+In summary, while Alberto Ros’s TAGE-SC-L provides a strong alternative with some very intelligent hardware simplifications, it does not quite match the broad accuracy of André Seznec’s design. The hybrid history sequence is a valuable contribution to hardware efficiency, but the trace data indicates that Seznec’s predictor is more successful at resolving mispredictions in the majority of complex integer and infrastructure benchmarks. For most applications, the Seznec predictor remains the more effective choice, weakly subsuming the Alberto Ros implementation.
+
+\end{document}

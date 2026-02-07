@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{TAGE-SCL (Andrez) vs. RVA-Toru: Performance Analysis}
+
+This specific comparison was the one I was most eager to analyze because it represents a direct head-to-head between two different philosophies: data-driven prediction versus history-based prediction. As I suspected, the data-driven approach utilized by RVA-Toru proved to be more effective, ultimately outperforming the history-focused TAGE-SCL.
+
+\textbf{Trace Coverage and Methodology}
+
+The analysis was conducted across 104 valid traces. One trace was excluded from the final results because it reported a zero MPKI, which would have skewed the relative comparisons.
+
+\begin{table}[h]
+\centering
+\caption{Delta Statistics ($\Delta = \mathrm{MPKI}_{\mathrm{RVA\text{-}Toru}} - \mathrm{MPKI}_{\mathrm{TAGE\text{-}SCL}}$)}
+\begin{tabular}{lc}
+\toprule
+Statistic & Value (MPKI) \\
+\midrule
+Average   & $-0.1393$ \\
+Std Dev   & $0.4437$ \\
+Median    & $-0.0298$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Relative Performance and Observations}
+
+In terms of relative performance, TAGE-SCL (Andrez) outperformed RVA-Toru on 30 out of the 104 traces, which is about 28.8\% of the workload. This means that for the vast majority of cases, the register-aware mechanism provided a tangible benefit.
+
+\textbf{Maximum Observed MPKI:} 
+\begin{itemize}
+    \item RVA-Toru: 21.6842
+    \item TAGE-SCL: 23.3263
+\end{itemize}
+
+The maximum MPKI values show that RVA-Toru manages worst-case scenarios slightly better than TAGE-SCL, keeping the misprediction ceiling lower.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\textwidth]{delta_scatter_tagescl_andrez_vs_rvatoru.png}
+    \caption{Per-trace $\Delta$ MPKI: TAGE-SCL (Andrez) vs. RVA-Toru}
+\end{figure}
+
+
+
+\textbf{Summary and Final Thoughts}
+
+Based on these results, it is clear that RVA-Toru has surpassed TAGE-SCL in predictive accuracy. For a long time, André Seznec’s TAGE-based designs were the gold standard, but these numbers suggest they have finally been overtaken. 
+
+The primary reason for this shift is likely the use of register values. While TAGE-SCL relies on complex optimizations of branch history, it is still fundamentally limited by looking at past path patterns. RVA-Toru, on the other hand, sits on top of a TAGE base and supplements it with real-time data from registers. By using the actual values that influence branch decisions, it can resolve branches that appear identical in the execution history but behave differently based on the data. This combination of traditional history and modern data awareness is clearly the winning strategy here.
+
+\end{document}

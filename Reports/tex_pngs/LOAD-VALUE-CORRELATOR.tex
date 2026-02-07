@@ -1,0 +1,104 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\geometry{margin=1in}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    language=Java,
+    commentstyle=\color{green!50!black},
+    keywordstyle=\color{blue},
+}
+
+\title{Load Value Correlator Predictor (LVCP)}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Details}
+
+The core motivation for the Load Value Correlator Predictor (LVCP) is that traditional TAGE predictors often struggle with branches that are fundamentally data-dependent. TAGE primarily relies on branch history, such as taken or not-taken patterns, to make predictions. However, for certain branches, the same execution history can lead to different outcomes because the decision is actually based on a value loaded from memory rather than just the execution path.
+
+LVCP addresses this by utilizing three primary structures:
+\begin{itemize}
+    \item \textbf{Load Marking Table}: This identifies and marks specific loads that are likely to influence branch outcomes.
+    \item \textbf{Load Tracking Queue}: This structure maintains a record of recent loads, including their Program Counter (PC) and the actual data value, allowing branches to perform a lookup.
+    \item \textbf{Correlation Table}: This table uses a combination of the branch PC and recent load information to predict the branch direction when a strong match is found.
+\end{itemize}
+
+A central challenge in this design is determining which specific load a branch should use for its prediction. LVCP focuses on the most recent set of loads. As a load ages, it becomes less relevant and is eventually removed from the active tracking set. To connect a specific load to a branch, the system generates a hash using the branch PC, the load PC, and the loaded value. If this specific combination has occurred previously, LVCP can reuse that outcome to make a highly accurate prediction.
+
+\section{Load Value Correlator vs Baseline}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{register_value_aware_predictor_vs_baseline_plots.png}
+    \caption{Load Value Correlator Predictor vs Baseline Performance}
+\end{figure}
+
+
+
+\subsection{Performance Summary}
+
+The table below summarizes the number of frameworks where LVCP outperformed the baseline, along with the success ratios and the total improvement in Mispredictions Per Kilo-Instruction (MPKI).
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccr}
+\toprule
+Framework & Improve/Total & Success Ratio (\%) & Total MPKI Improvement \\ 
+\midrule
+Web       & 23/26 & 88.5 & -10.4414 \\
+Int       & 20/37 & 54.1 & -14.4377 \\
+Fp        & 5/14  & 35.7 & -2.9306  \\
+Infra     & 9/16  & 56.3 & -2.1943  \\
+Compress  & 1/8   & 12.5 & -0.1299  \\
+Media     & 0/4   & 0.0  & 0.0000   \\
+\bottomrule
+\end{tabular}
+\caption{Performance comparison across different benchmark types}
+\end{table}
+
+\subsection{Analysis}
+
+As expected, LVCP consistently performs better than the baseline TAGE predictor. The most significant gains are visible in web benchmarks. This is likely because web workloads frequently perform state or input checks where the data is retrieved directly from memory. This creates many "load then branch" patterns. For example:
+
+\begin{lstlisting}
+if (request.type == GET) { ... }
+\end{lstlisting}
+
+In JavaScript-intensive workloads, the program structure requires frequent memory access, leading to a high volume of loads and stores. LVCP is particularly effective in these scenarios because it can correlate the load immediately preceding the branch. The data also shows that the largest overall MPKI improvement occurs in the integer group. This is consistent with the nature of integer workloads, which often load values from memory to make control flow decisions.
+
+\section{Discussion: Why LVCP Helps Some Workloads More Than Others}
+
+\subsection{When Load Values Actually Help}
+
+LVCP is at its best when a branch decision depends directly on a value that was recently loaded from memory. In these instances, the most recent load acts as a strong signal for what the branch will do. However, if a branch depends on multiple different values, or on values that undergo several mathematical transformations after being loaded, a single load value is not enough to make a correct prediction. This explains why the performance gains vary across different types of workloads.
+
+\subsection{Why Web Benchmarks Improve a Lot}
+
+Web code frequently follows a simple and direct pattern: it loads a field, compares it to a constant, and then branches. Because the load and the branch are close together in the instruction stream, LVCP can easily identify the correct load and use its value to predict the branch outcome.
+
+\subsection{How This Differs from Register-Value-Aware Predictors}
+
+The primary difference is that LVCP specifically ties branch behavior to values coming from memory loads. Register-value-aware predictors are more general because they look at register values directly. These registers can contain loaded values, but they also contain values produced by internal calculations. This makes register-aware predictors more flexible across different workloads since they can capture more types of data dependence than just the most recent memory load.
+
+\subsection{Limits: Timing and Tracking Size}
+
+The effectiveness of LVCP also depends heavily on timing. If the useful load occurred a long time before the branch, or if many other unrelated loads happened in the interval between them, the predictor might not be able to identify the correct load. Furthermore, LVCP can only track a limited number of recent loads. This works well for simple and local cases, but it is less effective for branches that depend on complex or long-lived program states.
+
+\subsection{Summary}
+
+In summary, LVCP is most effective when control flow is tightly linked to a recent memory load, a pattern that is very common in web-style code. While it is less helpful for branches that depend on long computations or complex states, it remains a powerful and targeted tool for resolving data-dependent branches.
+
+\end{document}

@@ -1,0 +1,44 @@
+% filepath: /Users/saumya/Desktop/Winter26/Cmput429/cbp2025/Reports/comparison-predictors/lvcp_vs_rva.tex
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{LVCP vs RVA-Toru: Performance Delta Analysis}
+
+\begin{table}[h]
+\centering
+\caption{Delta Statistics ($\Delta = \mathrm{MPKI}_{\mathrm{LVCP}} - \mathrm{MPKI}_{\mathrm{RVA\text{-}Toru}}$)}
+\begin{tabular}{lc}
+\toprule
+Statistic & Value (MPKI) \\
+\midrule
+Average   & +0.1664 \\
+Std Dev   & 0.4111 \\
+Median    & +0.0722 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Improvement Analysis:} \\
+RVA-Toru beats LVCP on 92 out of 105 traces (87.6\%).
+
+\textbf{Worst-Case MPKI:} \\
+LVCP: 23.5688 \\
+RVA-Toru: 21.6842
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\textwidth]{delta_scatter_lvcp_vs_rvatoru.png}
+    \caption{Per-trace $\Delta$ MPKI: LVCP $\rightarrow$ RVA-Toru}
+\end{figure}
+
+\textbf{Conclusion:} \\
+- i can conclude that RVA Toru mostly subsumes LVCP, and rva toru provides superior prediction on 87.6% of workloads. this is a good indictor. and it makes sense why its better. rva-toru uses registers to compute what branches can be predicted, rva hashes multples values and also deals with register renaming and reuse, so it kinda makes sense why it does better. 
+
+- lvcp might perform better in cases, where there are sufficient loads from memory before branches, especially conditional ones where values are compared. and lvcp only tracks memory driven values where as rva-toru takes all register values and their idea of using digests which are 12 bit encodings is pretty neat as well. 
+\end{document}

@@ -1,0 +1,131 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{longtable}
+\usepackage{amssymb}
+
+% Code listing setup
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10}
+}
+
+\title{Analysis of the TAGE-SC 2025 Branch Predictor by André Seznec}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Overview and Evolutionary Context}
+
+After investigating the 2025 TAGE-SC implementation and comparing it to the well-known 2016 TAGE-SC-L version, several critical differences in Mispredictions Per Kilo-Instruction (MPKI) become apparent. The 2025 model demonstrates a roughly 15.6\% lower MPKI, dropping from 3.986 to 3.363. While direct comparisons are naturally approximate due to the use of different trace sets, specifically CBP-5 versus the modern CBP2025 set, the trend of improvement is unmistakable.
+
+The 2016 version relied on bank-interleaving for TAGE tables and partial associativity for medium-length histories, which provided a 2 to 3\% MPKI gain. It also featured an enhanced neural Statistical Correlator (SC) utilizing IMLI counters and various local histories. In contrast, the 2025 predictor shifts its focus toward a significantly larger number of SC tables and novel history forms, such as region and target-based IMLI, to handle branches that remain hard to predict under traditional history-based schemes.
+
+It is important to note that the 2016 predictor was primarily a "competition" design rather than a hardware-ready one. The sheer number of SC tables made it impractical for real silicon. Later, a "realistic" TAGE predictor was proposed, designed to fit within an aggressive instruction front-end capable of predicting blocks of up to four branches per cycle.
+
+\begin{lstlisting}
+The CBP2025 TAGE-SC is derived from the CBP2016 TAGE-SC-L. It retains several features that challenge direct hardware implementation, such as extensive table interleaving and high-latency local history lookups. However, it incorporates significant new optimizations in allocation and replacement policies, as well as refined IMLI components within the SC.
+\end{lstlisting}
+
+\subsection{Key Optimization Features in the 2025 Version}
+
+
+
+The 2025 implementation introduces several optimizations that were absent in the 2016 design. One of the most impactful changes involves the allocation policy during mispredictions. Instead of a conservative approach, the system now allows multiple entries from different tables to be allocated simultaneously. To prevent these new entries from being immediately evicted, the system sets the "U" (usefulness) counter of the first entry and protects it. Furthermore, the counter is set directly to 2, which allows for faster eventual eviction if the entry proves to be inaccurate.
+
+Another significant addition is the use of probabilistic counters. These counters determine whether a new entry should be allocated based on the confidence of the current prediction. This confidence is derived from the longest matching counter in the TAGE tables. By filtering allocations this way, the predictor avoids polluting the tables with "noisy" or low-confidence data. Additionally, the design uses two-way skewed associativity to reduce conflict misses without the high power cost of traditional set-associative caches.
+
+The structural correlator has also seen major revisions. André Seznec's 2024 "TAGE Cookbook" outlines these improvements, particularly the introduction of a "Tagged IMLI" (Inner Most Loop Iterator). Traditional IMLI counters often suffer from interference where two different loops overwrite each other's state. The tagged version solves this by associating the counter with a specific PC, effectively isolating loop behaviors. 
+
+\textbf{The dual-table IMLI approach is particularly clever:} 
+\begin{itemize}
+    \item One table handles standard loop iterations to fix "fall-through" mispredictions at the end of a loop.
+    \item The second table, the Branch Context IMLI (BrIMLI), manages branches that lack a fixed iteration count. It uses history based on a previous "anchor branch" to establish a bias. While this makes the prediction more biased, it provides a much safer result than simple pattern matching for irregular loops.
+\end{itemize}
+
+\section{Performance Comparison: TAGE-SC 2025 vs. Baseline}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{andrez_seznec_vs_baseline_plots.png}
+    \caption{Performance Comparison of TAGE-SC 2025 against the Baseline Predictor}
+\end{figure}
+
+The plots indicate that the MPKI of the 2025 TAGE-SC is consistently below the baseline, though a few outliers exist. In my analysis, I applied a threshold of 0.1 MPKI to filter out execution noise. Most traces showed improvements well beyond this margin. Interestingly, the web benchmarks, which were previously noted as being difficult to improve, showed some of the most dramatic gains here. This is likely a result of the probabilistic allocation and the confidence-filtered learning, which help the predictor navigate the complex, non-linear control flow found in JavaScript engines.
+
+\subsection{Performance by Framework Type}
+
+The following table illustrates the success ratio of the 2025 predictor across various workload types.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Framework} & \textbf{Improve/Total} & \textbf{Success Ratio (\%)} \\
+\midrule
+Web        & 25/26 & 96.2 \\
+Fp         & 9/14  & 64.3 \\
+Int        & 25/37 & 67.6 \\
+Infra      & 7/16  & 43.8 \\
+Compress   & 1/8   & 12.5 \\
+\bottomrule
+\end{tabular}
+\caption{Success ratios for TAGE-SC 2025 across framework types}
+\end{table}
+
+\subsection{Technical Analysis and Observations}
+
+Overall, the 2025 predictor provides a solid 11\% performance gain. However, a curious observation is that the baseline predictor occasionally outperformed the 2025 version in "infrastructure" frameworks. This can be explained by the way the 2025 optimizations prioritize noise reduction. 
+
+
+
+The confidence-filtered allocation and aggressive protection mechanisms slightly delay the learning process. While this is a massive benefit for modern, noisy workloads, it can be a slight disadvantage for small, regular infrastructure loops that require fast, deterministic convergence. In those specific cases, the simpler 2016 design or the baseline can sometimes "lock on" to the pattern faster. 
+
+The most significant improvements were found in integer benchmarks. This makes sense because integer workloads are notoriously branch-heavy and often contain irregular loops. The dual-table IMLI and the revamped statistical correlator allow the 2025 predictor to excel where simple history-based predictors usually fail.
+
+\subsection{Top 20 Most Improved Traces}
+
+\begin{longtable}{clcccc}
+\toprule
+\textbf{\#} & \textbf{Trace} & \textbf{Baseline MPKI} & \textbf{TAGE-SCL MPKI} & \textbf{Improvement} & \textbf{Status} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{\#} & \textbf{Trace} & \textbf{Baseline MPKI} & \textbf{TAGE-SCL MPKI} & \textbf{Improvement} & \textbf{Status} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+1  & web\_19\_trace & 6.0075  & 0.0000  & -6.0075 &\checkmark~Better \\
+2  & int\_16\_trace & 8.1253  & 5.8279  & -2.2974 &\checkmark~Better \\
+3  & web\_7\_trace  & 7.7526  & 6.1046  & -1.6480 &\checkmark~Better \\
+4  & int\_17\_trace & 6.3949  & 4.8436  & -1.5513 &\checkmark~Better \\
+5  & int\_7\_trace  & 5.7589  & 4.3978  & -1.3611 &\checkmark~Better \\
+6  & int\_8\_trace  & 7.1931  & 5.8380  & -1.3551 &\checkmark~Better \\
+7  & int\_9\_trace  & 4.8555  & 3.6628  & -1.1927 &\checkmark~Better \\
+8  & int\_1\_trace  & 11.6458 & 10.5130 & -1.1328 &\checkmark~Better \\
+9  & int\_22\_trace & 5.3965  & 4.2827  & -1.1138 &\checkmark~Better \\
+10 & web\_11\_trace & 5.7895  & 4.7055  & -1.0840 &\checkmark~Better \\
+11 & web\_15\_trace & 6.1054  & 5.0241  & -1.0813 &\checkmark~Better \\
+12 & web\_20\_trace & 4.2180  & 3.1562  & -1.0618 &\checkmark~Better \\
+13 & int\_30\_trace & 12.9427 & 11.9056 & -1.0371 &\checkmark~Better \\
+14 & int\_29\_trace & 12.4572 & 11.4747 & -0.9825 &\checkmark~Better \\
+15 & int\_36\_trace & 3.9821  & 3.0001  & -0.9820 &\checkmark~Better \\
+16 & int\_2\_trace  & 10.9652 & 9.9876  & -0.9776 &\checkmark~Better \\
+17 & int\_21\_trace & 24.1502 & 23.3263 & -0.8239 &\checkmark~Better \\
+18 & web\_25\_trace & 6.3793  & 5.7130  & -0.6663 &\checkmark~Better \\
+19 & int\_32\_trace & 6.9551  & 6.3487  & -0.6064 &\checkmark~Better \\
+20 & web\_12\_trace & 4.4363  & 3.8768  & -0.5595 &\checkmark~Better \\
+\end{longtable}
+
+\end{document}

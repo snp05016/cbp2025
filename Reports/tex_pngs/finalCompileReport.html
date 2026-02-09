@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A Comprehensive analysis of the CBP 2025 Branch Predictors entries: LVCP, RVA-Toru, and TAGE-SC 2025</title>
+  <style>
+    :root{
+      --fg: #1f2937;
+      --muted: #6b7280;
+      --bg: #ffffff;
+      --panel: #f7faf7;
+
+      --green: #228B22;         /* forest green */
+      --green-dark: #166b16;
+      --gold: #D4AF37;
+
+      --border: #e5e7eb;
+      --code-bg: #0b1f0b;
+      --code-fg: #e7f5e7;
+      --maxw: 980px;
+    }
+
+    html, body { background: var(--bg); color: var(--fg); }
+    body{
+      margin: 0;
+      font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    a{ color: var(--green); text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+
+    .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 28px 18px 64px; }
+
+    header{
+      border-bottom: 3px solid var(--green);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+    header .kicker{
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0 0 8px;
+    }
+    header h1{
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.2;
+      color: var(--green-dark);
+    }
+    header .meta{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .badge{
+      display: inline-block;
+      border: 1px solid var(--gold);
+      color: var(--green-dark);
+      background: #fffdf3;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      vertical-align: middle;
+    }
+
+    nav.toc{
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-left: 6px solid var(--gold);
+      padding: 14px 14px;
+      border-radius: 8px;
+      margin: 18px 0 26px;
+    }
+    nav.toc h2{
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: var(--green-dark);
+    }
+    nav.toc ol{
+      margin: 0;
+      padding-left: 20px;
+    }
+    nav.toc li{ margin: 4px 0; }
+
+    h2, h3, h4{
+      color: var(--green-dark);
+      margin: 24px 0 8px;
+      line-height: 1.25;
+    }
+    h2{ font-size: 22px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    h3{ font-size: 18px; }
+    h4{ font-size: 16px; }
+
+    p{ margin: 10px 0; }
+    ul, ol{ margin: 10px 0; padding-left: 22px; }
+
+    .question{
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    figure{
+      margin: 14px 0 18px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+    }
+    figure img{
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+    }
+    figcaption{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    table{
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 18px;
+      font-size: 14px;
+    }
+    caption{
+      caption-side: bottom;
+      padding-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    th, td{
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      vertical-align: top;
+    }
+    th{
+      background: #f3faf3;
+      color: var(--green-dark);
+      text-align: left;
+    }
+    .tight td, .tight th{ padding: 6px 8px; }
+    .note{ color: var(--muted); font-size: 14px; }
+
+    pre{
+      margin: 12px 0 18px;
+      padding: 12px 14px;
+      overflow: auto;
+      background: var(--code-bg);
+      color: var(--code-fg);
+      border-radius: 8px;
+      border: 1px solid #0f2b0f;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+    blockquote{
+      margin: 12px 0 18px;
+      padding: 10px 14px;
+      border-left: 5px solid var(--gold);
+      background: #fffdf3;
+      border-radius: 6px;
+      color: #3f3f46;
+    }
+
+    hr.sep{
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 26px 0;
+    }
+
+    .footnotes{
+      margin-top: 22px;
+      padding-top: 10px;
+      border-top: 2px solid var(--green);
+    }
+    .footnotes p{
+      margin: 8px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <p class="kicker">CBP 2025 Entries Analysis </p>
+      <h1>A Comprehensive analysis of the CBP 2025 Branch Predictors entries: LVCP, RVA-Toru, and TAGE-SC 2025</h1>
+      <div class="meta">Saumya Patel • <time datetime="2026-02-07">February 7, 2026</time></div>
+    </header>
+
+    <nav class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#lvcp">Load Value Correlator Predictor (LVCP)</a></li>
+        <li><a href="#rva">Register-Value-Aware Branch Predictor</a></li>
+        <li><a href="#tage2025">TAGE-SC 2025 André Seznec Report</a></li>
+        <li><a href="#ros">TAGE-SC-L Alberto Ros Predictor Analysis</a></li>
+        <li><a href="#delta">Delta Analyses and Conclusions</a></li>
+        <li><a href="#rankings">Overall Predictor Rankings</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+        <li><a href="#future">Scope for Future Work: Exploring the Limits of Branch Prediction</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <main>
+      <section id="introduction">
+        <h2>Introduction</h2>
+
+        <p>The field of branch prediction has reached a level of sophistication where further performance gains are rarely achieved through incremental structural modifications. Instead, meaningful advancements increasingly depend on a granular understanding of why certain branches remain mispredicted and which specific information sources, whether path history, data values, or execution context, are most capable of resolving them. The 2025 Championship Branch Prediction (CBP) competition offers a unique framework to explore these questions across a diverse range of workloads and state-of-the-art architectures evaluated under a unified methodology.</p>
+
+        <p>This report represents a critical continuation of my multi-stage investigation into high-performance branch prediction. This work picks up directly from my second assignment, where I analyzed the 2016-era TAGE-SC-L baseline to identify the fundamental bottlenecks inherent in traditional history-based techniques. By establishing that reference point, I was able to determine which workloads are inherently difficult to predict and precisely where mispredictions tend to concentrate when the system relies solely on path history.</p>
+
+        <p>Building upon those initial findings, the objective of the current study is to analyze "optimization deltas." Rather than merely reproducing established results, this report examines how specific architectural innovations introduced in the CBP 2025 entries alter prediction behavior relative to established baselines. The analytical focus shifts from aggregate averages to trace-level deltas, worst-case performance, and workload-specific trends. This approach is designed to distinguish between mechanisms that address fundamental bottlenecks and those that simply reshuffle performance across different benchmarks.</p>
+
+        <p>To achieve this, the report investigates three distinct classes of predictors. First, the Load Value Correlator Predictor (LVCP) is evaluated as a targeted attempt to resolve data-dependent branches through explicit correlation with recent memory load values. Second, the Register-Value-Aware predictor (RVA-Toru) is examined for its ability to generalize this concept by incorporating register values directly into the prediction process. Finally, refined history-based methods, including the 2025 TAGE-SC design by André Seznec, are analyzed to determine the limits of traditional path-based correlation when compared to modern value-aware models.</p>
+
+        <p>Throughout this analysis, the goal is to look beyond industry standard metric of Mispredictions Per Kilo-Instruction (MPKI) reductions. By examining where regressions occur and how misprediction ceilings evolve, this study extracts broader architectural insights into the relationship between history, data, and design complexity. Ultimately, this report serves as both a performance evaluation and an exploratory study into the future of robust and effective branch prediction.</p>
+      </section>
+
+      <section id="lvcp">
+        <h2>Load Value Correlator Predictor (LVCP)</h2>
+
+        <h3>Details</h3>
+        <p>The main idea is that TAGE can struggle with hard-to-predict (h2p) branches when the decision depends on data values. TAGE mainly uses branch history (taken / not taken patterns). But for some branches, the same history can lead to different outcomes because the decision is based on a value loaded from memory, not just the path.</p>
+
+        <p>LVCP helps by using three key structures:</p>
+        <ul>
+          <li><strong>Load Marking Table</strong>: Marks which loads are worth tracking.</li>
+          <li><strong>Load Tracking Queue</strong>: Keeps recent loads (their PC and value) so branches can look them up.</li>
+          <li><strong>Correlation Table</strong>: Uses (branch PC + recent load info) to predict taken/not-taken when there is a strong match.</li>
+        </ul>
+
+        <p><span class="question">A key question is: which load should the branch use?</span><br/>
+        LVCP focuses on recent loads. If a load is too old, it becomes less useful and can be moved out of the “recent” set.<br/>
+        <span class="question">Another question is: how does it connect a load to a branch?</span><br/>
+        The branch looks back at recent loads and uses a hash of the branch PC, the load PC, and the load value. If that same combination happened before, LVCP can reuse what happened last time (taken or not taken).</p>
+
+        <h3>Load Value Correlator vs Baseline</h3>
+        <figure>
+          <img src="register_value_aware_predictor_vs_baseline_plots.png" alt="Load Value Correlator Predictor vs Baseline Performance" />
+          <figcaption>Load Value Correlator Predictor vs Baseline Performance</figcaption>
+        </figure>
+
+        <h4>Performance Summary</h4>
+        <p>Better performances in how many frameworks of each type:</p>
+        <table class="tight">
+          <thead>
+            <tr>
+              <th>Framework</th>
+              <th>Improve/Total</th>
+              <th>Success Ratio (%)</th>
+              <th>Total MPKI Improvement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Web</td><td>23/26</td><td>88.5</td><td>-10.4414</td></tr>
+            <tr><td>Int</td><td>20/37</td><td>54.1</td><td>-14.4377</td></tr>
+            <tr><td>Fp</td><td>5/14</td><td>35.7</td><td>-2.9306</td></tr>
+            <tr><td>Infra</td><td>9/16</td><td>56.3</td><td>-2.1943</td></tr>
+            <tr><td>Compress</td><td>1/8</td><td>12.5</td><td>-0.1299</td></tr>
+            <tr><td>Media</td><td>0/4</td><td>0.0</td><td>0.0000</td></tr>
+          </tbody>
+          <caption>Performance comparison across different benchmark types</caption>
+        </table>
+
+        <h4>Analysis</h4>
+        <p>As usual, it performs better than the baseline TAGE predictor. The biggest gains show up in the web benchmarks. A likely reason is that web workloads often do a lot of checks on input/state that come from memory. That creates many “load then branch” patterns. For example:</p>
+
+        <pre><code>if (request.type == GET) { ... }</code></pre>
+
+        <p>This would mean that usually, how these JavaScript intensive workloads are structured is that they would need memory access, and this would mean that there would be a lot of loads and stores. The load value correlator is exceptional with loads before branches. In the example above, there would be a load before the branch and this means the load value correlator would shine.</p>
+
+        <p>The largest overall MPKI improvement comes from the integer group. That also makes sense: many integer workloads load values from memory and then branch based on those values.</p>
+
+        <h3>Discussion: Why LVCP Helps Some Workloads More Than Others</h3>
+
+        <h4>When Load Values Actually Help</h4>
+        <p>LVCP works best when a branch decision depends directly on a value that was just loaded from memory. In those cases, the last load is a strong hint for what the branch will do.</p>
+
+        <p>If the branch depends on several values, or on values that are computed after the load (math, multiple steps, combined state), then one load value is not enough. In that situation, LVCP helps less. This is why the results are uneven. Web benchmarks improve a lot, while FP, compression, and media often show smaller gains.</p>
+
+        <h4>Why Web Benchmarks Improve a Lot</h4>
+        <p>Web code often follows a simple pattern: load a field, compare it, then branch. For example, reading a request type or a flag and immediately checking it. Because the load and the branch are close together, LVCP can usually find the “right” recent load and use it to predict the branch.</p>
+
+        <h4>How This Differs from Register-Value-Aware Predictors</h4>
+        <p>LVCP ties branch behavior to values coming from memory loads. Register-value-aware predictors look at register values, which can include both loaded values and values produced by computation. That makes them more flexible across different workloads because they can capture more kinds of data dependence than “just the last load”.</p>
+
+        <h4>Limits: Timing and Tracking Size</h4>
+        <p>LVCP also depends on timing. If the useful load happened too long before the branch, or many other loads happen in between, the best load might not be the one LVCP picks. Also, LVCP tracks only a limited set of recent loads. That works for “simple and recent” cases, but not for branches that depend on long-lived or complex program state.</p>
+
+        <p><strong>Summary:</strong> In short, LVCP shines when control flow is tightly linked to a recent memory load (common in web-style code). It is less helpful when branches depend on longer computations or more complex state. That is why it is a strong but targeted tool for data-dependent branches.</p>
+      </section>
+
+      <section id="rva">
+        <h2>Register-Value-Aware Branch Predictor</h2>
+
+        <p>This was a pretty interesting read, and there were a lot of interesting methods that they used.</p>
+
+        <p>The RVA-Toru predictor uses the TAGE predictor as the foundation, and it consists of multiple tagged tables and a statistical correlator. They have also increased the size of the bimodal predictor to 128k entries.</p>
+
+        <p>The key innovation in this predictor is the register value awareness. Essentially this predictor uses register values to help predict branches. That is pretty interesting because initially, I thought that it would be very expensive to just compare register values every time; register reads could add to the overhead. But as I read the paper more, I was quite intrigued by the techniques that they used. I was pleasantly surprised by the quality of branch prediction as it beats André Seznec's 2025 TAGE-SC-L.</p>
+
+        <p>Something that I found different/interesting was that they use the term “digest” when it is just a summary. Nevertheless, a digest is a 12-bit summary of a 64-bit register value; these digests are used to track correlations between specific data patterns (like loop counters) and branch outcomes. The digests are generated based on the type of data; for example, for INT registers the digest includes the count of leading zeros, but for FP registers they use the MSBs of the exponent. Once the digests are generated they are fed into the statistical register. It then organizes the registers into banks, generates a usefulness table, and picks the most useful register. The selected digest is used to look up the prediction in the prediction table. It outputs the actual predicted branch direction.</p>
+
+        <p>The register component turned out to provide the largest and broadest gain out of all the other features. It was the only feature that improved accuracy across every benchmark.</p>
+
+        <p>RVA-Toru flags an entry as newly allocated instead of using u-bits to prevent eviction. The system tracks two outcomes for these entries: success and waste.</p>
+
+        <p>Apart from the register optimizations, RVA-Toru combines an arithmetic progression with a geometric one, which turned out to be near-optimal. They also improved the IMLI and added the call stack component to the statistical correlator. This can differentiate identical branches that might be called from different functions. They also increased the size of the base predictor as mentioned above.</p>
+
+        <h3>Register Value Aware Predictor vs Baseline Predictor</h3>
+        <figure>
+          <img src="register_value_aware_predictor_vs_baseline_plots.png" alt="Register Value Aware Predictor vs Baseline Comparison" />
+          <figcaption>Register Value Aware Predictor vs Baseline Comparison</figcaption>
+        </figure>
+
+        <p>Okay first things first, in the graph (bottom right) I can see that there is a significant gain in MPKI. In terms of raw numbers, the MPKI for the register value aware predictor is 13.28% better than the baseline. There “isn't much” gain in IPC but the misprediction rate is lesser for the predictor. The IPC improvements tell me that the improvements are central to hard-to-predict branches. I'm pretty sure most of these improvements are because IRL most branches are value dependent and this predictor exactly exploits that. Since the predictor sits on top of TAGE with its smart use of registers to predict branches, it is able to maximize its gains.</p>
+
+        <p>From the graphs, I can see near-zero regressions. It means that the predictor only helps when it is useful and when the baseline doesn't perform the best. When the values don't correlate, the predictor falls back to baseline behavior.</p>
+
+        <p>A good thing is that around 15/112 benchmarks reported “similar” MPKIs, so the rest of them have significant or “pretty good” gains in MPKI.</p>
+
+        <p>It is not very surprising that a lot of the improvements in the MPKI (where the difference is more than 1) belong to the INT benchmark. Now that intuitively makes sense since most of the INT benchmarks are used to do integer computations, array indexing, control flow decisions, etc. But another thing to consider is that the success rate (i.e., #improved/total) is 75%, which means that INT benchmarks have a wide variety. I'm assuming it does well when it involves branches that use register values, and it turns out that the MPKI speedups are very noisy, either having significant improvements or having little to no improvement, mostly leaning towards the improvement side. RVA-Toru performs well on INT because it exploits value.</p>
+
+        <h4>Summary Statistics</h4>
+        <table class="tight">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Baseline</th>
+              <th>RVA-Toru</th>
+              <th>Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>MPKI</td><td>3.8080</td><td>3.3022</td><td>↓ 13.28% better</td></tr>
+            <tr><td>MR</td><td>2.9679</td><td>2.5681</td><td>↓ 13.47% better</td></tr>
+            <tr><td>IPC</td><td>3.4636</td><td>3.5450</td><td>↑ 2.35% better</td></tr>
+            <tr><td>Cycles</td><td>14824660.91</td><td>14401963.47</td><td>↓ 2.85% better</td></tr>
+            <tr><td>BrPerCyc</td><td>0.4203</td><td>0.4309</td><td>↑ 2.54% better</td></tr>
+            <tr><td>MispBrPerCyc</td><td>0.0100</td><td>0.0089</td><td>↓ 10.23% worse</td></tr>
+            <tr><td>CycWPPKI</td><td>161.6047</td><td>149.9141</td><td>↓ 7.23% better</td></tr>
+          </tbody>
+          <caption>Summary statistics comparison</caption>
+        </table>
+
+        <p>Obviously <code>MispBrPerCyc</code> would improve if MPKI improves. Moreover, all benchmarks show any sort of visible improvement (even though we might call them similar due to inherent error margins and noise).</p>
+
+        <p>Another thing that was quite noticeable is that MPKI reductions occur on traces with already high baseline MPKI, suggesting that the predictor sort of "clutches" on branches where history-based correlation is weak. This indicates that the register value aware predictor is able to exploit value correlation where history-based predictors fail.</p>
+
+        <p>The variance in INT benchmark improvements reflects the heterogeneity of integer workloads. While value-dependent control benefits significantly from register correlation, pointer-driven and indirect branches limit the effectiveness of value-aware mechanisms, leading to uneven but predominantly positive gains.</p>
+
+        <p>One other good thing about the predictor is that it is able to defer to the baseline TAGE predictor when register value correlation is weak or absent, preventing performance degradation. This is evident from the lack of significant regressions across benchmarks.</p>
+      </section>
+
+      <section id="tage2025">
+        <h2>TAGE-SC 2025 André Seznec Report</h2>
+
+        <h3>Overview</h3>
+        <p>By digging around, and looking at the TAGE implementation of the same TAGE-SC predictor of 2016, I found that it had some differences in the MPKI as mentioned in the abstract of the paper. Below are the differences:</p>
+        <ul>
+          <li>MPKI Difference is that the 2025 TAGE-SC shows a roughly 15.6% lower MPKI (3.363 vs 3.986), a drop of 0.623 MPKI, though direct comparison is approximate due to different trace sets (CBP-5 vs CBP2025).</li>
+          <li>2016 Optimizations: Bank-interleaving for TAGE tables, partial associativity on medium histories (2-3% MPKI gain), enhanced neural SC with IMLI counters, global backward history, and multiple local histories (total SC benefit ~8%).</li>
+          <li>Both use TAGE core (geometric histories, tagged tables), SC for bias correction, but the 2025 predictor focused on more SC tables and new history forms like region/target IMLI for hard-to-predict branches.</li>
+        </ul>
+
+        <p>The TAGE 2016 predictor was not designed to be effective in hardware, but only to win a competition, due to the unreasonable number of SC tables in the 2016 implementation. Later a realistic TAGE predictor was presented and as cited:</p>
+
+        <blockquote>
+          “Realistic” meaning that the author estimated that it could be implemented for an aggressive instruction front-end predicting an instruction block with up to 4 branches (at most one taken) per cycle.
+        </blockquote>
+
+        <pre><code>The CBP2025 TAGE-SC is derived from CBP2016 TAGE-SC-L, and replicates most of the features that would prevent any reasonable direct hardware implementation: huge number of distinct tables, complete table interleaving in TAGE, use of local histories, unrealistic prediction latency, .. It features the new optimizations on allocation/replacement policy on TAGE-SC proposed in [11] as well as the optimizations on the IMLI components in SC.</code></pre>
+
+        <h3>Optimization Features of TAGE 2025</h3>
+        <p>The optimization features of the TAGE 2025 that aren't there in the 2016 version:</p>
+        <ul>
+          <li>On a misprediction, a lot of the entries from different tables are allocated at the first time, and by setting the U-counter of the first entry, it is protected against replacement. Moreover, the U-counter is also set directly to 2 which supports faster eviction.</li>
+          <li>It uses probabilistic counters that are determined by the confidence in the prediction (provided by the longest matching counter), to filter the allocation of entries.</li>
+          <li>Uses 2-way skewed associativity.</li>
+        </ul>
+
+        <p>The structural correlator has also been “improved” or so they say. Most of these optimizations are done from the article/book about TAGE in 2024 <em>[André Seznec. 2024. TAGE: an engineering cookbook. Technical Report 9561]</em>.</p>
+
+        <p>Something that I found pretty interesting was that they use a tagged IMLI (Inner Most Loop Iterator) to solve the issue of the fall-through misprediction in the last loop iteration. It is tagged because considering two loops, you would notice that the counters would overwrite each other if it was just a single IMLI, so to solve that they have a tagged IMLI. <strong>Something that was interesting to me is that they use two IMLI tables, and both of them have different purposes.</strong> The other one is the branch context IMLI; it is useful for branches that don't have fixed loop iterations, so they use histories based on the previous anchor branch. Anchor branches do cause biases, but due to the correlator in a BrIMLI, it will make a safe biased prediction; it is still counting based rather than pattern based but it is kinda more biased now.</p>
+
+        <p>The branch predictor still uses 2 global history-based components from the GEHL (geo history length predictor):</p>
+        <ul>
+          <li>XOR PC and GHR</li>
+          <li>XOR PC with (longest matching prediction and global history)</li>
+        </ul>
+
+        <p>Funny thing, they got rid of the loop predictor; it did not seem to help a lot apparently. Marginal gains and it took space also so they nuked it lmao.</p>
+
+        <h3>TAGE SC 2025 vs TAGE SC-L 2016</h3>
+        <figure>
+          <img src="andrez_seznec_vs_baseline_plots.png" alt="TAGE-SC 2025 vs Baseline Comparison" />
+          <figcaption>TAGE-SC 2025 vs Baseline Comparison</figcaption>
+        </figure>
+
+        <p>If we take a look at the plots we can see that for the top right plot, the MPKI of the TAGE-SC 2025 is slightly below the baseline predictor. There are some outliers.</p>
+
+        <p>My plot generating scripts and report generating scripts report similar numbers if the difference in the MPKI is more than 0.1, and I feel like I had to set that threshold to account for any noise or errors in the execution. I feel like 0.1 is a lot and I should have set the ± variation to be 0.05 but I feel like it is better to be safe than not.</p>
+
+        <p>But apart from that, most of the MPKIs for all the traces were above the threshold of 0.1 which is good. To be specific, what I found most interesting was that the web benchmarks were deemed the most hard to improve in the first report that I presented initially, but here the web benchmarks show the most improvements. It is probably because of the probabilistic allocation of entries, since you now have a confidence level that is provided by the longest matching counter.</p>
+
+        <h4>Performance by Framework Type</h4>
+        <p>Better performances in how many frameworks of each type:</p>
+        <table class="tight">
+          <thead>
+            <tr>
+              <th>Framework</th>
+              <th>Improve/Total</th>
+              <th>Success Ratio (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Web</td><td>25/26</td><td>96.2</td></tr>
+            <tr><td>Fp</td><td>9/14</td><td>64.3</td></tr>
+            <tr><td>Int</td><td>25/37</td><td>67.6</td></tr>
+            <tr><td>Infra</td><td>7/16</td><td>43.8</td></tr>
+            <tr><td>Compress</td><td>1/8</td><td>12.5</td></tr>
+          </tbody>
+          <caption>Performance improvement by framework type</caption>
+        </table>
+
+        <h4>Analysis</h4>
+        <p>The results show that the TAGE-SC 2025 predictor achieves a consistently lower MPKI than the baseline implementation, with an overall improvement of approximately 11%. This is a meaningful gain, especially given that both predictors operate under similar storage and structural constraints. Across nearly all workloads, the 2025 design outperforms the baseline, confirming the effectiveness of its architectural refinements.</p>
+
+        <p>A notable exception appears in a small subset of the infrastructure benchmarks. Of the few cases where the baseline predictor performs better, three out of four occur within the <em>infra</em> category. While these differences are minor in magnitude, they suggest a systematic pattern rather than random noise.</p>
+
+        <p>One plausible explanation relates to the learning behavior of the two predictors. The TAGE-SC 2025 design introduces several mechanisms, such as confidence-filtered allocation, aggressive entry protection, and multi-allocation policies, that intentionally slow down or suppress learning for branches deemed noisy. These features are highly effective for modern, irregular workloads but can be less suitable for small, regular loops commonly found in infrastructure benchmarks. In contrast, the baseline design updates its prediction structures more directly and deterministically, allowing it to converge faster on simple, repetitive patterns.</p>
+
+        <p>In this context, <em>deterministic convergence</em> refers to the straightforward saturation of prediction counters based solely on observed branch outcomes, without delayed updates or confidence gating. For stable loops with highly predictable behavior, this simpler learning process can occasionally provide a slight advantage. However, it is important to note that the observed differences are extremely small (on the order of ± 0.01 MPKI), suggesting that these regressions are not practically significant and may be partially attributable to measurement noise.</p>
+
+        <p>Finally, the largest performance gains are observed in the integer (INT) benchmarks. This behavior aligns well with expectations: INT workloads tend to be branch-heavy and exhibit irregular control flow due to complex program logic and compile-time decision points. The TAGE-SC 2025 predictor excels in this regime, benefiting from its additional IMLI tables and enhanced allocation strategies, which are specifically designed to handle noisy and alias-prone branch behavior.</p>
+
+        <p>Overall, these results reinforce the conclusion that TAGE-SC 2025 represents a clear improvement over the baseline, particularly for modern, complex workloads, while only marginally underperforming in a small number of simple, highly regular cases.</p>
+
+        <h4>Top 20 Most Improved Traces</h4>
+        <table class="tight">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Trace</th>
+              <th>Baseline MPKI</th>
+              <th>TAGE-SCL MPKI</th>
+              <th>Improvement</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>web_19_trace</td><td>6.0075</td><td>0.0000</td><td>-6.0075</td><td>Better</td></tr>
+            <tr><td>2</td><td>int_16_trace</td><td>8.1253</td><td>5.8279</td><td>-2.2974</td><td>Better</td></tr>
+            <tr><td>3</td><td>web_7_trace</td><td>7.7526</td><td>6.1046</td><td>-1.6480</td><td>Better</td></tr>
+            <tr><td>4</td><td>int_17_trace</td><td>6.3949</td><td>4.8436</td><td>-1.5513</td><td>Better</td></tr>
+            <tr><td>5</td><td>int_7_trace</td><td>5.7589</td><td>4.3978</td><td>-1.3611</td><td>Better</td></tr>
+            <tr><td>6</td><td>int_8_trace</td><td>7.1931</td><td>5.8380</td><td>-1.3551</td><td>Better</td></tr>
+            <tr><td>7</td><td>int_9_trace</td><td>4.8555</td><td>3.6628</td><td>-1.1927</td><td>Better</td></tr>
+            <tr><td>8</td><td>int_1_trace</td><td>11.6458</td><td>10.5130</td><td>-1.1328</td><td>Better</td></tr>
+            <tr><td>9</td><td>int_22_trace</td><td>5.3965</td><td>4.2827</td><td>-1.1138</td><td>Better</td></tr>
+            <tr><td>10</td><td>web_11_trace</td><td>5.7895</td><td>4.7055</td><td>-1.0840</td><td>Better</td></tr>
+            <tr><td>11</td><td>web_15_trace</td><td>6.1054</td><td>5.0241</td><td>-1.0813</td><td>Better</td></tr>
+            <tr><td>12</td><td>web_20_trace</td><td>4.2180</td><td>3.1562</td><td>-1.0618</td><td>Better</td></tr>
+            <tr><td>13</td><td>int_30_trace</td><td>12.9427</td><td>11.9056</td><td>-1.0371</td><td>Better</td></tr>
+            <tr><td>14</td><td>int_29_trace</td><td>12.4572</td><td>11.4747</td><td>-0.9825</td><td>Better</td></tr>
+            <tr><td>15</td><td>int_36_trace</td><td>3.9821</td><td>3.0001</td><td>-0.9820</td><td>Better</td></tr>
+            <tr><td>16</td><td>int_2_trace</td><td>10.9652</td><td>9.9876</td><td>-0.9776</td><td>Better</td></tr>
+            <tr><td>17</td><td>int_21_trace</td><td>24.1502</td><td>23.3263</td><td>-0.8239</td><td>Better</td></tr>
+            <tr><td>18</td><td>web_25_trace</td><td>6.3793</td><td>5.7130</td><td>-0.6663</td><td>Better</td></tr>
+            <tr><td>19</td><td>int_32_trace</td><td>6.9551</td><td>6.3487</td><td>-0.6064</td><td>Better</td></tr>
+            <tr><td>20</td><td>web_12_trace</td><td>4.4363</td><td>3.8768</td><td>-0.5595</td><td>Better</td></tr>
+          </tbody>
+          <caption>Top 20 Most Improved Traces</caption>
+        </table>
+      </section>
+
+      <section id="ros">
+        <h2>TAGE-SC-L Alberto Ros Predictor Analysis</h2>
+
+        <h3>Outline of the Predictor</h3>
+        <p>The TAGE-SC-L predictor by Alberto Ros, while similar to André Seznec's implementation, introduces distinct optimizations on top of the base TAGE architecture.</p>
+
+        <p>Key differences include:</p>
+        <ul>
+          <li><strong>Hybrid Sequence Design</strong>: The predictor employs a quadratic sequence initially, then transitions to a generalized geometric sequence with increasing multipliers. This design leverages the rapid growth of quadratic sequences early on, followed by the more moderate progression of geometric sequences. This approach simplifies hardware implementation by allowing direct-mapped tables instead of set-associative ones, reducing MPKI.</li>
+          <li><strong>Enhanced Confidence Mechanism</strong>: The confidence rates have been improved to better balance decisions between the statistical correlator and TAGE components. The loop predictor is treated as the most confident component with final, non-overridable decisions, a departure from the 2016 predictor which allowed conflicts between the SC and loop predictor. The loop predictor is only selected when confidence level is ≥ 2.</li>
+        </ul>
+
+        <h3>Predictor vs Baseline Predictor</h3>
+        <figure>
+          <img src="tage_sc_l_alberto_vs_baseline_plots.png" alt="Performance comparison plots (Ros vs Baseline)" />
+          <figcaption>Performance comparison plots (Ros vs Baseline)</figcaption>
+        </figure>
+
+        <p>Upon analyzing the performance graphs, minimal differences were observed between this predictor and André Seznec's implementation. The improvements are nearly identical, if not slightly worse in some cases.</p>
+
+        <h4>Framework Performance Comparison</h4>
+        <table class="tight">
+          <thead>
+            <tr>
+              <th>Framework</th>
+              <th colspan="2">TAGE Alberto Ros</th>
+              <th colspan="2">TAGE Seznec</th>
+            </tr>
+            <tr>
+              <th></th>
+              <th>Improve/Total</th><th>Success %</th>
+              <th>Improve/Total</th><th>Success %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Web</td><td>25/26</td><td>96.2%</td><td>25/26</td><td>96.2%</td></tr>
+            <tr><td>Fp</td><td>8/14</td><td>57.1%</td><td>9/14</td><td>64.3%</td></tr>
+            <tr><td>Int</td><td>20/37</td><td>54.1%</td><td>25/37</td><td>67.6%</td></tr>
+            <tr><td>Infra</td><td>4/16</td><td>25.0%</td><td>7/16</td><td>43.8%</td></tr>
+            <tr><td>Compress</td><td>1/8</td><td>12.5%</td><td>1/8</td><td>12.5%</td></tr>
+            <tr><td>Media</td><td>3/4</td><td>75.0%</td><td>3/4</td><td>75.0%</td></tr>
+            <tr><td><strong>Average</strong></td><td>61/109</td><td>55.96%</td><td>70/105</td><td>66.7%</td></tr>
+          </tbody>
+          <caption>Side-by-Side Framework Performance Comparison</caption>
+        </table>
+
+        <h3>Direct Predictor Comparison</h3>
+        <p>Even when comparing overall MPKI differences, there is minimal variance between the two implementations.</p>
+
+        <h4>Summary Statistics</h4>
+        <table class="tight">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Alberto Ros</th>
+              <th>Seznec</th>
+              <th>Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>MPKI</td><td>3.3898</td><td>3.3918</td><td>↑ 0.06% worse</td></tr>
+            <tr><td>MR</td><td>2.6697</td><td>2.6687</td><td>↓ 0.04% better</td></tr>
+            <tr><td>IPC</td><td>3.3537</td><td>3.5081</td><td>↑ 4.60% better</td></tr>
+            <tr><td>Cycles</td><td>14106643.7</td><td>14447201.9</td><td>↑ 2.41% worse</td></tr>
+            <tr><td>BrPerCyc</td><td>0.4012</td><td>0.4257</td><td>↑ 6.10% better</td></tr>
+            <tr><td>MispBrPerCyc</td><td>0.0089</td><td>0.0092</td><td>↑ 2.42% better</td></tr>
+            <tr><td>CycWPPKI</td><td>151.4364</td><td>151.7579</td><td>↑ 0.21% worse</td></tr>
+          </tbody>
+          <caption>TAGE-SC-L Alberto Ros vs TAGE-SCL André Seznec</caption>
+        </table>
+
+        <h4>Trace-by-Trace Comparison (MPKI)</h4>
+        <ul>
+          <li>TAGE-SC-L Alberto Ros wins: 27 traces</li>
+          <li>TAGE-SCL André Seznec wins: 78 traces</li>
+          <li>Ties: 0 traces</li>
+        </ul>
+
+        <h4>Biggest Improvements (Seznec Better)</h4>
+        <table class="tight">
+          <thead>
+            <tr><th>Trace</th><th>Alberto Ros</th><th>Seznec</th><th>Improvement</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>web_19_trace</td><td>5.0555</td><td>0.0000</td><td>↓ 5.0555</td></tr>
+            <tr><td>int_1_trace</td><td>11.4406</td><td>10.5130</td><td>↓ 0.9276</td></tr>
+            <tr><td>int_2_trace</td><td>10.7227</td><td>9.9876</td><td>↓ 0.7351</td></tr>
+            <tr><td>int_22_trace</td><td>4.8095</td><td>4.2827</td><td>↓ 0.5268</td></tr>
+            <tr><td>int_21_trace</td><td>23.7948</td><td>23.3263</td><td>↓ 0.4685</td></tr>
+          </tbody>
+          <caption>Biggest Improvements (Seznec Better)</caption>
+        </table>
+
+        <h4>Biggest Regressions (Seznec Worse)</h4>
+        <table class="tight">
+          <thead>
+            <tr><th>Trace</th><th>Alberto Ros</th><th>Seznec</th><th>Regression</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>int_9_trace</td><td>0.0000</td><td>3.6628</td><td>↑ 3.6628</td></tr>
+            <tr><td>web_3_trace</td><td>0.0000</td><td>3.5523</td><td>↑ 3.5523</td></tr>
+            <tr><td>web_14_trace</td><td>0.0000</td><td>3.3625</td><td>↑ 3.3625</td></tr>
+            <tr><td>fp_6_trace</td><td>0.0000</td><td>0.8550</td><td>↑ 0.8550</td></tr>
+            <tr><td>int_16_trace</td><td>5.5268</td><td>5.8279</td><td>↑ 0.3011</td></tr>
+          </tbody>
+          <caption>Biggest Regressions (Seznec Worse)</caption>
+        </table>
+      </section>
+
+      <section id="delta">
+        <h2>Delta Analyses and Conclusions</h2>
+        <p>This section analyzes the trace-level performance differentials ("deltas") between the evaluated predictors. By isolating where specific mechanisms succeed or fail, we distinguish between fundamental architectural advantages and stochastic variance. While individual traces exhibit high variance, the consistency of directional improvements across a majority of workloads indicates that the observed deltas reflect systematic architectural effects rather than stochastic noise.</p>
+
+        <h3>LVCP vs. RVA-Toru: The Generalization of Value Prediction</h3>
+        <table class="tight">
+          <thead>
+            <tr><th>Statistic</th><th>Value (MPKI)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Average Δ (MPKI<sub>LVCP</sub> - MPKI<sub>RVA</sub>)</td><td>+0.1664</td></tr>
+            <tr><td>Std Dev</td><td>0.4111</td></tr>
+            <tr><td>RVA Win Rate</td><td>87.6% (92/105 traces)</td></tr>
+          </tbody>
+          <caption>Delta Statistics: LVCP vs. RVA-Toru (Positive Δ indicates RVA is better)</caption>
+        </table>
+
+        <h4>Analysis of the Delta</h4>
+        <figure>
+          <img src="delta_scatter_lvcp_vs_rvatoru.png" alt="Per-Trace MPKI Delta: LVCP vs. RVA-Toru" />
+          <figcaption>Per-Trace MPKI Delta: LVCP vs. RVA-Toru</figcaption>
+        </figure>
+
+        <h4>Visual Analysis of the Performance Gap</h4>
+        <p>Figure illustrates where the performance improvements originate. The traces are ordered by difficulty, with the hardest workloads (highest baseline MPKI) shown on the left.</p>
+
+        <p>Two clear patterns stand out.</p>
+        <ul>
+          <li><strong>Large gains on the hardest traces:</strong> The largest improvements, where Δ MPKI exceeds 1.0, are concentrated on the left side of the plot (roughly indices 0–15). These traces represent cases where the baseline and LVCP perform particularly poorly. RVA-Toru’s strong improvements here suggest that it is capturing dependencies that LVCP cannot observe, especially in workloads with complex data-driven behavior.</li>
+          <li><strong>Stable behavior on easy traces:</strong> Moving toward the right side of the figure (indices 40–100), which corresponds to easier traces, the deltas cluster tightly around zero. This indicates that RVA-Toru does not degrade performance when value correlation is weak or unnecessary. Instead, it behaves similarly to LVCP on these workloads.</li>
+        </ul>
+
+        <p>Overall, the figure shows that RVA-Toru delivers its benefits where they matter most, on difficult traces, while remaining stable on simpler ones. This supports the claim that RVA-Toru is a robust generalization of LVCP rather than a risky specialization.</p>
+
+        <p>The empirical data demonstrates that RVA-Toru effectively subsumes the benefits of the Load Value Correlator Predictor (LVCP). RVA-Toru achieves a lower MPKI on 87.6% of traces. This dominance is structurally inherent:</p>
+        <ul>
+          <li><strong>Architectural Superset:</strong> LVCP correlates branch outcomes strictly with <em>memory load values</em>. RVA-Toru correlates with <em>register values</em>. Since all loaded data must traverse a register to influence a branch (in Load-Store architectures), RVA captures the same information entropy as LVCP.</li>
+          <li><strong>Computational Scope:</strong> RVA-Toru captures information LVCP misses: values derived from arithmetic operations (e.g., loop induction variables, bitwise shifts) rather than raw memory loads.</li>
+          <li><strong>Digest Efficiency:</strong> LVCP suffers from timing windows, if a load is too old, it is evicted. RVA-Toru's use of 12-bit "digests" allows it to track dependencies over longer instruction windows with less storage overhead than storing full 64-bit load values.</li>
+        </ul>
+
+        <p><strong>Conclusion:</strong> The RVA predictor effectively renders the standalone LVCP largely redundant for general-purpose prediction by generalizing the concept of value correlation from the memory domain to the register domain.</p>
+
+        <h4>Where LVCP Still Wins</h4>
+        <p>Although RVA-Toru dominates overall, LVCP outperforms RVA on 12.4% of traces. These cases likely correspond to tightly coupled load–branch idioms where the branch outcome depends on a recently loaded value with minimal intervening computation. In such scenarios, LVCP’s direct memory-value correlation can be marginally more precise, while RVA’s value digest abstraction may dilute short-lived correlations. These cases are structurally narrow, reinforcing the conclusion that LVCP provides limited incremental coverage beyond RVA-Toru.</p>
+
+        <h3>TAGE-SC-L (Seznec) vs. RVA-Toru: History vs. Data</h3>
+        <table class="tight">
+          <thead>
+            <tr><th>Statistic</th><th>Value (MPKI)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Average Δ (MPKI<sub>RVA</sub> - MPKI<sub>TAGE</sub>)</td><td>-0.1393</td></tr>
+            <tr><td>Std Dev</td><td>0.4437</td></tr>
+            <tr><td>RVA Win Rate</td><td>71.2% (74/104 traces)</td></tr>
+          </tbody>
+          <caption>Delta Statistics: RVA-Toru vs. TAGE-SCL (Seznec)</caption>
+        </table>
+
+        <h4>Analysis of the Delta</h4>
+        <p>This comparison represents the critical inflection point in CBP 2025: the limit of Control-Flow History vs. Data-Flow Correlation.</p>
+        <ul>
+          <li><strong>The History Wall:</strong> TAGE-SC-L relies on path history. When different data values flow through the exact same control path (e.g., a data-dependent sort or hash check), TAGE suffers from aliasing. No amount of history length can resolve a branch that is purely a function of a register value.</li>
+          <li><strong>Orthogonal Information:</strong> RVA-Toru injects orthogonal information (register contents) into the prediction hash. The significant improvement (Δ ≈ -0.14 MPKI) confirms that modern misprediction bottlenecks are largely data-dependent, not history-dependent.</li>
+          <li><strong>Hybrid Robustness:</strong> RVA-Toru sits atop a TAGE-like base. It defaults to TAGE when register correlation is weak. The lack of significant regressions confirms that RVA is a safe, additive optimization.</li>
+        </ul>
+
+        <h3>LVCP vs. TAGE-SC-L: Load Data vs. Control-Flow History</h3>
+        <p>This comparison highlights the fundamental distinction between data-local correlation and long-range control-flow history.</p>
+        <p>LVCP excels on branches whose outcomes depend on recently loaded memory values, such as bounds checks or flag-based conditionals. In contrast, TAGE-SC-L captures long-term path correlations that arise from repetitive control-flow patterns, independent of data values. Neither predictor strictly subsumes the other: LVCP struggles when relevant loads fall outside its temporal window, while TAGE-SC-L fails on branches that are purely data-dependent.</p>
+        <p>This complementarity explains why RVA-Toru, which unifies history-based prediction with register-value correlation, outperforms both approaches individually.</p>
+
+        <h3>TAGE-SCL (Seznec) vs. TAGE-SC-L (Ros): Implementation Trade-offs</h3>
+        <table class="tight">
+          <thead>
+            <tr><th>Statistic</th><th>Value (MPKI)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Average Δ (MPKI<sub>Ros</sub> - MPKI<sub>Seznec</sub>)</td><td>+0.0617</td></tr>
+            <tr><td>Std Dev</td><td>0.1539</td></tr>
+            <tr><td>Seznec Win Rate</td><td>77.0%</td></tr>
+          </tbody>
+          <caption>Delta Statistics: Ros vs. Seznec (Positive Δ indicates Seznec is better)</caption>
+        </table>
+
+        <h4>Analysis of the Delta</h4>
+        <p>While the MPKI delta (+0.0617) appears marginal, the comparison highlights a trade-off between algorithmic complexity and hardware realism.</p>
+        <ul>
+          <li><strong>Algorithmic Purity:</strong> Seznec's implementation (TAGE-SCL 2025) utilizes complex features like skewed associativity and aggressive update policies, yielding a statistically significant win rate (77%). It represents the theoretical ceiling of history-based prediction.</li>
+          <li><strong>Hardware Feasibility:</strong> Ros's implementation utilizes direct-mapped tables and simplified confidence mechanisms. The fact that Ros's predictor performs within ≈ 0.06 MPKI of Seznec's complex design suggests that the marginal utility of aggressive associativity is diminishing.</li>
+        </ul>
+
+        <p><strong>Conclusion:</strong> The 2025 Championship demonstrates that purely history-based improvements (Seznec vs. Ros) have reached a point of diminishing returns. The significant leap in performance comes from breaking the abstraction layer and utilizing data values directly (RVA-Toru). Future high-performance predictors must likely incorporate register-data awareness as a standard component.</p>
+      </section>
+
+      <section id="rankings">
+        <h2>Overall Predictor Rankings</h2>
+
+        <p>This section provides a consolidated, high-level comparison of all evaluated branch predictors across the full set of performance metrics. While earlier sections focused on trace-level deltas and architectural behavior, the goal here is to summarize <em>overall effectiveness</em> by looking at absolute averages and relative rankings side by side.</p>
+
+        <p>Table reports the average values for each predictor across five key metrics: mispredictions per kilo-instructions (MPKI), branch miss rate, instructions per cycle (IPC), average cycle count, and cycles wasted per kilo-instructions (CycWPPKI). For each metric, predictors are implicitly ranked according to whether lower or higher values are better. A composite score is then computed by summing each predictor’s rank across all metrics, where a lower score indicates stronger overall performance.</p>
+
+        <table class="tight">
+          <thead>
+            <tr>
+              <th>Predictor</th>
+              <th>MPKI</th>
+              <th>Miss Rate</th>
+              <th>IPC</th>
+              <th>Cycles</th>
+              <th>CycWPPKI</th>
+              <th>Composite</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Register-Value-Aware-Toru</td>
+              <td>3.3022</td><td>2.5681</td><td>3.5450</td><td>14,401,963</td><td>149.9141</td><td><strong>6</strong></td>
+            </tr>
+            <tr>
+              <td>TAGE-SC-L (Alberto Ros)</td>
+              <td>3.3898</td><td>2.6697</td><td>3.3537</td><td>14,106,644</td><td>151.4364</td><td><strong>13</strong></td>
+            </tr>
+            <tr>
+              <td>TAGE-SCL (Seznec)</td>
+              <td>3.3918</td><td>2.6687</td><td>3.5081</td><td>14,447,202</td><td>151.7579</td><td><strong>14</strong></td>
+            </tr>
+            <tr>
+              <td>Load Value Correlator</td>
+              <td>3.4687</td><td>2.7183</td><td>3.5159</td><td>14,561,855</td><td>153.8107</td><td><strong>18</strong></td>
+            </tr>
+            <tr>
+              <td>Baseline</td>
+              <td>3.8080</td><td>2.9679</td><td>3.4636</td><td>14,824,661</td><td>161.6047</td><td><strong>24</strong></td>
+            </tr>
+          </tbody>
+          <caption>Overall predictor performance and composite ranking across all metrics</caption>
+        </table>
+
+        <p>Several trends are immediately apparent. Register-Value-Aware-Toru ranks first in nearly every category, achieving the lowest MPKI, lowest miss rate, highest IPC, and lowest wasted cycles per kilo-instruction. This dominance results in a composite score that is substantially better than all other predictors.</p>
+
+        <p>Among the history-based designs, TAGE-SC-L (Ros) and TAGE-SCL (Seznec) perform very similarly. Ros’s simpler design achieves the lowest average cycle count, while Seznec’s predictor slightly outperforms it in IPC and miss rate. Their close composite scores reflect the diminishing returns of increasingly complex history-based refinements.</p>
+
+        <p>The Load Value Correlator improves meaningfully over the baseline across all metrics, particularly IPC and MPKI, but consistently trails predictors that incorporate register-level value information. The baseline predictor ranks last across every category, reinforcing the necessity of advanced correlation mechanisms for modern workloads.</p>
+
+        <p>Overall, this ranking table reinforces the central conclusion of this study: while history-based predictors have largely converged in performance, incorporating data-flow information, especially register values, provides the most consistent and system-wide gains.</p>
+      </section>
+
+      <section id="conclusion">
+        <h2>Conclusion</h2>
+        <p>This study of the CBP 2025 predictors highlights a clear shift in how modern branch prediction is improving. By comparing the Load Value Correlator (LVCP), RVA-Toru, and several TAGE-based predictors, a consistent pattern emerges: further gains from control-flow history alone are becoming harder to achieve, while data-driven techniques are providing the most meaningful improvements.</p>
+
+        <p>The comparison between Seznec’s TAGE-SCL and Ros’s TAGE-SC-L illustrates this well. Although Seznec’s design uses more complex mechanisms such as skewed associativity and aggressive updates, its advantage over Ros’s simpler implementation is small (about 0.06 MPKI). This suggests that increasing complexity within history-based predictors yields limited returns, especially given the added hardware cost.</p>
+
+        <p>The more impactful improvements in this championship come from incorporating value information. The Load Value Correlator shows that, for certain workloads, particularly web-style programs, branch outcomes are often determined by recently loaded data rather than long control-flow histories. However, LVCP is limited in scope. It struggles when branches depend on values produced by computation rather than direct memory loads, which explains its weaker performance on many integer benchmarks.</p>
+
+        <p>RVA-Toru addresses this limitation by extending value correlation to register contents. This allows it to capture both loaded values and values produced by arithmetic operations. The per-trace delta analysis shows that RVA-Toru consistently improves the most difficult workloads while remaining stable on easier ones. In other words, it provides large benefits where history-based predictors fail, without introducing widespread regressions.</p>
+
+        <p><strong>Final Verdict:</strong><br/>
+        The CBP 2025 results indicate that future gains in branch prediction will not come from larger or more complex history tables alone. Instead, meaningful progress requires incorporating information about the data being processed by the program. RVA-Toru demonstrates that register-value awareness can complement traditional history-based prediction and address cases where history alone is insufficient. As workloads continue to become more data-dependent, this hybrid approach is likely to become a standard component of high-performance branch predictors.</p>
+      </section>
+
+      <section id="future">
+        <h2>Scope for Future Work: Exploring the Limits of Branch Prediction</h2>
+
+        <p>This work shows that RVA-Toru currently represents the strongest predictor in CBP 2025 by making effective use of register values.
+        <span class="question">The natural next question is: <em>how much further can branch prediction be pushed?</em></span>
+        My future work focuses on answering this by studying alternative design ideas and by estimating the theoretical upper bound of prediction accuracy.</p>
+
+        <p>I plan to approach this in two phases.</p>
+
+        <h3>Phase 1: Studying Alternative Prediction Styles</h3>
+        <p>Although TAGE-based predictors dominate the leaderboard, CBP 2025 also includes predictors that take very different approaches. These predictors may capture information that traditional history-based designs miss. I plan to perform trace-level delta analysis on several of these “outlier” designs to understand what, if anything, they contribute beyond TAGE and RVA-style predictors.</p>
+
+        <ul>
+          <li><strong>Multiperspective Perceptron (Jiménez):</strong> This predictor replaces tables with a neural-style learning mechanism. I want to test whether this approach adapts faster during warm-up periods, especially in <em>infra</em> and <em>web</em> workloads where TAGE predictors often struggle early in execution.</li>
+          <li><strong>Programming-Idiom Predictor (PIP) and Code Structure Correlator (CSC):</strong> These predictors attempt to link branches to higher-level code patterns rather than raw history or values. Comparing them against RVA-Toru will help answer whether “code structure” provides new information, or whether it is simply another way of indirectly capturing data-flow behavior.</li>
+          <li><strong>BALL and Bullseye Predictors:</strong> Since this study already examined LVCP, the BALL predictor offers a natural follow-up by tracking longer dependency chains involving ALU operations and loads. This allows a direct comparison: does following a full computation chain outperform tracking only load values? I also plan to revisit Bullseye to see whether its filtering techniques could be reused to reduce predictor overhead in other designs.</li>
+        </ul>
+
+        <h3>Phase 2: An Idealized “Infinite-Hardware” Oracle</h3>
+        <p>Even with advanced predictors like RVA-Toru, a small fraction of traces remain difficult to predict. This raises an important question: are these failures caused by limited hardware resources, or are they fundamentally unpredictable?</p>
+
+        <p>To explore this, I propose building an idealized “Oracle” predictor that ignores all practical hardware constraints. This predictor would not be bound by the CBP 64KB size limit and would combine the strongest ideas from all predictors into a single design.</p>
+
+        <p>The Oracle would include:</p>
+        <ul>
+          <li><strong>Very Long Histories and Large Tables:</strong> History lengths extended far beyond practical limits, with fully associative structures to eliminate aliasing.</li>
+          <li><strong>Comprehensive Feature Tracking:</strong> Simultaneous use of global history, register values, memory values, and neural-style learning signals.</li>
+          <li><strong>Perfect Updates:</strong> Immediate and ideal updates to remove pipeline timing effects from the analysis.</li>
+        </ul>
+
+        <p><strong>Goal:</strong> By running this Oracle on the most stubborn traces, those that defeat all existing predictors, I aim to separate remaining mispredictions into two groups: those caused by hardware limits (and therefore potentially fixable), and those caused by true randomness in program behavior. This distinction would help define the true ceiling of branch prediction accuracy and guide future architectural research.</p>
+      </section>
+
+      <section id="references">
+        <h2>References</h2>
+        <ol>
+          <li><strong>A. Seznec</strong>, <em>TAGE-SC for CBP 2025</em>, Championship Branch Prediction Workshop, 2025. SiFive.</li>
+          <li><strong>A. Ros</strong>, <em>A Deep Dive into TAGE-SC-L</em>, Championship Branch Prediction Workshop, 2025. University of Murcia.</li>
+          <li><strong>T. Koizumi et al.</strong>, <em>RUNLTS: Register-Value-Aware Predictor Utilizing Nested Large Tables</em>, Championship Branch Prediction Workshop, 2025. Nagoya Institute of Technology and The University of Tokyo.</li>
+          <li><strong>Y. Man et al.</strong>, <em>LVCP: A Load Value Correlated Predictor for TAGE-SC-L</em>, Championship Branch Prediction Workshop, 2025. Institute of Computing Technology, Chinese Academy of Sciences.</li>
+        </ol>
+
+        <div class="footnotes">
+          <p>ChatGPT (OpenAI) was used for conceptual clarification. No AI was used for explanation of architectural ideas, and editorial refinement of text. No experimental results or analysis were generated by the tool.</p>
+          <p>Perplexity AI was used for exploratory questioning and cross-checking background information. All formulas, performance metrics, and graph generation code were written and validated by me.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -94,14 +94,239 @@ The field of branch prediction has reached a level of sophistication where furth
 
 This report represents a critical continuation of my multi-stage investigation into high-performance branch prediction. This work picks up directly from my second assignment, where I analyzed the 2016-era TAGE-SC-L baseline to identify the fundamental bottlenecks inherent in traditional history-based techniques. By establishing that reference point, I was able to determine which workloads are inherently difficult to predict and precisely where mispredictions tend to concentrate when the system relies solely on path history.
 
-Building upon those initial findings, the objective of the current study is to analyze "optimization deltas." Rather than merely reproducing established results, this report examines how specific architectural innovations introduced in the CBP 2025 entries alter prediction behavior relative to established baselines. The analytical focus shifts from aggregate averages to trace-level deltas, worst-case performance, and workload-specific trends. This approach is designed to distinguish between mechanisms that address fundamental bottlenecks and those that simply reshuffle performance across different benchmarks.
+Building upon those initial findings, the objective of the current report is to analyze "optimization deltas." Rather than merely reproducing established results, this report examines how specific architectural innovations introduced in the CBP 2025 entries alter prediction behavior relative to established baselines. The analytical focus shifts from aggregate averages to trace-level deltas, worst-case performance, and workload-specific trends. This approach is designed to distinguish between mechanisms that address fundamental bottlenecks and those that simply reshuffle performance across different benchmarks.
 
 To achieve this, the report investigates three distinct classes of predictors. First, the Load Value Correlator Predictor (LVCP) is evaluated as a targeted attempt to resolve data-dependent branches through explicit correlation with recent memory load values. Second, the Register-Value-Aware predictor (RVA-Toru) is examined for its ability to generalize this concept by incorporating register values directly into the prediction process. Finally, refined history-based methods, including the 2025 TAGE-SC design by André Seznec, are analyzed to determine the limits of traditional path-based correlation when compared to modern value-aware models.
 
-Throughout this analysis, the goal is to look beyond industry standard metric of Mispredictions Per Kilo-Instruction (MPKI) reductions. By examining where regressions occur and how misprediction ceilings evolve, this study extracts broader architectural insights into the relationship between history, data, and design complexity. Ultimately, this report serves as both a performance evaluation and an exploratory study into the future of robust and effective branch prediction.
+Throughout this analysis, the goal is to look beyond industry standard metric of Mispredictions Per Kilo-Instruction (MPKI) reductions. By examining where regressions occur and how misprediction ceilings evolve, this report extracts broader architectural insights into the relationship between history, data, and design complexity. Ultimately, this report serves as both a performance evaluation and an exploratory report into the future of robust and effective branch prediction.
 
 \newpage
+\section{Methodology}
 
+This section describes how I obtained all reported values and figures, beginning with the raw
+simulator outputs and ending with the plots included in the final report. The goal of this section
+was to make the evaluation process transparent and reproducible, and to clearly explain why each
+metric was required to analyze branch predictor behavior beyond simple aggregate accuracy.
+
+\subsection{Simulator and Experimental Setup}
+
+All experiments were run using the official Championship Branch Prediction (CBP) 2025 cycle-accurate
+simulator (\texttt{cbp}). The simulator models a superscalar out-of-order core using a window-based
+pipeline and memory hierarchy, and it exposes branch predictor callbacks at multiple pipeline stages
+(fetch, decode, execute/resolve, and commit) via the CBP predictor interface.
+
+To ensure that results are reproducible, all predictors were evaluated under the same simulator
+configuration and microarchitectural parameters, on the same trace set, and under the same conditional
+branch predictor storage budget. 
+
+The workload suite was the CBP 2025 training trace set: 105 compressed instruction traces spanning six
+categories ie Int (37), Fp (14), Web (26), Infra (16), Compress (8), and Media (4). Unless explicitly
+stated otherwise, every predictor result in this report reflects running the full trace set under
+identical conditions.
+
+While the baseline suite comprises 105 traces, the final number of evaluated traces varies in certain
+experiments (ranging from 101 to 105) due to occasional simulator timeouts/crashes that prevent some
+traces from producing valid per-trace CSV rows, and due to analysis-specific filtering
+applied in selected comparisons.
+
+\subsection{Experimental Data Generation Pipeline}
+
+All experimental results came from cycle-accurate simulator runs on a fixed set of instruction
+traces. I evaluated each predictor configuration independently on the same trace set, so any
+performance differences I observed were due to predictor design rather than workload variation.
+
+For each predictor, the simulator gave me a per-trace CSV file with an identical schema. Each
+row was a single trace and each column was a specific metric. Since the schema was the same
+across all predictors, I could line up the CSV files by trace identifier without any manual
+data manipulation.
+
+These CSV files were the only source of numbers in this report. I used a scripted analysis
+pipeline to process them, which did the following:
+\begin{itemize}
+    \item Loaded and aligned per-trace CSV files across predictors by trace identifier.
+    \item Computed derived metrics (MPKI, IPC, CycWPPKI, etc.) from raw simulator outputs.
+    \item Generated pairwise comparison figures and delta scatter plots.
+    \item Produced summary tables and composite ranking scores.
+\end{itemize}
+
+
+\subsubsection{Instruction Throughput Metrics}
+
+I recorded the total number of retired instructions (\textbf{Instr}) and the total number of
+simulated cycles (\textbf{Cycles}) for each trace. From these values, I computed instructions per
+cycle (IPC):
+
+\[
+\text{IPC} = \frac{\text{Instr}}{\text{Cycles}}
+\]
+
+IPC was used as an end-to-end performance metric, as it reflected not only branch prediction
+accuracy but also the downstream cost of mispredictions, including pipeline flushes and recovery
+latency.
+
+\subsubsection{Branch Frequency and Misprediction Counts}
+
+To characterize control-flow behavior, the simulator recorded the total number of conditional branches
+(\textbf{NumBr}) and the number of mispredicted branches (\textbf{MispBr}) per trace. From these raw
+counts, I derived and reported the branch and misprediction densities:
+
+\[
+\text{BrPerCyc} = \frac{\text{NumBr}}{\text{Cycles}}, \qquad
+\text{MispBrPerCyc} = \frac{\text{MispBr}}{\text{Cycles}}
+\]
+
+These metrics captured how frequently branches occurred and how often mispredictions disrupted
+execution relative to overall runtime.
+
+These density metrics were utilized strictly for intermediate trace profiling and workload
+characterization, rather than for the final composite predictor evaluation.
+
+\subsubsection{Accuracy-Oriented Metrics}
+
+Branch prediction accuracy was evaluated using two complementary metrics. First, I computed the
+misprediction rate (MR):
+
+\[
+\text{MR} = 100 \cdot \frac{\text{MispBr}}{\text{NumBr}}
+\]
+
+While MR measured per-branch accuracy, it did not account for instruction mix or execution length.
+For this reason, I relied primarily on mispredictions per kilo-instruction (MPKI):
+
+\[
+\text{MPKI} = 1000 \cdot \frac{\text{MispBr}}{\text{Instr}}
+\]
+
+MPKI normalized mispredictions by instruction count and provided a stronger correlation with
+overall performance impact.
+
+\subsubsection{Wrong-Path Execution Cost Metrics}
+
+Accuracy alone did not fully capture the cost of branch mispredictions. To quantify recovery
+overhead, I used the simulator-reported number of cycles spent on wrong-path execution
+
+(\textbf{CycWP}). from this value, I computed wrong-path execution cost normalized by instruction
+count:
+
+\[
+\text{CycWPPKI} = 1000 \cdot \frac{\text{CycWP}}{\text{Instr}}
+\]
+
+These metrics distinguished predictors that reduced misprediction frequency from those that also
+reduced the cost of each misprediction.
+
+\subsection{Predictor-versus-Baseline Comparison Figures}
+
+Pairwise comparison figures were generated using a Python and Matplotlib. The python file loads the per-trace CSV files for two predictors and
+produces a 2$\times$2 comparison figure (containing 4 plots).
+
+The resulting figures were saved as PNG files and included directly in the LaTeX report.
+
+I chose a 2$\times$2 panel layout because each subplot reveals a different aspect of behavior: the MPKI/IPC
+scatter plots expose per-trace tradeoffs and outliers, the MPKI-difference histogram shows whether gains are
+broad-based or concentrated, and the normalized mean bars summarize overall direction across complementary
+metrics without hiding trace-level structure.
+
+\subsubsection{Scatter Plots}
+
+The top-left subplot showed a scatter plot of MPKI values, with baseline MPKI on the x-axis and
+the evaluated predictor MPKI on the y-axis. A diagonal reference line indicated equal
+performance; points below the diagonal represented an improvement over the baseline.
+
+The top-right subplot followed the same structure for IPC. In this case, points above the
+diagonal indicated higher instruction throughput.
+
+\subsubsection{MPKI Difference Histogram}
+
+The bottom-left subplot visualized the distribution of per-trace MPKI differences:
+
+\[
+\text{MPKI}_{\text{pred2}} - \text{MPKI}_{\text{pred1}}
+\]
+
+Negative values indicated improved accuracy relative to the baseline and revealed whether
+performance gains were widespread or limited to a subset of traces.
+
+\subsubsection{Normalized Mean Metric Comparison}
+
+The bottom-right subplot compared normalized mean values of MPKI, MR, and CycWPPKI. Each metric
+was normalized by the larger of the two predictors’ mean values. Because normalization was
+performed independently for each comparison, bar heights were intended for within-figure
+comparison only and should not be compared across different predictor pairs.
+
+\subsection{Delta-Based Comparison and Subsumption Analysis}
+
+In addition to direct predictor-versus-baseline comparisons, I performed a delta-based analysis
+to examine how predictors related to one another on a per-trace basis. This approach emphasized
+relative predictor behavior rather than aggregate averages.
+
+\subsubsection{Delta Definition}
+
+For any two predictors $A$ and $B$, I defined the per-trace delta as:
+
+\[
+\Delta = \text{MPKI}_A - \text{MPKI}_B
+\]
+
+With this definition, a positive delta indicated that predictor $B$ achieved lower MPKI than
+predictor $A$ on that trace.
+
+\subsubsection{Trace Filtering}
+
+Some traces were not informative for delta analysis. In particular, traces that reported zero
+MPKI for one or both predictors indicated that no mispredictions occurred during execution. To
+avoid distorting delta distributions with such cases, I excluded any trace where either predictor
+had zero MPKI.
+
+To avoid distorting visualizations, this filtering rule was applied strictly to the delta scatter
+plots. Zero-MPKI traces were retained in the tabular summaries to accurately reflect absolute
+performance gains.
+
+\subsubsection{Delta Visualizations}
+I analyzed MPKI deltas using scatter plots showing per-trace delta values, 
+with traces ordered along the x-axis by baseline MPKI, from most difficult 
+to easiest. This ordering made it easier to observe whether a predictor's 
+advantage was concentrated in challenging workloads or distributed across 
+the benchmark set.
+
+
+\subsection{Improvement Classification and Success Ratio}
+\label{sec:improvement-classification}
+
+To classify per-trace outcomes, I introduced an error MPKI of of $\pm 0.1$ MPKI to account
+for small numerical variations in simulator outputs. I selected $\pm 0.1$ MPKI as a practical
+significance rate (roughly one misprediction per 10,000 instructions), so extremely small deltas
+are not over-interpreted as meaningful improvements. A trace was classified as \emph{improved} if
+the evaluated predictor reduced MPKI by more than 0.1 relative to the comparison baseline. Traces
+with MPKI differences within $\pm 0.1$ were treated as equivalent.
+
+Using this classification, the \emph{Improve/Total} value reported in tables reflected the number
+of improved traces divided by the total number of evaluated traces. The \emph{Success Ratio (\%)}
+was computed as the percentage of traces classified as improved under this criterion.
+
+\subsection{Composite Predictor Ranking}
+
+To provide an overall comparison across multiple metrics, I constructed a composite ranking
+scheme. Predictors were ranked independently across five core performance metrics: MPKI,
+misprediction rate (MR), IPC, total simulated cycles (Cycles), and CycWPPKI. These per-metric
+ranks were then summed to produce a composite score, where lower values indicated stronger
+overall performance. This approach ensured that no single metric dominated the final ranking.
+
+\subsection{Rationale for Metric Selection}
+
+Each metric used in this report captured a distinct aspect of branch predictor behavior. MPKI
+quantified prediction accuracy, IPC reflected overall performance impact, CycWPPKI exposed
+recovery cost, and delta-based comparisons revealed relative predictor dominance. Together, these
+metrics enabled conclusions that were robust and not overly dependent on any single measurement.
+
+I used MPKI rather than MR as the primary accuracy metric because MPKI normalizes by instruction count and
+therefore better reflects end-to-end performance impact across traces with very different branch densities.
+
+While IPC normalizes instruction throughput, raw simulated Cycles were included in the composite
+evaluation to capture the absolute reduction in execution time across the fixed benchmark suite.
+
+I also used CycWPPKI rather than raw CycWP because normalizing wrong-path cycles by instruction count makes recovery
+overhead comparable across traces of different lengths and instruction mixes.
 % ==========================================
 % SECTION 1: LVCP
 % ==========================================
@@ -127,7 +352,7 @@ The branch looks back at recent loads and uses a hash of the branch PC, the load
 \begin{figure}[H]
     \centering
     % Placeholder for the image
-    \includegraphics[width=0.85\textwidth]{register_value_aware_predictor_vs_baseline_plots.png}
+    \includegraphics[width=0.85\textwidth]{load_value_vs_baseline_plots.png}
     \caption{Load Value Correlator Predictor vs Baseline Performance}
 \end{figure}
 
@@ -187,7 +412,7 @@ LVCP also depends on timing. If the useful load happened too long before the bra
 % ==========================================
 \section{Register-Value-Aware Branch Predictor}
 
-This was a pretty interesting read, and there were a lot of interesting methods that they used.
+This predictor includes several notable design techniques that were useful to study.
 
 The RVA-Toru predictor uses the TAGE predictor as the foundation, and it consists of multiple tagged tables and a statistical correlator. They have also increased the size of the bimodal predictor to 128k entries.
 
@@ -209,13 +434,13 @@ Apart from the register optimizations, RVA-Toru combines an arithmetic progressi
     \caption{Register Value Aware Predictor vs Baseline Comparison}
 \end{figure}
 
-Okay first things first, in the graph (bottom right) I can see that there is a significant gain in MPKI. In terms of raw numbers, the MPKI for the register value aware predictor is 13.28\% better than the baseline. There ``isn't much'' gain in IPC but the misprediction rate is lesser for the predictor. The IPC improvements tell me that the improvements are central to hard-to-predict branches. I'm pretty sure most of these improvements are because IRL most branches are value dependent and this predictor exactly exploits that. Since the predictor sits on top of TAGE with its smart use of registers to predict branches, it is able to maximize its gains. 
+The normalized-mean subplot shows a substantial gain in MPKI. In terms of raw numbers, the MPKI for the register value aware predictor is 13.28\% better than the baseline. IPC improves modestly, while both MPKI and misprediction rate decrease. This pattern suggests that the gains are concentrated in hard-to-predict branches where history-based correlation is weak. Since the predictor builds on top of TAGE and selectively injects register information when it is useful, it can capture value-dependent behavior while retaining strong baseline behavior.
 
 From the graphs, I can see near-zero regressions. It means that the predictor only helps when it is useful and when the baseline doesn't perform the best. When the values don't correlate, the predictor falls back to baseline behavior.
 
-A good thing is that around 15/112 benchmarks reported ``similar'' MPKIs, so the rest of them have significant or ``pretty good'' gains in MPKI.
+Approximately 15/105 benchmarks reported ``similar'' MPKIs, while the remainder show clear gains in MPKI.
 
-It is not very surprising that a lot of the improvements in the MPKI (where the difference is more than 1) belong to the INT benchmark. Now that intuitively makes sense since most of the INT benchmarks are used to do integer computations, array indexing, control flow decisions, etc. But another thing to consider is that the success rate (i.e., \#improved/total) is 75\%, which means that INT benchmarks have a wide variety. I'm assuming it does well when it involves branches that use register values, and it turns out that the MPKI speedups are very noisy, either having significant improvements or having little to no improvement, mostly leaning towards the improvement side. RVA-Toru performs well on INT because it exploits value.
+It is not very surprising that a lot of the improvements in the MPKI (where the difference is more than 1) belong to the INT benchmark. Now that intuitively makes sense since most of the INT benchmarks are used to do integer computations, array indexing, control flow decisions, etc. But another thing to consider is that the success rate (i.e., \#improved/total) is 75\%, which means that INT benchmarks have a wide variety. I assume it does well when it involves branches that use register values, and it turns out that the MPKI speedups are very noisy, either having significant improvements or having little to no improvement, mostly leaning towards the improvement side. RVA-Toru performs well on INT because it exploits value.
 
 \subsubsection{Summary Statistics}
 
@@ -230,12 +455,13 @@ MR             & 2.9679      & 2.5681      & $\downarrow$ 13.47\% better \\
 IPC            & 3.4636      & 3.5450      & $\uparrow$ 2.35\% better \\
 Cycles         & 14824660.91 & 14401963.47 & $\downarrow$ 2.85\% better \\
 BrPerCyc       & 0.4203      & 0.4309      & $\uparrow$ 2.54\% better \\
-MispBrPerCyc   & 0.0100      & 0.0089      & $\downarrow$ 10.23\% worse \\
+MispBrPerCyc   & 0.0100      & 0.0089      & $\downarrow$ 10.23\% better \\
 CycWPPKI       & 161.6047    & 149.9141    & $\downarrow$ 7.23\% better \\
 \bottomrule
 \end{tabular}
 \caption{Summary statistics comparison}
 \end{table}
+
 
 Obviously \texttt{MispBrPerCyc} would improve if MPKI improves. Moreover, all benchmarks show any sort of visible improvement (even though we might call them similar due to inherent error margins and noise).
 
@@ -281,9 +507,9 @@ The optimization features of the TAGE 2025 that aren't there in the 2016 version
     \item Uses 2-way skewed associativity.
 \end{itemize}
 
-The structural correlator has also been ``improved'' or so they say. Most of these optimizations are done from the article/book about TAGE in 2024 \textit{[André Seznec. 2024. TAGE: an engineering cookbook. Technical Report 9561]}. 
+The structural correlator was also revised. Many of these optimizations are derived from the 2024 TAGE engineering report \textit{[André Seznec. 2024. TAGE: an engineering cookbook. Technical Report 9561]}. 
 
-Something that I found pretty interesting was that they use a tagged IMLI (Inner Most Loop Iterator) to solve the issue of the fall-through misprediction in the last loop iteration. It is tagged because considering two loops, you would notice that the counters would overwrite each other if it was just a single IMLI, so to solve that they have a tagged IMLI. \textbf{Something that was interesting to me is that they use two IMLI tables, and both of them have different purposes.} The other one is the branch context IMLI; it is useful for branches that don't have fixed loop iterations, so they use histories based on the previous anchor branch. Anchor branches do cause biases, but due to the correlator in a BrIMLI, it will make a safe biased prediction; it is still counting based rather than pattern based but it is kinda more biased now.
+Something that I found notable was the use of a tagged IMLI (Inner Most Loop Iterator) to address fall-through mispredictions on the last loop iteration. Tagging is important because different loops would otherwise interfere and overwrite each other's counters. \textbf{A key design detail is that the predictor uses two IMLI tables with different roles.} The second component, the branch-context IMLI, targets branches without fixed loop iterations by using histories based on the previous anchor branch. Anchor branches can introduce bias; however, the BrIMLI correlator tends to produce a conservative bias that is still counting-based rather than purely pattern-based.
 
 The branch predictor still uses 2 global history-based components from the GEHL (geo history length predictor):
 \begin{itemize}
@@ -291,7 +517,7 @@ The branch predictor still uses 2 global history-based components from the GEHL 
     \item XOR PC with (longest matching prediction and global history)
 \end{itemize}
 
-Funny thing, they got rid of the loop predictor; it did not seem to help a lot apparently. Marginal gains and it took space also so they nuked it lmao.
+
 
 \subsection{TAGE SC 2025 vs TAGE SC-L 2016}
 
@@ -303,9 +529,7 @@ Funny thing, they got rid of the loop predictor; it did not seem to help a lot a
 
 If we take a look at the plots we can see that for the top right plot, the MPKI of the TAGE-SC 2025 is slightly below the baseline predictor. There are some outliers.
 
-My plot generating scripts and report generating scripts report similar numbers if the difference in the MPKI is more than 0.1, and I feel like I had to set that threshold to account for any noise or errors in the execution. I feel like 0.1 is a lot and I should have set the $\pm$ variation to be 0.05 but I feel like it is better to be safe than not.
-
-But apart from that, most of the MPKIs for all the traces were above the threshold of 0.1 which is good. To be specific, what I found most interesting was that the web benchmarks were deemed the most hard to improve in the first report that I presented initially, but here the web benchmarks show the most improvements. It is probably because of the probabilistic allocation of entries, since you now have a confidence level that is provided by the longest matching counter.
+For per-trace improvement/equivalence classification, I use the tolerance threshold defined in Section~\ref{sec:improvement-classification}. This keeps the trace-level comparisons consistent across all predictors and avoids over-interpreting very small numerical differences.
 
 \subsubsection{Performance by Framework Type}
 Better performances in how many frameworks of each type:
@@ -328,7 +552,7 @@ Compress   & 1/8   & 12.5 \\
 
 \subsubsection{Analysis}
 
-The results show that the TAGE-SC 2025 predictor achieves a consistently lower MPKI than the baseline implementation, with an overall improvement of approximately 11%. This is a meaningful gain, especially given that both predictors operate under similar storage and structural constraints. Across nearly all workloads, the 2025 design outperforms the baseline, confirming the effectiveness of its architectural refinements.
+The results show that the TAGE-SC 2025 predictor achieves a consistently lower MPKI than the baseline implementation, with an overall improvement of approximately 11\%. This is a meaningful gain, especially given that both predictors operate under similar storage and structural constraints. Across nearly all workloads, the 2025 design outperforms the baseline, confirming the effectiveness of its architectural refinements.
 
 A notable exception appears in a small subset of the infrastructure benchmarks. Of the few cases where the baseline predictor performs better, three out of four occur within the \textit{infra} category. While these differences are minor in magnitude, they suggest a systematic pattern rather than random noise.
 
@@ -419,7 +643,7 @@ Infra      & 4/16   & 25.0\%  & 7/16   & 43.8\% \\
 Compress   & 1/8    & 12.5\%  & 1/8    & 12.5\% \\
 Media      & 3/4    & 75.0\%  & 3/4    & 75.0\% \\
 \midrule
-Average    & 61/109 & 55.96\% & 70/105 & 66.7\% \\
+AAverage    & 61/105 & 58.1\% & 70/105 & 66.7\% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -569,7 +793,7 @@ This comparison represents the critical inflection point in CBP 2025: the limit 
 \begin{itemize}
     \item \textbf{The History Wall:} TAGE-SC-L relies on path history. When different data values flow through the exact same control path (e.g., a data-dependent sort or hash check), TAGE suffers from aliasing. No amount of history length can resolve a branch that is purely a function of a register value.
     \item \textbf{Orthogonal Information:} RVA-Toru injects orthogonal information (register contents) into the prediction hash. The significant improvement ($\Delta \approx -0.14$ MPKI) confirms that modern misprediction bottlenecks are largely data-dependent, not history-dependent.
-    \item \textbf{Hybrid Robustness:} RVA-Toru sits atop a TAGE-like base. It defaults to TAGE when register correlation is weak. The lack of significant regressions (points above the line in Figure 2) confirms that RVA is a safe, additive optimization.
+    \item \textbf{Hybrid Robustness:} RVA-Toru sits atop a TAGE-like base. It defaults to TAGE when register correlation is weak. The lack of significant regressions (points above the line in Figure~2 (RVA vs. Baseline MPKI scatter)) confirms that RVA is a safe, additive optimization.
 \end{itemize}
 \subsection{LVCP vs. TAGE-SC-L: Load Data vs. Control-Flow History}
 
@@ -647,7 +871,7 @@ Among the history-based designs, TAGE-SC-L (Ros) and TAGE-SCL (Seznec) perform v
 
 The Load Value Correlator improves meaningfully over the baseline across all metrics, particularly IPC and MPKI, but consistently trails predictors that incorporate register-level value information. The baseline predictor ranks last across every category, reinforcing the necessity of advanced correlation mechanisms for modern workloads.
 
-Overall, this ranking table reinforces the central conclusion of this study: while history-based predictors have largely converged in performance, incorporating data-flow information, especially register values, provides the most consistent and system-wide gains.
+Overall, this ranking table reinforces the central conclusion of this report: while history-based predictors have largely converged in performance, incorporating data-flow information, especially register values, provides the most consistent and system-wide gains.
 
 
 % ==========================================
@@ -655,7 +879,7 @@ Overall, this ranking table reinforces the central conclusion of this study: whi
 % ==========================================
 \section{Conclusion}
 
-This study of the CBP 2025 predictors highlights a clear shift in how modern branch prediction is improving. By comparing the Load Value Correlator (LVCP), RVA-Toru, and several TAGE-based predictors, a consistent pattern emerges: further gains from control-flow history alone are becoming harder to achieve, while data-driven techniques are providing the most meaningful improvements.
+This report of the CBP 2025 predictors highlights a clear shift in how modern branch prediction is improving. By comparing the Load Value Correlator (LVCP), RVA-Toru, and several TAGE-based predictors, a consistent pattern emerges: further gains from control-flow history alone are becoming harder to achieve, while data-driven techniques are providing the most meaningful improvements.
 
 The comparison between Seznec’s TAGE-SCL and Ros’s TAGE-SC-L illustrates this well. Although Seznec’s design uses more complex mechanisms such as skewed associativity and aggressive updates, its advantage over Ros’s simpler implementation is small (about 0.06 MPKI). This suggests that increasing complexity within history-based predictors yields limited returns, especially given the added hardware cost.
 
@@ -689,7 +913,7 @@ Although TAGE-based predictors dominate the leaderboard, CBP 2025 also includes 
     These predictors attempt to link branches to higher-level code patterns rather than raw history or values. Comparing them against RVA-Toru will help answer whether “code structure” provides new information, or whether it is simply another way of indirectly capturing data-flow behavior.
     
     \item \textbf{BALL and Bullseye Predictors:}  
-    Since this study already examined LVCP, the BALL predictor offers a natural follow-up by tracking longer dependency chains involving ALU operations and loads. This allows a direct comparison: does following a full computation chain outperform tracking only load values? I also plan to revisit Bullseye to see whether its filtering techniques could be reused to reduce predictor overhead in other designs.
+    Since this report already examined LVCP, the BALL predictor offers a natural follow-up by tracking longer dependency chains involving ALU operations and loads. This allows a direct comparison: does following a full computation chain outperform tracking only load values? I also plan to revisit Bullseye to see whether its filtering techniques could be reused to reduce predictor overhead in other designs.
 \end{itemize}
 
 \subsection{Phase 2: An Idealized “Infinite-Hardware” Oracle}
@@ -741,12 +965,11 @@ Championship Branch Prediction Workshop, 2025.
 Institute of Computing Technology, Chinese Academy of Sciences.
 \end{thebibliography}
 
-\footnote{
-ChatGPT (OpenAI) was used for conceptual clarification. No AI was used for explanation of architectural ideas, and editorial refinement of text. No experimental results or analysis were generated by the tool.
-}
-
-\footnote{
-Perplexity AI was used for exploratory questioning and cross-checking background information. All formulas, performance metrics, and graph generation code were written and validated by me.
-}
+\section*{AI Tool Disclosure}
+\noindent I used AI tools in a limited way to support writing and background cross-checking, while keeping all
+experimental results and analysis fully authored and validated by me.\footnote{ChatGPT (OpenAI) was used for
+conceptual clarification. No experimental results or analysis were generated by the tool.}\footnote{Perplexity AI
+was used for exploratory questioning and cross-checking background information. All formulas, performance metrics,
+and graph generation code were written and validated by me.}
 
 \end{document}

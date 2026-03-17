@@ -1,9 +1,9 @@
-lib/
+/lib/
 cbp
 my_cond_branch_predictor.o
 cond_branch_predictor_interface.o
 .vscode/
 traces/
-ReportGenerators/generatorinfo.md
-results/baseline/
+scripts/analysis/report_generators/generatorinfo.md
+data/results/baseline_sim/
 copyImportantFiles.sh

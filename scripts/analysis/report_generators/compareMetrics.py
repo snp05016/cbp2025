@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib
 matplotlib.use('Agg')  # Non-interactive backend - no popups
 import matplotlib.pyplot as plt
+import os
+from pathlib import Path
 
 
 def load_file(file_path):
@@ -163,12 +165,14 @@ def plot_comparison(comparison_results, category, similar_metric, different_metr
     
     plt.tight_layout()
     
-    # Save to Reports directory
-    import os
-    output_dir = '../Reports/05_comparative_analysis/divergent_behavior'
-    os.makedirs(output_dir, exist_ok=True)
-    filename = f'{output_dir}/discrepancy_{category}_{different_metric}_vs_{similar_metric}.png'
-    
+    # Save to selected report root (stable regardless of CWD)
+    repo_root = Path(__file__).resolve().parents[3]
+    reports_root = Path(os.environ.get('CBP_REPORTS_DIR', str(repo_root / 'reports')))
+    graph_prefix = os.environ.get('CBP_GRAPH_PREFIX', '')
+    output_dir = reports_root / '05_comparative_analysis' / 'divergent_behavior'
+    output_dir.mkdir(parents=True, exist_ok=True)
+    filename = output_dir / f'{graph_prefix}discrepancy_{category}_{different_metric}_vs_{similar_metric}.png'
+
     plt.savefig(filename, dpi=300, bbox_inches='tight')
     plt.close()  # Close figure instead of showing
     

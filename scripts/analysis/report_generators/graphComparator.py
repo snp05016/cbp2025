@@ -3,6 +3,8 @@ import matplotlib
 matplotlib.use('Agg')  # Non-interactive backend - no popups
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+from pathlib import Path
 
 # Load Data
 df = pd.read_csv('results.csv')
@@ -57,11 +59,13 @@ def generate_comparison_plot(data, workload_type, full_data=None):
     ax.grid(axis='y', linestyle='--', alpha=0.4)
     plt.subplots_adjust(bottom=0.25)
     
-    # Save to Reports directory
-    import os
-    output_dir = '../Reports/01_misprediction_analysis/graphs'
-    os.makedirs(output_dir, exist_ok=True)
-    plt.savefig(f'{output_dir}/mpki_comparison_{workload_type}.png')
+    # Save to selected report root (stable regardless of CWD)
+    repo_root = Path(__file__).resolve().parents[3]
+    reports_root = Path(os.environ.get('CBP_REPORTS_DIR', str(repo_root / 'reports')))
+    graph_prefix = os.environ.get('CBP_GRAPH_PREFIX', '')
+    output_dir = reports_root / '01_misprediction_analysis' / 'graphs'
+    output_dir.mkdir(parents=True, exist_ok=True)
+    plt.savefig(output_dir / f'{graph_prefix}mpki_comparison_{workload_type}.png')
     plt.close()  # Close figure instead of showing
 
 # --- FIX STARTS HERE ---

@@ -4,6 +4,9 @@ matplotlib.use('Agg')  # Non-interactive backend - no popups
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from pathlib import Path
+
+graph_prefix = os.environ.get('CBP_GRAPH_PREFIX', '')
 
 def load_results(csv_path):
     df = pd.read_csv(csv_path)
@@ -26,7 +29,7 @@ def create_misprediction_rate_graphs(df, output_dir):
     plt.title('Average Misprediction Rate by Benchmark Category')
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
-    plt.savefig(f'{output_dir}/category_avg_misprediction_rate.png', dpi=150)
+    plt.savefig(f'{output_dir}/{graph_prefix}category_avg_misprediction_rate.png', dpi=150)
     plt.close()
     
     for category in categories:
@@ -38,7 +41,7 @@ def create_misprediction_rate_graphs(df, output_dir):
         plt.title(f'Misprediction Rate for {category} Traces')
         plt.xticks(range(len(cat_data)), cat_data['Run'], rotation=90, fontsize=8)
         plt.tight_layout()
-        plt.savefig(f'{output_dir}/{category}_misprediction_rates.png', dpi=150)
+        plt.savefig(f'{output_dir}/{graph_prefix}{category}_misprediction_rates.png', dpi=150)
         plt.close()
 
 def create_performance_metric_graphs(df, output_dir):
@@ -76,7 +79,7 @@ def create_performance_metric_graphs(df, output_dir):
         axes[1, 1].grid(alpha=0.3)
         
         plt.tight_layout()
-        plt.savefig(f'{output_dir}/{category}_performance_metrics.png', dpi=150)
+        plt.savefig(f'{output_dir}/{graph_prefix}{category}_performance_metrics.png', dpi=150)
         plt.close()
 
 def create_difficulty_analysis_graphs(df, output_dir):
@@ -99,7 +102,7 @@ def create_difficulty_analysis_graphs(df, output_dir):
         axes[idx].axis('off')
     
     plt.tight_layout()
-    plt.savefig(f'{output_dir}/difficulty_mr_vs_mpki.png', dpi=150)
+    plt.savefig(f'{output_dir}/{graph_prefix}difficulty_mr_vs_mpki.png', dpi=150)
     plt.close()
     
     category_stats = df.groupby('Workload').agg({
@@ -128,7 +131,7 @@ def create_difficulty_analysis_graphs(df, output_dir):
     axes[1].grid(axis='y', alpha=0.3)
     
     plt.tight_layout()
-    plt.savefig(f'{output_dir}/difficulty_variability.png', dpi=150)
+    plt.savefig(f'{output_dir}/{graph_prefix}difficulty_variability.png', dpi=150)
     plt.close()
     
     fig, ax = plt.subplots(figsize=(12, 8))
@@ -141,7 +144,7 @@ def create_difficulty_analysis_graphs(df, output_dir):
     ax.legend()
     ax.grid(alpha=0.3)
     plt.tight_layout()
-    plt.savefig(f'{output_dir}/difficulty_ipc_vs_mr_all.png', dpi=150)
+    plt.savefig(f'{output_dir}/{graph_prefix}difficulty_ipc_vs_mr_all.png', dpi=150)
     plt.close()
 
 def create_branch_prediction_analysis(df, output_dir):
@@ -179,7 +182,7 @@ def create_branch_prediction_analysis(df, output_dir):
         axes[1, 1].grid(alpha=0.3)
         
         plt.tight_layout()
-        plt.savefig(f'{output_dir}/{category}_branch_analysis.png', dpi=150)
+        plt.savefig(f'{output_dir}/{graph_prefix}{category}_branch_analysis.png', dpi=150)
         plt.close()
 
 def create_cycles_analysis(df, output_dir):
@@ -202,7 +205,7 @@ def create_cycles_analysis(df, output_dir):
         axes[idx].axis('off')
     
     plt.tight_layout()
-    plt.savefig(f'{output_dir}/cycles_vs_instructions_all.png', dpi=150)
+    plt.savefig(f'{output_dir}/{graph_prefix}cycles_vs_instructions_all.png', dpi=150)
     plt.close()
     
     for category in categories:
@@ -223,7 +226,7 @@ def create_cycles_analysis(df, output_dir):
         axes[1].grid(alpha=0.3)
         
         plt.tight_layout()
-        plt.savefig(f'{output_dir}/{category}_cycle_waste.png', dpi=150)
+        plt.savefig(f'{output_dir}/{graph_prefix}{category}_cycle_waste.png', dpi=150)
         plt.close()
 def create_benchmark_analysis(df, output_dir):
     os.makedirs(output_dir, exist_ok=True)
@@ -273,7 +276,7 @@ def create_benchmark_analysis(df, output_dir):
                 ha='center', va='bottom', fontsize=9, weight='bold')
     
     plt.tight_layout()
-    plt.savefig(f'{output_dir}/mpki_comparison_benchmarks.png', dpi=150)
+    plt.savefig(f'{output_dir}/{graph_prefix}mpki_comparison_benchmarks.png', dpi=150)
     plt.close()
     
     # 2. MPKI Box Plot
@@ -292,7 +295,7 @@ def create_benchmark_analysis(df, output_dir):
     plt.title('MPKI Distribution Across Benchmark Categories', fontsize=14, weight='bold', pad=20)
     plt.grid(axis='y', alpha=0.3, linestyle='--')
     plt.tight_layout()
-    plt.savefig(f'{output_dir}/mpki_boxplot_benchmarks.png', dpi=150)
+    plt.savefig(f'{output_dir}/{graph_prefix}mpki_boxplot_benchmarks.png', dpi=150)
     plt.close()
     
     # 3. MPKI per individual run within each category - Representative Sample
@@ -361,7 +364,7 @@ def create_benchmark_analysis(df, output_dir):
     axes[-1].axis('off')
     
     plt.tight_layout()
-    plt.savefig(f'{output_dir}/mpki_per_category_detailed.png', dpi=150)
+    plt.savefig(f'{output_dir}/{graph_prefix}mpki_per_category_detailed.png', dpi=150)
     plt.close()
     
     # 4. Summary Statistics Table with Geometric Mean
@@ -413,7 +416,7 @@ def create_benchmark_analysis(df, output_dir):
             table[(i, j)].set_facecolor('#f0f0f0' if i % 2 == 0 else 'white')
     
     plt.title('MPKI Statistics by Benchmark Category (Full Dataset)', pad=20, fontsize=14, weight='bold')
-    plt.savefig(f'{output_dir}/mpki_summary_table.png', dpi=150, bbox_inches='tight')
+    plt.savefig(f'{output_dir}/{graph_prefix}mpki_summary_table.png', dpi=150, bbox_inches='tight')
     plt.close()
         
 def create_first_vs_second_half_analysis(df, output_dir):
@@ -462,7 +465,7 @@ def create_first_vs_second_half_analysis(df, output_dir):
         axes[1, 1].tick_params(axis='x', labelsize=8)
         
         plt.tight_layout()
-        plt.savefig(f'{output_dir}/{category}_first_vs_second_half.png', dpi=150)
+        plt.savefig(f'{output_dir}/{graph_prefix}{category}_first_vs_second_half.png', dpi=150)
         plt.close()
 
 def create_aggregate_comparison_graphs(df, output_dir):
@@ -494,12 +497,14 @@ def create_aggregate_comparison_graphs(df, output_dir):
     axes[1, 2].axis('off')
     
     plt.tight_layout()
-    plt.savefig(f'{output_dir}/aggregate_category_comparison.png', dpi=150)
+    plt.savefig(f'{output_dir}/{graph_prefix}aggregate_category_comparison.png', dpi=150)
     plt.close()
 
 def main():
     csv_path = 'results.csv'
-    output_dir = '../Reports/04_performance_metrics/graphs'
+    repo_root = Path(__file__).resolve().parents[3]
+    reports_root = Path(os.environ.get('CBP_REPORTS_DIR', str(repo_root / 'reports')))
+    output_dir = str(reports_root / '04_performance_metrics' / 'graphs')
     
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)

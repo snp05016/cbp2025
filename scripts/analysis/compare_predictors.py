@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Comprehensive Predictor Comparison Script
-Analyzes and compares 5 different branch predictors across multiple metrics
+Analyzes and compares all branch predictor result CSVs found in the repo's results/ folder
 Generates text reports and visualizations without popups
 """
 
@@ -11,24 +11,66 @@ import matplotlib
 matplotlib.use('Agg')  # Use non-interactive backend
 import matplotlib.pyplot as plt
 import seaborn as sns
+import argparse
+import re
 from pathlib import Path
 import warnings
 warnings.filterwarnings('ignore')
+from pandas.api.types import is_string_dtype
 
 # Set style
 sns.set_style("whitegrid")
 plt.rcParams['figure.figsize'] = (12, 8)
 plt.rcParams['font.size'] = 10
 
-# Define predictor files and names
-PREDICTORS = {
-    'Baseline': 'baseline.csv',
-    'Programming Idiom Predictor-Mose': 'programming-idiom-predictor-mose.csv',
-    'TAGE-SC-L-Alberto-Ros': 'tage-sc-l-alberto-ros-results.csv',
-    'TAGE-SCL-Andrez-Seznec': 'tage-scl-andrez-seznec-results.csv',
-    'Load-Value-Correlator-Man': 'load-value-correlator-man-results.csv',
-    'Register-Value-Aware-Toru': 'register-value-aware-toru-results.csv'
+PREDICTOR_LABEL_OVERRIDES = {
+    'baseline': 'Baseline',
+    'programming-idiom-predictor-mose': 'Programming Idiom Predictor-Mose',
+    'multi-perspective-predictor': 'Multi-Perspective Predictor',
+    'tage-sc-l-alberto-ros-results': 'TAGE-SC-L-Alberto-Ros',
+    'tage-scl-andrez-seznec-results': 'TAGE-SCL-Andrez-Seznec',
+    'load-value-correlator-man-results': 'Load-Value-Correlator-Man',
+    'register-value-aware-toru-results': 'Register-Value-Aware-Toru',
 }
+
+
+def _repo_root() -> Path:
+    # scripts/analysis/compare_predictors.py -> scripts/analysis -> scripts -> repo root
+    return Path(__file__).resolve().parents[2]
+
+
+def _slugify(text: str) -> str:
+    text = text.strip()
+    text = re.sub(r'\s+', '_', text)
+    text = re.sub(r'[^A-Za-z0-9._-]+', '_', text)
+    text = re.sub(r'_+', '_', text)
+    return text.strip('._-') or 'predictor'
+
+
+def _label_from_filename(path: Path) -> str:
+    stem = path.stem
+    if stem in PREDICTOR_LABEL_OVERRIDES:
+        return PREDICTOR_LABEL_OVERRIDES[stem]
+
+    # Default: make something readable from the file stem
+    label = stem.replace('_', ' ').replace('-', ' ')
+    label = re.sub(r'\s+', ' ', label).strip()
+    return (label.title() if label else stem)
+
+
+def _discover_csvs(results_dir: Path, recursive: bool) -> list[Path]:
+    if recursive:
+        candidates = sorted(p for p in results_dir.rglob('*.csv') if p.is_file())
+    else:
+        candidates = sorted(p for p in results_dir.glob('*.csv') if p.is_file())
+
+    # Skip obvious non-predictor artifacts if present
+    skip_names = {
+        'combined_predictor_results.csv',
+        'pairwise_deltas.csv',
+        'subsumption_summary.csv',
+    }
+    return [p for p in candidates if p.name not in skip_names]
 
 # Key metrics to analyze
 METRICS = {
@@ -44,29 +86,65 @@ METRICS = {
 }
 
 class PredictorComparator:
-    def __init__(self, base_dir='.', output_dir='reports/comparison-predictors'):
-        self.base_dir = Path(base_dir)
+    def __init__(self, results_dir: str | Path, output_dir: str | Path, recursive: bool = False):
+        self.results_dir = Path(results_dir)
         self.output_dir = Path(output_dir)
+        self.recursive = recursive
         self.data = {}
+        self._safe_name = {}
         self.load_data()
         self.create_output_structure()
         
     def load_data(self):
-        """Load all predictor CSV files"""
+        """Load all predictor CSV files discovered in results_dir."""
         print("Loading predictor data...")
-        for name, filename in PREDICTORS.items():
-            filepath = self.base_dir / filename
-            if filepath.exists():
+        if not self.results_dir.exists():
+            print(f"  ✗ Results directory not found: {self.results_dir}")
+            return
+
+        csv_files = _discover_csvs(self.results_dir, self.recursive)
+        if not csv_files:
+            print(f"  ✗ No CSV files found in: {self.results_dir}")
+            return
+
+        print(f"  Found {len(csv_files)} CSV file(s) in {self.results_dir}")
+        for filepath in csv_files:
+            try:
                 df = pd.read_csv(filepath)
-                # Clean percentage values
-                if 'MR' in df.columns:
-                    df['MR'] = df['MR'].str.rstrip('%').astype('float')
-                if '50PercMR' in df.columns:
-                    df['50PercMR'] = df['50PercMR'].str.rstrip('%').astype('float')
-                self.data[name] = df
-                print(f"  ✓ Loaded {name}: {len(df)} traces")
-            else:
-                print(f"  ✗ File not found: {filename}")
+            except Exception as e:
+                print(f"  ✗ Failed to read {filepath.name}: {e}")
+                continue
+
+            # Basic schema check: must have Run and MPKI for meaningful comparisons
+            if 'Run' not in df.columns or 'MPKI' not in df.columns:
+                print(f"  - Skipping {filepath.name} (missing 'Run' and/or 'MPKI')")
+                continue
+
+            # Clean percentage values (common in MR columns)
+            for pct_col in ['MR', '50PercMR']:
+                if pct_col in df.columns and (df[pct_col].dtype == object or is_string_dtype(df[pct_col])):
+                    df[pct_col] = (
+                        df[pct_col]
+                        .astype(str)
+                        .str.rstrip('%')
+                        .replace({'nan': np.nan})
+                    )
+                    df[pct_col] = pd.to_numeric(df[pct_col], errors='coerce')
+
+            # Coerce common numeric columns if present
+            for num_col in ['MPKI', 'IPC', 'Cycles', 'BrPerCyc', 'MispBrPerCyc', 'CycWPPKI', 'MispBr', 'NumBr']:
+                if num_col in df.columns:
+                    df[num_col] = pd.to_numeric(df[num_col], errors='coerce')
+
+            label = _label_from_filename(filepath)
+            safe = _slugify(label)
+            # Ensure uniqueness if two files map to the same label
+            if safe in self._safe_name.values():
+                safe = _slugify(f"{label}_{filepath.stem}")
+
+            self.data[label] = df
+            self._safe_name[label] = safe
+            print(f"  ✓ Loaded {filepath.name} as '{label}': {len(df)} traces")
                 
     def create_output_structure(self):
         """Create directory structure for outputs"""
@@ -82,7 +160,7 @@ class PredictorComparator:
         predictor_names = list(self.data.keys())
         for i, pred1 in enumerate(predictor_names):
             for pred2 in predictor_names[i+1:]:
-                pair_dir = self.output_dir / f'{pred1}_vs_{pred2}'
+                pair_dir = self.output_dir / f"{self._safe_name[pred1]}_vs_{self._safe_name[pred2]}"
                 pair_dir.mkdir(exist_ok=True)
                 (pair_dir / 'figures').mkdir(exist_ok=True)
                 (pair_dir / 'text_reports').mkdir(exist_ok=True)
@@ -651,7 +729,7 @@ class PredictorComparator:
         df1 = self.data[pred1]
         df2 = self.data[pred2]
         
-        pair_dir = self.output_dir / f'{pred1}_vs_{pred2}'
+        pair_dir = self.output_dir / f"{self._safe_name[pred1]}_vs_{self._safe_name[pred2]}"
         
         # 1. Generate comparison report
         self._generate_pair_report(pred1, pred2, df1, df2, pair_dir)
@@ -880,5 +958,29 @@ class PredictorComparator:
         print("    - figures/")
 
 if __name__ == '__main__':
-    comparator = PredictorComparator()
+    parser = argparse.ArgumentParser(
+        description='Compare all predictor CSVs in results/ and generate overall + pairwise reports.'
+    )
+    parser.add_argument(
+        '--results-dir',
+        default=str(_repo_root() / 'results'),
+        help='Directory containing predictor CSV files (default: <repo>/results)'
+    )
+    parser.add_argument(
+        '--output-dir',
+        default=str(_repo_root() / 'reports' / 'comparison-predictors'),
+        help='Directory to write comparison outputs (default: <repo>/reports/comparison-predictors)'
+    )
+    parser.add_argument(
+        '--recursive',
+        action='store_true',
+        help='Recursively search for CSV files under results-dir'
+    )
+    args = parser.parse_args()
+
+    comparator = PredictorComparator(
+        results_dir=args.results_dir,
+        output_dir=args.output_dir,
+        recursive=args.recursive,
+    )
     comparator.run_all_analyses()

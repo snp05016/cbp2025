@@ -3,7 +3,7 @@
 # ============================================================================
 # CBP2025 Report Generation & Organization Script
 # ============================================================================
-# This script runs all analysis scripts and organizes outputs into 
+# This script runs all analysis scripts and organizes outputs into
 # well-structured directories for easy navigation and comparison.
 # ============================================================================
 
@@ -12,15 +12,26 @@ set -e  # Exit on error
 if [ $# -lt 1 ]; then
     echo "Usage: $0 <branch_predictor_name> [path/to/csv]"
     echo "Example: $0 baseline"
+    echo "Example: $0 tage-sc-l-alberto-ros results/tage-sc-l-alberto-ros-results.csv"
     exit 2
 fi
 
 PREDICTOR_NAME="$1"
+
+# Make a filesystem-safe name for folder + filename prefix
 SAFE_NAME=$(echo "$PREDICTOR_NAME" | tr ' /' '__' | tr -cd '[:alnum:]_.-')
 
 if [ -z "$SAFE_NAME" ]; then
     echo "Error: predictor name becomes empty after sanitizing."
     exit 2
+fi
+
+# Store project root directory
+PROJECT_ROOT="$(pwd)"
+
+# Activate virtual environment if it exists
+if [ -d "${PROJECT_ROOT}/.venv" ]; then
+    source "${PROJECT_ROOT}/.venv/bin/activate"
 fi
 
 # Color codes for output
@@ -32,11 +43,12 @@ NC='\033[0m' # No Color
 
 # Base directories
 RESULTS_CSV="results.csv"  # analysis scripts expect this exact filename
-REPORTS_DIR="../reports/${SAFE_NAME}"
-SCRIPT_DIR="ReportGenerators"
+REPORTS_ROOT="${PROJECT_ROOT}/reports/${SAFE_NAME}"
+REPORTS_DIR="${REPORTS_ROOT}"
+SCRIPT_DIR="scripts/analysis/report_generators"
 
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-export CBP_REPORTS_DIR="${REPO_ROOT}/reports/${SAFE_NAME}"
+# Tell the Python scripts where to write outputs, and how to prefix graph filenames
+export CBP_REPORTS_DIR="${REPORTS_ROOT}"
 export CBP_GRAPH_PREFIX="${SAFE_NAME}__"
 
 echo -e "${BLUE}========================================${NC}"
@@ -73,6 +85,10 @@ echo -e "${GREEN}✓${NC} Directory structure created\n"
 echo -e "${YELLOW}[2/6]${NC} Analyzing baseline difficulty (intrinsic hardness)..."
 
 # Resolve which CSV to analyze.
+# Priority:
+#  1) user-provided path (arg2)
+#  2) results/<predictor>.csv or common variants
+#  3) legacy results.csv locations
 CSV_PATH=""
 
 if [ $# -ge 2 ]; then
@@ -84,13 +100,16 @@ if [ $# -ge 2 ]; then
     fi
 else
     for candidate in \
-        "../results/${PREDICTOR_NAME}.csv" \
-        "../results/${SAFE_NAME}.csv" \
-        "../results/${PREDICTOR_NAME}-results.csv" \
-        "../results/${SAFE_NAME}-results.csv" \
-        "../${RESULTS_CSV}" \
-        "../results/${RESULTS_CSV}" \
+        "results/${PREDICTOR_NAME}.csv" \
+        "results/${SAFE_NAME}.csv" \
+        "results/${PREDICTOR_NAME}-results.csv" \
+        "results/${SAFE_NAME}-results.csv" \
+        "results/${PREDICTOR_NAME}_results.csv" \
+        "results/${SAFE_NAME}_results.csv" \
+        "${PREDICTOR_NAME}.csv" \
+        "${SAFE_NAME}.csv" \
         "${RESULTS_CSV}" \
+        "results/${RESULTS_CSV}" \
         "${SCRIPT_DIR}/${RESULTS_CSV}"; do
         if [ -f "$candidate" ]; then
             CSV_PATH="$candidate"
@@ -101,18 +120,21 @@ fi
 
 if [ -z "$CSV_PATH" ]; then
     echo -e "${RED}✗${NC} No suitable CSV found for predictor '${PREDICTOR_NAME}'."
-    echo -e "${YELLOW}Hint:${NC} Pass an explicit CSV path as the 2nd argument."
+    echo -e "${YELLOW}Looked for:${NC}"
+    echo "  - results/${PREDICTOR_NAME}.csv (and common variants)"
+    echo "  - ./results.csv or results/results.csv"
+    echo -e "${YELLOW}Hint:${NC} Run traces first or pass an explicit CSV path."
     exit 1
 fi
 
 echo -e "   Using: ${CSV_PATH}"
 
-# Copy/overwrite results.csv in ReportGenerators
+# Copy results.csv to script directory if not already there
 cp "${CSV_PATH}" "${SCRIPT_DIR}/${RESULTS_CSV}"
 
 cd ${SCRIPT_DIR}
-python baselineDifficulty.py > ${REPORTS_DIR}/06_difficulty_analysis/intrinsic_hardness/baseline_difficulty_report.txt 2>&1
-cd ..
+python3 baselineDifficulty.py > ${REPORTS_DIR}/06_difficulty_analysis/intrinsic_hardness/baseline_difficulty_report.txt 2>&1
+cd ${PROJECT_ROOT}
 echo -e "${GREEN}✓${NC} Baseline difficulty analysis complete"
 echo -e "   Output: ${REPORTS_DIR}/06_difficulty_analysis/intrinsic_hardness/baseline_difficulty_report.txt\n"
 
@@ -122,8 +144,8 @@ echo -e "   Output: ${REPORTS_DIR}/06_difficulty_analysis/intrinsic_hardness/bas
 echo -e "${YELLOW}[3/6]${NC} Analyzing phase behavior patterns..."
 
 cd ${SCRIPT_DIR}
-python compareMPKI_vs50PercMPKI.py > ${REPORTS_DIR}/03_phase_behavior/phase_behavior_report.txt 2>&1
-cd ..
+python3 compareMPKI_vs50PercMPKI.py > ${REPORTS_DIR}/03_phase_behavior/phase_behavior_report.txt 2>&1
+cd ${PROJECT_ROOT}
 
 echo -e "${GREEN}✓${NC} Phase behavior analysis complete"
 echo -e "   Output: ${REPORTS_DIR}/03_phase_behavior/\n"
@@ -134,8 +156,8 @@ echo -e "   Output: ${REPORTS_DIR}/03_phase_behavior/\n"
 echo -e "${YELLOW}[3.5/6]${NC} Generating MPKI comparison visualizations..."
 
 cd ${SCRIPT_DIR}
-python graphComparator.py > ${REPORTS_DIR}/01_misprediction_analysis/mpki_comparison_report.txt 2>&1
-cd ..
+python3 graphComparator.py > ${REPORTS_DIR}/01_misprediction_analysis/mpki_comparison_report.txt 2>&1
+cd ${PROJECT_ROOT}
 
 echo -e "${GREEN}✓${NC} MPKI comparison graphs complete"
 echo -e "   Output: ${REPORTS_DIR}/01_misprediction_analysis/\n"
@@ -146,8 +168,8 @@ echo -e "   Output: ${REPORTS_DIR}/01_misprediction_analysis/\n"
 echo -e "${YELLOW}[4/6]${NC} Finding benchmarks with divergent behavior..."
 
 cd ${SCRIPT_DIR}
-python compareMetrics.py > ${REPORTS_DIR}/05_comparative_analysis/divergent_behavior_report.txt 2>&1
-cd ..
+python3 compareMetrics.py > ${REPORTS_DIR}/05_comparative_analysis/divergent_behavior_report.txt 2>&1
+cd ${PROJECT_ROOT}
 
 echo -e "${GREEN}✓${NC} Comparative analysis complete"
 echo -e "   Output: ${REPORTS_DIR}/05_comparative_analysis/divergent_behavior_report.txt\n"
@@ -158,8 +180,8 @@ echo -e "   Output: ${REPORTS_DIR}/05_comparative_analysis/divergent_behavior_re
 echo -e "${YELLOW}[5/6]${NC} Generating performance metric visualizations..."
 
 cd ${SCRIPT_DIR}
-python generate_graphs.py 2>&1 | tee ${REPORTS_DIR}/04_performance_metrics/graph_generation.log
-cd ..
+python3 generate_graphs.py 2>&1 | tee ${REPORTS_DIR}/04_performance_metrics/graph_generation.log
+cd ${PROJECT_ROOT}
 
 echo -e "${GREEN}✓${NC} Graph generation complete"
 echo -e "   Output: ${REPORTS_DIR}/04_performance_metrics/\n"
@@ -170,8 +192,8 @@ echo -e "   Output: ${REPORTS_DIR}/04_performance_metrics/\n"
 echo -e "${YELLOW}[6/6]${NC} Analyzing branch density patterns..."
 
 cd ${SCRIPT_DIR}
-python rangeOfBranchesAcrossBenchmarks.py > ${REPORTS_DIR}/02_branch_density/branch_density_report.txt 2>&1
-cd ..
+python3 rangeOfBranchesAcrossBenchmarks.py > ${REPORTS_DIR}/02_branch_density/branch_density_report.txt 2>&1
+cd ${PROJECT_ROOT}
 
 echo -e "${GREEN}✓${NC} Branch density analysis complete"
 echo -e "   Output: ${REPORTS_DIR}/02_branch_density/\n"

@@ -65,30 +65,30 @@ I$:
 	accesses   = 53518558
 	misses     = 343235
 	miss ratio = 0.64%
-	pf accesses   = 0
-	pf misses     = 0
-	pf miss ratio = nan%
+	pf accesses   = 16204198715729174752
+	pf misses     = 16204198715729174752
+	pf miss ratio = 100.00%
 L1$:
 	accesses   = 19036354
 	misses     = 338969
 	miss ratio = 1.78%
-	pf accesses   = 886892
-	pf misses     = 34646
-	pf miss ratio = 3.91%
+	pf accesses   = 16204198715730061644
+	pf misses     = 16204198715729209398
+	pf miss ratio = 100.00%
 L2$:
 	accesses   = 682204
 	misses     = 142717
 	miss ratio = 20.92%
-	pf accesses   = 34646
-	pf misses     = 26411
-	pf miss ratio = 76.23%
+	pf accesses   = 16204198715729209398
+	pf misses     = 16204198715729201163
+	pf miss ratio = 100.00%
 L3$:
 	accesses   = 142717
 	misses     = 84633
 	miss ratio = 59.30%
-	pf accesses   = 26411
-	pf misses     = 15121
-	pf miss ratio = 57.25%
+	pf accesses   = 16204198715729201163
+	pf misses     = 16204198715729189873
+	pf miss ratio = 100.00%
 ---------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------Prefetcher (Full Simulation i.e. No Warmup)----------------------------------------------
 Num Trainings :12895967
@@ -103,7 +103,7 @@ Num prefetches not issued stride 0 :4198414
 -------------------------------ILP LIMIT STUDY (Full Simulation i.e. Counts Not Reset When Warmup Ends)--------------------------------
 instructions = 50000052
 cycles       = 17421132
-CycWP        = 3269868
+CycWP        = 16204198715732444620
 IPC          = 2.8701
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -138,4 +138,4 @@ Not control        43983166          0   0.0000%   0.0000
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Read 50000052 instrs 
 
-ExecTime = 481.8701229095459
+ExecTime = 477.7208511829376

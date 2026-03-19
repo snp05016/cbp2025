@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Multi-Perspective Predictor vs TAGE-SCL-Andrez-Seznec
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Multi-Perspective Predictor TAGE-SCL-Andrez-Seznec Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.4631               3.3918               ↓ 2.06% better
+MR                             2.7758               2.6687               ↓ 3.86% better
+IPC                            3.7119               3.5081               ↓ 5.49% worse
+Cycles                         15341076.1023        14447201.9524        ↓ 5.83% better
+BrPerCyc                       0.4388               0.4257               ↓ 2.98% worse
+MispBrPerCyc                   0.0096               0.0092               ↓ 4.28% worse
+CycWPPKI                       159.8244             151.7579             ↓ 5.05% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Multi-Perspective Predictor wins: 45 traces
+TAGE-SCL-Andrez-Seznec wins: 43 traces
+Ties: 0 traces
+
+
+Biggest Improvements (TAGE-SCL-Andrez-Seznec better):
+--------------------------------------------------------------------------------
+  web_7_trace                                7.5938 →   6.1046 (↓ 1.4892)
+  int_16_trace                               6.8140 →   5.8279 (↓ 0.9861)
+  int_17_trace                               5.4692 →   4.8436 (↓ 0.6256)
+  int_30_trace                              12.2311 →  11.9056 (↓ 0.3255)
+  int_8_trace                                6.1344 →   5.8380 (↓ 0.2964)
+
+
+Biggest Regressions (TAGE-SCL-Andrez-Seznec worse):
+--------------------------------------------------------------------------------
+  web_8_trace                                0.0000 →   4.5779 (↑ 4.5779)
+  int_1_trace                                9.0328 →  10.5130 (↑ 1.4802)
+  int_2_trace                                8.6194 →   9.9876 (↑ 1.3682)
+  int_22_trace                               3.5724 →   4.2827 (↑ 0.7103)
+  int_32_trace                               5.9951 →   6.3487 (↑ 0.3536)

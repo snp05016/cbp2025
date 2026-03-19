@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Load-Value-Correlator-Man vs TAGE-SCL-Andrez-Seznec
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Load-Value-Correlator-Man TAGE-SCL-Andrez-Seznec Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.4687               3.3918               ↓ 2.22% better
+MR                             2.7183               2.6687               ↓ 1.82% better
+IPC                            3.5159               3.5081               ↓ 0.22% worse
+Cycles                         14561854.8381        14447201.9524        ↓ 0.79% better
+BrPerCyc                       0.4274               0.4257               ↓ 0.40% worse
+MispBrPerCyc                   0.0093               0.0092               ↓ 1.60% worse
+CycWPPKI                       153.8107             151.7579             ↓ 1.33% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Load-Value-Correlator-Man wins: 34 traces
+TAGE-SCL-Andrez-Seznec wins: 71 traces
+Ties: 0 traces
+
+
+Biggest Improvements (TAGE-SCL-Andrez-Seznec better):
+--------------------------------------------------------------------------------
+  web_19_trace                               5.1496 →   0.0000 (↓ 5.1496)
+  int_22_trace                               4.8609 →   4.2827 (↓ 0.5782)
+  compress_3_trace                           8.1504 →   7.7625 (↓ 0.3879)
+  int_35_trace                               2.3653 →   2.0167 (↓ 0.3486)
+  int_32_trace                               6.6835 →   6.3487 (↓ 0.3348)
+
+
+Biggest Regressions (TAGE-SCL-Andrez-Seznec worse):
+--------------------------------------------------------------------------------
+  fp_8_trace                                 6.6877 →   7.3856 (↑ 0.6979)
+  infra_4_trace                              1.8311 →   2.3855 (↑ 0.5544)
+  fp_13_trace                               11.9520 →  12.3153 (↑ 0.3633)
+  fp_12_trace                                0.8073 →   1.0969 (↑ 0.2896)
+  infra_0_trace                              0.9872 →   1.2453 (↑ 0.2581)

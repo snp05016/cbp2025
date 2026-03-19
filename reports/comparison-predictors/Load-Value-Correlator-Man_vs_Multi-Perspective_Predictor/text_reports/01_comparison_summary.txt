@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Load-Value-Correlator-Man vs Multi-Perspective Predictor
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Load-Value-Correlator-Man Multi-Perspective Predictor Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.4687               3.4631               ↓ 0.16% better
+MR                             2.7183               2.7758               ↑ 2.11% worse
+IPC                            3.5159               3.7119               ↑ 5.58% better
+Cycles                         14561854.8381        15341076.1023        ↑ 5.35% worse
+BrPerCyc                       0.4274               0.4388               ↑ 2.66% better
+MispBrPerCyc                   0.0093               0.0096               ↑ 2.80% better
+CycWPPKI                       153.8107             159.8244             ↑ 3.91% worse
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Load-Value-Correlator-Man wins: 38 traces
+Multi-Perspective Predictor wins: 50 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Multi-Perspective Predictor better):
+--------------------------------------------------------------------------------
+  web_8_trace                                4.6254 →   0.0000 (↓ 4.6254)
+  int_1_trace                               10.6773 →   9.0328 (↓ 1.6445)
+  int_2_trace                               10.0902 →   8.6194 (↓ 1.4708)
+  int_22_trace                               4.8609 →   3.5724 (↓ 1.2885)
+  int_32_trace                               6.6835 →   5.9951 (↓ 0.6884)
+
+
+Biggest Regressions (Multi-Perspective Predictor worse):
+--------------------------------------------------------------------------------
+  web_7_trace                                6.1216 →   7.5938 (↑ 1.4722)
+  int_16_trace                               5.8167 →   6.8140 (↑ 0.9973)
+  fp_8_trace                                 6.6877 →   7.5897 (↑ 0.9020)
+  int_17_trace                               4.8546 →   5.4692 (↑ 0.6146)
+  infra_4_trace                              1.8311 →   2.3702 (↑ 0.5391)

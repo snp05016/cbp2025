@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Baseline vs Multi-Perspective Predictor
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Baseline             Multi-Perspective Predictor Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.8080               3.4631               ↓ 9.06% better
+MR                             2.9679               2.7758               ↓ 6.47% better
+IPC                            3.4636               3.7119               ↑ 7.17% better
+Cycles                         14824660.9143        15341076.1023        ↑ 3.48% worse
+BrPerCyc                       0.4203               0.4388               ↑ 4.40% better
+MispBrPerCyc                   0.0100               0.0096               ↓ 3.94% worse
+CycWPPKI                       161.6047             159.8244             ↓ 1.10% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Baseline wins: 0 traces
+Multi-Perspective Predictor wins: 88 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Multi-Perspective Predictor better):
+--------------------------------------------------------------------------------
+  web_8_trace                                5.1087 →   0.0000 (↓ 5.1087)
+  int_1_trace                               11.6458 →   9.0328 (↓ 2.6130)
+  int_2_trace                               10.9652 →   8.6194 (↓ 2.3458)
+  int_22_trace                               5.3965 →   3.5724 (↓ 1.8241)
+  int_16_trace                               8.1253 →   6.8140 (↓ 1.3113)
+
+
+Biggest Regressions (Multi-Perspective Predictor worse):
+--------------------------------------------------------------------------------
+  int_25_trace                               1.3243 →   1.3236 (↑ -0.0007)
+  infra_5_trace                              2.2119 →   2.2083 (↑ -0.0036)
+  fp_4_trace                                 0.5736 →   0.5696 (↑ -0.0040)
+  infra_2_trace                              0.4838 →   0.4797 (↑ -0.0041)
+  infra_8_trace                              1.2568 →   1.2520 (↑ -0.0048)

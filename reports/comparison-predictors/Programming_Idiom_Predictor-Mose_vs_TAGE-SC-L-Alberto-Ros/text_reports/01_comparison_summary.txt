@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Programming Idiom Predictor-Mose vs TAGE-SC-L-Alberto-Ros
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Programming Idiom Predictor-Mose TAGE-SC-L-Alberto-Ros Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.5453               3.3898               ↓ 4.39% better
+MR                             2.7608               2.6697               ↓ 3.30% better
+IPC                            3.4974               3.3537               ↓ 4.11% worse
+Cycles                         14667399.0000        14106643.7238        ↓ 3.82% better
+BrPerCyc                       0.4248               0.4012               ↓ 5.55% worse
+MispBrPerCyc                   0.0094               0.0089               ↓ 4.91% worse
+CycWPPKI                       157.2730             151.4364             ↓ 3.71% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Programming Idiom Predictor-Mose wins: 31 traces
+TAGE-SC-L-Alberto-Ros wins: 74 traces
+Ties: 0 traces
+
+
+Biggest Improvements (TAGE-SC-L-Alberto-Ros better):
+--------------------------------------------------------------------------------
+  int_9_trace                                3.9419 →   0.0000 (↓ 3.9419)
+  web_14_trace                               3.6513 →   0.0000 (↓ 3.6513)
+  web_3_trace                                3.6031 →   0.0000 (↓ 3.6031)
+  web_7_trace                                6.9881 →   6.0090 (↓ 0.9791)
+  fp_6_trace                                 0.9645 →   0.0000 (↓ 0.9645)
+
+
+Biggest Regressions (TAGE-SC-L-Alberto-Ros worse):
+--------------------------------------------------------------------------------
+  int_0_trace                                4.3111 →   5.0346 (↑ 0.7235)
+  int_21_trace                              23.2204 →  23.7948 (↑ 0.5744)
+  compress_0_trace                           2.7349 →   3.2129 (↑ 0.4780)
+  fp_5_trace                                 0.5128 →   0.9369 (↑ 0.4241)
+  int_33_trace                               7.4723 →   7.6605 (↑ 0.1882)

@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Load-Value-Correlator-Man vs Programming Idiom Predictor-Mose
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Load-Value-Correlator-Man Programming Idiom Predictor-Mose Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.4687               3.5453               ↑ 2.21% worse
+MR                             2.7183               2.7608               ↑ 1.57% worse
+IPC                            3.5159               3.4974               ↓ 0.52% worse
+Cycles                         14561854.8381        14667399.0000        ↑ 0.72% worse
+BrPerCyc                       0.4274               0.4248               ↓ 0.61% worse
+MispBrPerCyc                   0.0093               0.0094               ↑ 1.04% better
+CycWPPKI                       153.8107             157.2730             ↑ 2.25% worse
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Load-Value-Correlator-Man wins: 68 traces
+Programming Idiom Predictor-Mose wins: 37 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Programming Idiom Predictor-Mose better):
+--------------------------------------------------------------------------------
+  compress_0_trace                           3.1984 →   2.7349 (↓ 0.4635)
+  fp_5_trace                                 0.9302 →   0.5128 (↓ 0.4174)
+  int_21_trace                              23.5688 →  23.2204 (↓ 0.3484)
+  int_0_trace                                4.6538 →   4.3111 (↓ 0.3427)
+  compress_3_trace                           8.1504 →   7.9811 (↓ 0.1693)
+
+
+Biggest Regressions (Programming Idiom Predictor-Mose worse):
+--------------------------------------------------------------------------------
+  fp_8_trace                                 6.6877 →   7.6591 (↑ 0.9714)
+  int_1_trace                               10.6773 →  11.6182 (↑ 0.9409)
+  web_7_trace                                6.1216 →   6.9881 (↑ 0.8665)
+  int_2_trace                               10.0902 →  10.8678 (↑ 0.7776)
+  int_30_trace                              11.7655 →  12.4295 (↑ 0.6640)

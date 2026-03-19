@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Baseline vs Programming Idiom Predictor-Mose
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Baseline             Programming Idiom Predictor-Mose Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.8080               3.5453               ↓ 6.90% better
+MR                             2.9679               2.7608               ↓ 6.98% better
+IPC                            3.4636               3.4974               ↑ 0.98% better
+Cycles                         14824660.9143        14667399.0000        ↓ 1.06% better
+BrPerCyc                       0.4203               0.4248               ↑ 1.07% better
+MispBrPerCyc                   0.0100               0.0094               ↓ 5.59% worse
+CycWPPKI                       161.6047             157.2730             ↓ 2.68% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Baseline wins: 8 traces
+Programming Idiom Predictor-Mose wins: 97 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Programming Idiom Predictor-Mose better):
+--------------------------------------------------------------------------------
+  int_16_trace                               8.1253 →   6.0105 (↓ 2.1148)
+  int_17_trace                               6.3949 →   5.0345 (↓ 1.3604)
+  int_8_trace                                7.1931 →   5.9655 (↓ 1.2276)
+  int_7_trace                                5.7589 →   4.6386 (↓ 1.1203)
+  web_11_trace                               5.7895 →   4.7711 (↓ 1.0184)
+
+
+Biggest Regressions (Programming Idiom Predictor-Mose worse):
+--------------------------------------------------------------------------------
+  infra_8_trace                              1.2568 →   1.3508 (↑ 0.0940)
+  infra_5_trace                              2.2119 →   2.2723 (↑ 0.0604)
+  fp_1_trace                                15.5816 →  15.6250 (↑ 0.0434)
+  fp_0_trace                                 3.2270 →   3.2610 (↑ 0.0340)
+  fp_2_trace                                 2.5615 →   2.5788 (↑ 0.0173)

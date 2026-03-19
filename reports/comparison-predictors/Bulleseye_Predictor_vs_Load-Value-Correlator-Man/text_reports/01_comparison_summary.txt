@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Bulleseye Predictor vs Load-Value-Correlator-Man
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Bulleseye Predictor  Load-Value-Correlator-Man Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.4631               3.4687               ↑ 0.16% worse
+MR                             2.7758               2.7183               ↓ 2.07% better
+IPC                            3.7119               3.5159               ↓ 5.28% worse
+Cycles                         15341076.1023        14561854.8381        ↓ 5.08% better
+BrPerCyc                       0.4388               0.4274               ↓ 2.59% worse
+MispBrPerCyc                   0.0096               0.0093               ↓ 2.73% worse
+CycWPPKI                       159.8244             153.8107             ↓ 3.76% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Bulleseye Predictor wins: 50 traces
+Load-Value-Correlator-Man wins: 38 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Load-Value-Correlator-Man better):
+--------------------------------------------------------------------------------
+  web_7_trace                                7.5938 →   6.1216 (↓ 1.4722)
+  int_16_trace                               6.8140 →   5.8167 (↓ 0.9973)
+  fp_8_trace                                 7.5897 →   6.6877 (↓ 0.9020)
+  int_17_trace                               5.4692 →   4.8546 (↓ 0.6146)
+  infra_4_trace                              2.3702 →   1.8311 (↓ 0.5391)
+
+
+Biggest Regressions (Load-Value-Correlator-Man worse):
+--------------------------------------------------------------------------------
+  web_8_trace                                0.0000 →   4.6254 (↑ 4.6254)
+  int_1_trace                                9.0328 →  10.6773 (↑ 1.6445)
+  int_2_trace                                8.6194 →  10.0902 (↑ 1.4708)
+  int_22_trace                               3.5724 →   4.8609 (↑ 1.2885)
+  int_32_trace                               5.9951 →   6.6835 (↑ 0.6884)

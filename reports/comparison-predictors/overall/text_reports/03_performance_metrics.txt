@@ -6,41 +6,57 @@ Instructions Per Cycle (IPC) Analysis:
 --------------------------------------------------------------------------------
 Predictor                           Avg IPC      Median       Std Dev     
 --------------------------------------------------------------------------------
+Ball Fun                            3.7119       3.5450       1.6663      
 Baseline                            3.4636       3.1982       1.5829      
+Bulleseye Predictor                 3.7119       3.5450       1.6663      
+Load-Value-Correlator-Man           3.5159       3.2762       1.5805      
+Multi-Perspective Predictor         3.7119       3.5450       1.6663      
+Programming Idiom Predictor-Mose    3.4974       3.2545       1.5868      
+Register-Value-Aware-Toru           3.5450       3.2718       1.5969      
 TAGE-SC-L-Alberto-Ros               3.3537       3.0955       1.6929      
 TAGE-SCL-Andrez-Seznec              3.5081       3.2655       1.6214      
-Load-Value-Correlator-Man           3.5159       3.2762       1.5805      
-Register-Value-Aware-Toru           3.5450       3.2718       1.5969      
 
 
 Cycle Count Analysis:
 --------------------------------------------------------------------------------
 Predictor                           Avg Cycles      Total Cycles   
 --------------------------------------------------------------------------------
+Ball Fun                            15,341,076      1,350,014,697  
 Baseline                            14,824,661      1,556,589,396  
+Bulleseye Predictor                 15,341,076      1,350,014,697  
+Load-Value-Correlator-Man           14,561,855      1,528,994,758  
+Multi-Perspective Predictor         15,341,076      1,350,014,697  
+Programming Idiom Predictor-Mose    14,667,399      1,540,076,895  
+Register-Value-Aware-Toru           14,401,963      1,512,206,164  
 TAGE-SC-L-Alberto-Ros               14,106,644      1,481,197,591  
 TAGE-SCL-Andrez-Seznec              14,447,202      1,516,956,205  
-Load-Value-Correlator-Man           14,561,855      1,528,994,758  
-Register-Value-Aware-Toru           14,401,963      1,512,206,164  
 
 
 Branches Per Cycle Analysis:
 --------------------------------------------------------------------------------
 Predictor                           Avg BrPerCyc   
 --------------------------------------------------------------------------------
+Ball Fun                            0.438757       
 Baseline                            0.420251       
+Bulleseye Predictor                 0.438757       
+Load-Value-Correlator-Man           0.427386       
+Multi-Perspective Predictor         0.438757       
+Programming Idiom Predictor-Mose    0.424762       
+Register-Value-Aware-Toru           0.430940       
 TAGE-SC-L-Alberto-Ros               0.401188       
 TAGE-SCL-Andrez-Seznec              0.425669       
-Load-Value-Correlator-Man           0.427386       
-Register-Value-Aware-Toru           0.430940       
 
 
 Wasted Cycles Analysis (CycWPPKI):
 --------------------------------------------------------------------------------
 Predictor                           Avg CycWPPKI   
 --------------------------------------------------------------------------------
+Ball Fun                            159.8244       
 Baseline                            161.6047       
+Bulleseye Predictor                 159.8244       
+Load-Value-Correlator-Man           153.8107       
+Multi-Perspective Predictor         159.8244       
+Programming Idiom Predictor-Mose    157.2730       
+Register-Value-Aware-Toru           149.9141       
 TAGE-SC-L-Alberto-Ros               151.4364       
 TAGE-SCL-Andrez-Seznec              151.7579       
-Load-Value-Correlator-Man           153.8107       
-Register-Value-Aware-Toru           149.9141       

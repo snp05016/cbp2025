@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Ball Fun vs Bulleseye Predictor
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Ball Fun             Bulleseye Predictor  Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.4631               3.4631               ↑ 0.00% worse
+MR                             2.7758               2.7758               ↑ 0.00% worse
+IPC                            3.7119               3.7119               ↓ 0.00% worse
+Cycles                         15341076.1023        15341076.1023        ↑ 0.00% worse
+BrPerCyc                       0.4388               0.4388               ↓ 0.00% worse
+MispBrPerCyc                   0.0096               0.0096               ↓ 0.00% worse
+CycWPPKI                       159.8244             159.8244             ↑ 0.00% worse
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Ball Fun wins: 0 traces
+Bulleseye Predictor wins: 0 traces
+Ties: 88 traces
+
+
+Biggest Improvements (Bulleseye Predictor better):
+--------------------------------------------------------------------------------
+  compress_3_trace                           7.6342 →   7.6342 (↓ 0.0000)
+  compress_2_trace                           1.4430 →   1.4430 (↓ 0.0000)
+  compress_4_trace                           1.7784 →   1.7784 (↓ 0.0000)
+  compress_5_trace                           1.8814 →   1.8814 (↓ 0.0000)
+  compress_0_trace                           3.1891 →   3.1891 (↓ 0.0000)
+
+
+Biggest Regressions (Bulleseye Predictor worse):
+--------------------------------------------------------------------------------
+  compress_3_trace                           7.6342 →   7.6342 (↑ 0.0000)
+  compress_2_trace                           1.4430 →   1.4430 (↑ 0.0000)
+  compress_4_trace                           1.7784 →   1.7784 (↑ 0.0000)
+  compress_5_trace                           1.8814 →   1.8814 (↑ 0.0000)
+  compress_0_trace                           3.1891 →   3.1891 (↑ 0.0000)

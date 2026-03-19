@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Programming Idiom Predictor-Mose vs Register-Value-Aware-Toru
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Programming Idiom Predictor-Mose Register-Value-Aware-Toru Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.5453               3.3022               ↓ 6.86% better
+MR                             2.7608               2.5681               ↓ 6.98% better
+IPC                            3.4974               3.5450               ↑ 1.36% better
+Cycles                         14667399.0000        14401963.4667        ↓ 1.81% better
+BrPerCyc                       0.4248               0.4309               ↑ 1.45% better
+MispBrPerCyc                   0.0094               0.0089               ↓ 4.91% worse
+CycWPPKI                       157.2730             149.9141             ↓ 4.68% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Programming Idiom Predictor-Mose wins: 10 traces
+Register-Value-Aware-Toru wins: 95 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Register-Value-Aware-Toru better):
+--------------------------------------------------------------------------------
+  fp_8_trace                                 7.6591 →   3.6875 (↓ 3.9716)
+  web_7_trace                                6.9881 →   4.3005 (↓ 2.6876)
+  int_1_trace                               11.6182 →   9.7511 (↓ 1.8671)
+  int_2_trace                               10.8678 →   9.2321 (↓ 1.6357)
+  int_21_trace                              23.2204 →  21.6842 (↓ 1.5362)
+
+
+Biggest Regressions (Register-Value-Aware-Toru worse):
+--------------------------------------------------------------------------------
+  int_0_trace                                4.3111 →   4.8418 (↑ 0.5307)
+  fp_5_trace                                 0.5128 →   0.9250 (↑ 0.4122)
+  compress_0_trace                           2.7349 →   3.0968 (↑ 0.3619)
+  web_10_trace                               2.7344 →   2.8319 (↑ 0.0975)
+  fp_10_trace                                1.9276 →   1.9757 (↑ 0.0481)

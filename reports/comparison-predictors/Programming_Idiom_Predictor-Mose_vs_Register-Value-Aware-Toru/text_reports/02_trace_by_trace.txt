@@ -1,0 +1,111 @@
+====================================================================================================
+TRACE-BY-TRACE COMPARISON: Programming Idiom Predictor-Mose vs Register-Value-Aware-Toru
+====================================================================================================
+
+Trace                                    Programming Idiom Predictor-Mose MPKI Register-Value-Aware-Toru MPKI Diff         Status              
+----------------------------------------------------------------------------------------------------
+fp_8_trace                               7.6591       3.6875       -3.9716      ✓ Register-Value-Aware-Toru better
+web_7_trace                              6.9881       4.3005       -2.6876      ✓ Register-Value-Aware-Toru better
+int_1_trace                              11.6182      9.7511       -1.8671      ✓ Register-Value-Aware-Toru better
+int_2_trace                              10.8678      9.2321       -1.6357      ✓ Register-Value-Aware-Toru better
+int_21_trace                             23.2204      21.6842      -1.5362      ✓ Register-Value-Aware-Toru better
+int_22_trace                             5.2470       3.9029       -1.3441      ✓ Register-Value-Aware-Toru better
+fp_1_trace                               15.6250      14.9323      -0.6927      ✓ Register-Value-Aware-Toru better
+int_30_trace                             12.4295      11.7569      -0.6726      ✓ Register-Value-Aware-Toru better
+int_29_trace                             11.9748      11.4097      -0.5651      ✓ Register-Value-Aware-Toru better
+fp_9_trace                               4.4698       4.0783       -0.3915      ✓ Register-Value-Aware-Toru better
+fp_13_trace                              12.6051      12.2224      -0.3827      ✓ Register-Value-Aware-Toru better
+infra_4_trace                            2.3511       2.0099       -0.3412      ✓ Register-Value-Aware-Toru better
+compress_3_trace                         7.9811       7.6547       -0.3264      ✓ Register-Value-Aware-Toru better
+infra_0_trace                            1.2289       0.9098       -0.3191      ✓ Register-Value-Aware-Toru better
+infra_3_trace                            1.0074       0.6962       -0.3112      ✓ Register-Value-Aware-Toru better
+int_16_trace                             6.0105       5.7002       -0.3103      ✓ Register-Value-Aware-Toru better
+infra_13_trace                           4.1401       3.8347       -0.3054      ✓ Register-Value-Aware-Toru better
+int_23_trace                             3.4717       3.1675       -0.3042      ✓ Register-Value-Aware-Toru better
+int_7_trace                              4.6386       4.3413       -0.2973      ✓ Register-Value-Aware-Toru better
+int_11_trace                             4.1844       3.8873       -0.2971      ✓ Register-Value-Aware-Toru better
+infra_14_trace                           5.3572       5.0633       -0.2939      ✓ Register-Value-Aware-Toru better
+int_9_trace                              3.9419       3.6499       -0.2920      ✓ Register-Value-Aware-Toru better
+infra_10_trace                           5.3028       5.0157       -0.2871      ✓ Register-Value-Aware-Toru better
+int_17_trace                             5.0345       4.7567       -0.2778      ✓ Register-Value-Aware-Toru better
+infra_5_trace                            2.2723       1.9951       -0.2772      ✓ Register-Value-Aware-Toru better
+int_4_trace                              3.8687       3.5930       -0.2757      ✓ Register-Value-Aware-Toru better
+infra_15_trace                           8.4228       8.1676       -0.2552      ✓ Register-Value-Aware-Toru better
+int_32_trace                             6.5669       6.3313       -0.2356      ✓ Register-Value-Aware-Toru better
+int_35_trace                             2.2847       2.0515       -0.2332      ✓ Register-Value-Aware-Toru better
+int_6_trace                              2.9749       2.7427       -0.2322      ✓ Register-Value-Aware-Toru better
+int_33_trace                             7.4723       7.2565       -0.2158      ✓ Register-Value-Aware-Toru better
+web_14_trace                             3.6513       3.4365       -0.2148      ✓ Register-Value-Aware-Toru better
+compress_7_trace                         2.0210       1.8067       -0.2143      ✓ Register-Value-Aware-Toru better
+int_8_trace                              5.9655       5.7914       -0.1741      ✓ Register-Value-Aware-Toru better
+infra_2_trace                            0.4766       0.3041       -0.1725      ✓ Register-Value-Aware-Toru better
+fp_3_trace                               1.9942       1.8233       -0.1709      ✓ Register-Value-Aware-Toru better
+int_18_trace                             0.8006       0.6300       -0.1706      ✓ Register-Value-Aware-Toru better
+int_5_trace                              2.8708       2.7058       -0.1650      ✓ Register-Value-Aware-Toru better
+web_15_trace                             5.2809       5.1194       -0.1615      ✓ Register-Value-Aware-Toru better
+compress_6_trace                         1.8499       1.6906       -0.1593      ✓ Register-Value-Aware-Toru better
+fp_2_trace                               2.5788       2.4245       -0.1543      ✓ Register-Value-Aware-Toru better
+web_20_trace                             3.3873       3.2357       -0.1516      ✓ Register-Value-Aware-Toru better
+int_31_trace                             0.7521       0.6026       -0.1495      ✓ Register-Value-Aware-Toru better
+int_28_trace                             3.3729       3.2288       -0.1441      ✓ Register-Value-Aware-Toru better
+compress_4_trace                         1.7729       1.6297       -0.1432      ✓ Register-Value-Aware-Toru better
+infra_7_trace                            1.3292       1.1914       -0.1378      ✓ Register-Value-Aware-Toru better
+compress_5_trace                         1.8630       1.7338       -0.1292      ✓ Register-Value-Aware-Toru better
+web_12_trace                             3.9832       3.8556       -0.1276      ✓ Register-Value-Aware-Toru better
+web_11_trace                             4.7711       4.6440       -0.1271      ✓ Register-Value-Aware-Toru better
+int_20_trace                             2.4574       2.3305       -0.1269      ✓ Register-Value-Aware-Toru better
+web_25_trace                             5.8643       5.7401       -0.1242      ✓ Register-Value-Aware-Toru better
+compress_1_trace                         1.6289       1.5125       -0.1164      ✓ Register-Value-Aware-Toru better
+int_34_trace                             2.8801       2.7686       -0.1115      ✓ Register-Value-Aware-Toru better
+web_24_trace                             1.7147       1.6068       -0.1079      ✓ Register-Value-Aware-Toru better
+infra_8_trace                            1.3508       1.2466       -0.1042      ✓ Register-Value-Aware-Toru better
+web_19_trace                             5.1795       5.0857       -0.0938      ≈ Similar           
+fp_7_trace                               1.0718       0.9805       -0.0913      ≈ Similar           
+media_3_trace                            1.3150       1.2256       -0.0894      ≈ Similar           
+web_21_trace                             1.5466       1.4572       -0.0894      ≈ Similar           
+int_26_trace                             1.2909       1.2045       -0.0864      ≈ Similar           
+web_13_trace                             3.0009       2.9155       -0.0854      ≈ Similar           
+fp_11_trace                              0.6464       0.5646       -0.0818      ≈ Similar           
+media_0_trace                            1.1127       1.0330       -0.0797      ≈ Similar           
+compress_2_trace                         1.4278       1.3543       -0.0735      ≈ Similar           
+infra_9_trace                            4.5559       4.4829       -0.0730      ≈ Similar           
+web_1_trace                              3.2226       3.1522       -0.0704      ≈ Similar           
+int_36_trace                             3.0431       2.9736       -0.0695      ≈ Similar           
+fp_12_trace                              1.0914       1.0294       -0.0620      ≈ Similar           
+web_18_trace                             2.7211       2.6603       -0.0608      ≈ Similar           
+infra_1_trace                            0.3543       0.2954       -0.0589      ≈ Similar           
+infra_12_trace                           1.0097       0.9525       -0.0572      ≈ Similar           
+infra_11_trace                           1.0299       0.9728       -0.0571      ≈ Similar           
+infra_6_trace                            1.2155       1.1585       -0.0570      ≈ Similar           
+web_2_trace                              3.8330       3.7775       -0.0555      ≈ Similar           
+int_19_trace                             0.8155       0.7603       -0.0552      ≈ Similar           
+int_27_trace                             0.8364       0.7820       -0.0544      ≈ Similar           
+web_17_trace                             1.4479       1.3943       -0.0536      ≈ Similar           
+fp_6_trace                               0.9645       0.9122       -0.0523      ≈ Similar           
+web_6_trace                              4.6115       4.5642       -0.0473      ≈ Similar           
+fp_0_trace                               3.2610       3.2189       -0.0421      ≈ Similar           
+int_15_trace                             0.4732       0.4318       -0.0414      ≈ Similar           
+media_1_trace                            1.0802       1.0414       -0.0388      ≈ Similar           
+web_22_trace                             3.2192       3.1805       -0.0387      ≈ Similar           
+web_16_trace                             1.6170       1.5812       -0.0358      ≈ Similar           
+web_23_trace                             0.9772       0.9431       -0.0341      ≈ Similar           
+int_24_trace                             0.5457       0.5127       -0.0330      ≈ Similar           
+web_3_trace                              3.6031       3.5768       -0.0263      ≈ Similar           
+media_2_trace                            0.5319       0.5058       -0.0261      ≈ Similar           
+int_12_trace                             0.4406       0.4177       -0.0229      ≈ Similar           
+fp_4_trace                               0.5332       0.5119       -0.0213      ≈ Similar           
+int_13_trace                             0.8664       0.8514       -0.0150      ≈ Similar           
+web_4_trace                              4.0377       4.0301       -0.0076      ≈ Similar           
+web_0_trace                              1.3145       1.3079       -0.0066      ≈ Similar           
+int_14_trace                             0.3731       0.3713       -0.0018      ≈ Similar           
+int_10_trace                             0.4983       0.4966       -0.0017      ≈ Similar           
+int_25_trace                             1.3197       1.3232       0.0035       ≈ Similar           
+web_8_trace                              4.6116       4.6201       0.0085       ≈ Similar           
+int_3_trace                              0.7630       0.7760       0.0130       ≈ Similar           
+web_9_trace                              2.4984       2.5137       0.0153       ≈ Similar           
+web_5_trace                              4.2907       4.3207       0.0300       ≈ Similar           
+fp_10_trace                              1.9276       1.9757       0.0481       ≈ Similar           
+web_10_trace                             2.7344       2.8319       0.0975       ≈ Similar           
+compress_0_trace                         2.7349       3.0968       0.3619       ✗ Programming Idiom Predictor-Mose better
+fp_5_trace                               0.5128       0.9250       0.4122       ✗ Programming Idiom Predictor-Mose better
+int_0_trace                              4.3111       4.8418       0.5307       ✗ Programming Idiom Predictor-Mose better

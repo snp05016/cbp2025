@@ -1,0 +1,106 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{longtable}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{fancyhdr}
+\usepackage{float}
+
+% --- make missing packages non-fatal on minimal TeXLive ---
+\IfFileExists{titlesec.sty}{%
+  \usepackage{titlesec}%
+}{%
+  \makeatletter
+  \providecommand{\titleformat}{\@ifstar{\ts@tf@star}{\ts@tf@nostar}}
+  \providecommand{\ts@tf@star}[5][]{}
+  \providecommand{\ts@tf@nostar}[6][]{}
+  \providecommand{\titlespacing}{\@ifstar{\ts@ts@star}{\ts@ts@nostar}}
+  \providecommand{\ts@ts@star}[4][]{}
+  \providecommand{\ts@ts@nostar}[4][]{}
+  \makeatother
+}
+
+\IfFileExists{enumitem.sty}{%
+  \usepackage{enumitem}%
+}{%
+  \providecommand{\setlist}[2][]{}
+}
+
+% --- Visual Setup ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!40!black,
+    urlcolor=blue!40!black,
+    citecolor=blue!40!black
+}
+
+% Header and Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{CBP 2025 Entries Analysis}
+\fancyhead[R]{Saumya Patel}
+\fancyfoot[C]{\thepage}
+
+% Section styling
+% \titleformat{\section}
+%   {\normalfont\Large\bfseries\color{blue!40!black}}{\thesection}{1em}{}
+% \titleformat{\subsection}
+%   {\normalfont\large\bfseries\color{blue!40!black}}{\thesubsection}{1em}{}
+
+% Code listing setup
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!5},
+    language=C++,
+    commentstyle=\color{green!40!black},
+    keywordstyle=\color{blue},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    captionpos=b
+}
+
+\title{\textbf{A Comprehensive analysis of the CBP 2025 Branch Predictors entries: LVCP, RVA-Toru, and TAGE-SC 2025}}
+\author{Saumya Patel}
+\date{\today}
+
+% Highlight helper for question sentences (bold + theme color)
+\newcommand{\question}[1]{\textbf{\textcolor{blue!40!black}{#1}}}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+
+\setcounter{page}{1}
+
+\section{Introduction}
+In the previous assignment, I evaluated the following branch predictors:
+\begin{itemsize}
+\item Load Value Correlator Predictor (LVCP)
+\item Register-Value-Aware Branch Predictor (RVA-Toru)
+\item TAGE-SC 2025 André Seznec Predictor
+\item TAGE-SC-L Alberto Ros Predictor
+\end{itemsize}
+In this report, I will continue my analysis of these predictors by performing a similiar analysis of the remaining CBP2025 entries, namely
+\begin{itemsize}
+        \item MultiPerspective Perceptron Predictor (MPP) by Jimenez, et al.
+        \item Programming Idiom Preictor (PIP)
+        \item Branch Prediction vua Load Value Prediction ( BALL ) by Jun Fan
+        \item The Bulleseye Predictor by Emet Behrendt, et al.
+\end{itemsize}
+I will do a similiar analysis of these predictors as I did for the first four and then I will compare all 8 predictors together to draw a final conclusion
+and rank them based on their performance. 
+
+\subsection{The Oracle Predictor}

@@ -1,6 +1,6 @@
-# CBP2025 Graph + Report Generation (human-ish instructions)
-
+# CBP2025 Graph + Report Generation 
 Here’s how to get graphs and reports out of this repo without having to remember where every script lives.
+
 also: there are *two* different “pipelines”, and they output to different places.
 
 1) **Single-predictor analysis graphs** (one predictor at a time) using `generateReportForPredictor.sh`.

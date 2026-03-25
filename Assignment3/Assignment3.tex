@@ -134,5 +134,8 @@ The new features that this predictor introduces are the following:
         You would want to track these "blurry" addresses because of 2 reasons, \textbf{first}, they have less noise. If your program takes a slightly different path through the same general 
         code region, precise history says "completely different." Blurry history says "same region, close enough." This can actually generalize better because you're capturing the structural shape of execution rather 
         than its exact fingerprint. \textbf{Second}, compression. Fewer distinct values means less aliasing pressure in the hash tables which means that different histories are less likely to collide on the same table entry.
+
+        MPP goes one step further, it only shifts a new region into the history when you cross into a new region. So if five consecutive branches are all within the same 256-byte chunk, only one entry gets recorded. 
+        You're tracking region transitions, not individual branches. This naturally compresses long sequences of nearby branches into a compact history
 \end{itemize}
 \end{document}

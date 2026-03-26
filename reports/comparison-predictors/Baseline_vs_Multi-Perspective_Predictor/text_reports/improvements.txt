@@ -1,0 +1,21 @@
+====================================================================================================
+FRAMEWORK-LEVEL SUMMARY: Baseline vs Multi-Perspective Predictor
+====================================================================================================
+
+| Framework | Improve/Total | Success Ratio (%) | Total MPKI Improvement |
+|-----------|---------------|-------------------|------------------------|
+| Web       | 9/9           | 100.0             | -6.3744               |
+| Int       | 28/37         | 75.7              | -18.8764              |
+| Fp        | 8/14          | 57.1              | -2.2088               |
+| Infra     | 5/16          | 31.3              | -1.2662               |
+| Compress  | 1/8           | 12.5              | -0.9672               |
+| Media     | 3/4           | 75.0              | -0.5673               |
+
+====================================================================================================
+KEY FINDINGS
+====================================================================================================
+
+1. Web traces show perfect improvement (100% success rate) with the highest per-trace average improvement
+2. Int traces have the largest absolute MPKI reduction (-18.88) across 37 traces, with a strong 75.7% success rate
+3. Fp and Media show moderate success rates (57.1% and 75.0% respectively)
+4. Infra and Compress show limited improvements (31.3% and 12.5% success rates)

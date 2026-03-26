@@ -29,7 +29,9 @@
     colorlinks=true,
     linkcolor=blue!40!black,
     urlcolor=blue!40!black,
-    citecolor=blue!40!black
+    citecolor=blue!40!black,
+    linkcolor=blue,
+    urlcolor=cyan
 }
 
 % Header and Footer
@@ -137,5 +139,11 @@ The new features that this predictor introduces are the following:
 
         MPP goes one step further, it only shifts a new region into the history when you cross into a new region. So if five consecutive branches are all within the same 256-byte chunk, only one entry gets recorded. 
         You're tracking region transitions, not individual branches. This naturally compresses long sequences of nearby branches into a compact history
+        \item \textbf{ACYCLIC history: }This tries to get the repititive loop structure from the history, keeping only the most recent outcome of each branch address rather than the full sequence of outcomes.
+        This is useful because in many cases, the most recent outcome of a branch is more predictive than the full history, especially in loops where the same branches are executed multiple times.
+
+        \item \textbf{Forward Branch IMLI: }Usually IMLI is designed for backward branches, but the author has added a version for \textit{top testing} loops i.e. where the exit is at the top and the uconditional jump
+        is at the bottom. This is a very common optimization that compilers do ( check \href{http://www.terraterra.ch/modula-2/sb-m2-v4.html}{here} for reference ). 
 \end{itemize}
+
 \end{document}

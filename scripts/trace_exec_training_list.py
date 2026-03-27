@@ -218,10 +218,23 @@ def execute_trace(my_trace_path):
 
 
 if __name__ == '__main__':
-    # For parallel runs:
-    with mp.Pool() as pool:
-        results = pool.map(execute_trace, my_traces)
-    
+    # For parallel runs using all CPU cores:
+    num_cores = mp.cpu_count()
+    total_traces = len(my_traces)
+    print(f'\n=== Using {num_cores} CPU cores for parallel trace execution ===')
+    print(f'=== Total traces to process: {total_traces} ===\n')
+
+    results = []
+    completed = 0
+    with mp.Pool(processes=num_cores) as pool:
+        # Use imap_unordered for progress tracking
+        for result in pool.imap_unordered(execute_trace, my_traces):
+            results.append(result)
+            completed += 1
+            print(f'Progress: {completed}/{total_traces} traces completed ({100*completed//total_traces}%)', flush=True)
+
+    print(f'\n=== All {total_traces} traces completed! ===\n')
+
     # For serial runs:
     #results = []
     #for my_trace in my_traces:

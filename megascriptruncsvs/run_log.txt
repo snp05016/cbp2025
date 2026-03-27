@@ -1,0 +1,448 @@
+=== Starting submission runs at Fri Mar 27 05:16:24 MDT 2026 ===
+Processing: BALL-FAN
+rm -f *.o cbp
+make -C lib clean
+rm -f *.o libcbp.a
+c++  -std=c++17 -O3  -c -o cond_branch_predictor_interface.o cond_branch_predictor_interface.cc
+c++  -std=c++17 -O3  -c -o my_cond_branch_predictor.o my_cond_branch_predictor.cc
+make -C lib DEBUG=0
+g++ -std=c++17 -I.. -I../lib  -O3 -DGZSTREAM_NAMESPACE=gz -c -o cbp.o cbp.cc
+g++ -std=c++17 -I.. -I../lib  -O3 -DGZSTREAM_NAMESPACE=gz -c -o my_value_predictor.o my_value_predictor.cc
+g++ -std=c++17 -I.. -I../lib  -O3 -DGZSTREAM_NAMESPACE=gz -c -o parameters.o parameters.cc
+g++ -std=c++17 -I.. -I../lib  -O3 -DGZSTREAM_NAMESPACE=gz -c -o uarchsim.o uarchsim.cc
+g++ -std=c++17 -I.. -I../lib  -O3 -DGZSTREAM_NAMESPACE=gz -c -o cache.o cache.cc
+g++ -std=c++17 -I.. -I../lib  -O3 -DGZSTREAM_NAMESPACE=gz -c -o bp.o bp.cc
+g++ -std=c++17 -I.. -I../lib  -O3 -DGZSTREAM_NAMESPACE=gz -c -o resource_schedule.o resource_schedule.cc
+g++ -std=c++17 -I.. -I../lib  -O3 -DGZSTREAM_NAMESPACE=gz -c -o gzstream.o gzstream.cc
+cache.cc:144:35: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  144 |    printf("\taccesses   = %lu\n", accesses);
+      |                           ~~~     ^~~~~~~~
+      |                           %llu
+cache.cc:145:35: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  145 |    printf("\tmisses     = %lu\n", misses);
+      |                           ~~~     ^~~~~~
+      |                           %llu
+cache.cc:147:38: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  147 |    printf("\tpf accesses   = %lu\n", pf_accesses);
+      |                              ~~~     ^~~~~~~~~~~
+      |                              %llu
+cache.cc:148:38: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  148 |    printf("\tpf misses     = %lu\n", pf_misses);
+      |                              ~~~     ^~~~~~~~~
+      |                              %llu
+4 warnings generated.
+bp.cc:231:4: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  231 |    BP_OUTPUT("CondDirect       ", meas_conddir_n, meas_conddir_m, num_inst);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bp.cc:207:54: note: expanded from macro 'BP_OUTPUT'
+  207 |     printf("%s%10ld %10ld %8.4lf%% %8.4lf\n", (str), (n), (m), 100.0*((double)(m)/(double)(n)), 1000.0*((double)(m)/(double)(i)))
+      |               ~~~~~                                  ^~~
+bp.cc:231:4: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  231 |    BP_OUTPUT("CondDirect       ", meas_conddir_n, meas_conddir_m, num_inst);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bp.cc:207:59: note: expanded from macro 'BP_OUTPUT'
+  207 |     printf("%s%10ld %10ld %8.4lf%% %8.4lf\n", (str), (n), (m), 100.0*((double)(m)/(double)(n)), 1000.0*((double)(m)/(double)(i)))
+      |                     ~~~~~                                 ^~~
+bp.cc:232:4: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  232 |    BP_OUTPUT("JumpDirect       ", meas_jumpdir_n, (uint64_t)0, num_inst);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bp.cc:207:54: note: expanded from macro 'BP_OUTPUT'
+  207 |     printf("%s%10ld %10ld %8.4lf%% %8.4lf\n", (str), (n), (m), 100.0*((double)(m)/(double)(n)), 1000.0*((double)(m)/(double)(i)))
+      |               ~~~~~                                  ^~~
+bp.cc:232:4: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  232 |    BP_OUTPUT("JumpDirect       ", meas_jumpdir_n, (uint64_t)0, num_inst);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bp.cc:207:59: note: expanded from macro 'BP_OUTPUT'
+  207 |     printf("%s%10ld %10ld %8.4lf%% %8.4lf\n", (str), (n), (m), 100.0*((double)(m)/(double)(n)), 1000.0*((double)(m)/(double)(i)))
+      |                     ~~~~~                                 ^~~
+bp.cc:233:4: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  233 |    BP_OUTPUT("JumpIndirect     ", meas_jumpind_n, meas_jumpind_m, num_inst);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bp.cc:207:54: note: expanded from macro 'BP_OUTPUT'
+  207 |     printf("%s%10ld %10ld %8.4lf%% %8.4lf\n", (str), (n), (m), 100.0*((double)(m)/(double)(n)), 1000.0*((double)(m)/(double)(i)))
+      |               ~~~~~                                  ^~~
+bp.cc:233:4: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  233 |    BP_OUTPUT("JumpIndirect     ", meas_jumpind_n, meas_jumpind_m, num_inst);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bp.cc:207:59: note: expanded from macro 'BP_OUTPUT'
+  207 |     printf("%s%10ld %10ld %8.4lf%% %8.4lf\n", (str), (n), (m), 100.0*((double)(m)/(double)(n)), 1000.0*((double)(m)/(double)(i)))
+      |                     ~~~~~                                 ^~~
+bp.cc:234:4: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  234 |    BP_OUTPUT("JumpReturn       ", meas_jumpret_n, meas_jumpret_m, num_inst);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bp.cc:207:54: note: expanded from macro 'BP_OUTPUT'
+  207 |     printf("%s%10ld %10ld %8.4lf%% %8.4lf\n", (str), (n), (m), 100.0*((double)(m)/(double)(n)), 1000.0*((double)(m)/(double)(i)))
+      |               ~~~~~                                  ^~~
+bp.cc:234:4: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  234 |    BP_OUTPUT("JumpReturn       ", meas_jumpret_n, meas_jumpret_m, num_inst);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bp.cc:207:59: note: expanded from macro 'BP_OUTPUT'
+  207 |     printf("%s%10ld %10ld %8.4lf%% %8.4lf\n", (str), (n), (m), 100.0*((double)(m)/(double)(n)), 1000.0*((double)(m)/(double)(i)))
+      |                     ~~~~~                                 ^~~
+bp.cc:235:4: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  235 |    BP_OUTPUT("Not control      ", meas_notctrl_n, meas_notctrl_m, num_inst);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bp.cc:207:54: note: expanded from macro 'BP_OUTPUT'
+  207 |     printf("%s%10ld %10ld %8.4lf%% %8.4lf\n", (str), (n), (m), 100.0*((double)(m)/(double)(n)), 1000.0*((double)(m)/(double)(i)))
+      |               ~~~~~                                  ^~~
+bp.cc:235:4: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  235 |    BP_OUTPUT("Not control      ", meas_notctrl_n, meas_notctrl_m, num_inst);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bp.cc:207:59: note: expanded from macro 'BP_OUTPUT'
+  207 |     printf("%s%10ld %10ld %8.4lf%% %8.4lf\n", (str), (n), (m), 100.0*((double)(m)/(double)(n)), 1000.0*((double)(m)/(double)(i)))
+      |                     ~~~~~                                 ^~~
+bp.cc:266:102: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  266 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |               ~~~~~                                                                                  ^~~~~~~~~~~~~~
+      |               %12llu
+bp.cc:266:118: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  266 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                     ~~~~~                                                                                            ^~~~~~~~~~~~~~
+      |                     %12llu
+bp.cc:266:181: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  266 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                 ~~~~~                                                                                                                                               ^~~~~~~~~~~
+      |                                 %10llu
+bp.cc:266:194: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  266 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                       ~~~~~                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~
+      |                                       %10llu
+bp.cc:266:445: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  266 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                                                            ~~~~~                                                                                                                                                                                                                                                                                                                                                                            ^~~~~~~~~~~~
+      |                                                                            %10llu
+bp.cc:293:102: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  293 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |               ~~~~~                                                                                  ^~~~~~~~~~~~~~
+      |               %12llu
+bp.cc:293:118: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  293 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                     ~~~~~                                                                                            ^~~~~~~~~~~~~~
+      |                     %12llu
+bp.cc:293:181: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  293 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                 ~~~~~                                                                                                                                               ^~~~~~~~~~~
+      |                                 %10llu
+bp.cc:293:194: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  293 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                       ~~~~~                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~
+      |                                       %10llu
+bp.cc:293:445: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  293 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                                                            ~~~~~                                                                                                                                                                                                                                                                                                                                                                            ^~~~~~~~~~~~
+      |                                                                            %10llu
+bp.cc:321:102: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  321 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |               ~~~~~                                                                                  ^~~~~~~~~~~~~~
+      |               %12llu
+bp.cc:321:118: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  321 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                     ~~~~~                                                                                            ^~~~~~~~~~~~~~
+      |                     %12llu
+bp.cc:321:181: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  321 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                 ~~~~~                                                                                                                                               ^~~~~~~~~~~
+      |                                 %10llu
+bp.cc:321:194: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  321 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                       ~~~~~                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~
+      |                                       %10llu
+bp.cc:321:445: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  321 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                                                            ~~~~~                                                                                                                                                                                                                                                                                                                                                                            ^~~~~~~~~~~~
+      |                                                                            %10llu
+bp.cc:349:102: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  349 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |               ~~~~~                                                                                  ^~~~~~~~~~~~~~
+      |               %12llu
+bp.cc:349:118: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  349 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                     ~~~~~                                                                                            ^~~~~~~~~~~~~~
+      |                     %12llu
+bp.cc:349:181: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  349 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                 ~~~~~                                                                                                                                               ^~~~~~~~~~~
+      |                                 %10llu
+bp.cc:349:194: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  349 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                       ~~~~~                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~
+      |                                       %10llu
+bp.cc:349:445: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  349 |       printf("%12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                                                            ~~~~~                                                                                                                                                                                                                                                                                                                                                                            ^~~~~~~~~~~~
+      |                                                                            %10llu
+bp.cc:368:112: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  368 |            printf("%5ld %12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", epoch_index, my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                    ~~~~                                                                                        ^~~~~~~~~~~
+      |                    %5llu
+bp.cc:368:125: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  368 |            printf("%5ld %12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", epoch_index, my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                         ~~~~~                                                                                               ^~~~~~~~~~~~~~
+      |                         %12llu
+bp.cc:368:141: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  368 |            printf("%5ld %12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", epoch_index, my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                               ~~~~~                                                                                                         ^~~~~~~~~~~~~~
+      |                               %12llu
+bp.cc:368:204: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  368 |            printf("%5ld %12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", epoch_index, my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                           ~~~~~                                                                                                                                                            ^~~~~~~~~~~
+      |                                           %10llu
+bp.cc:368:217: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  368 |            printf("%5ld %12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", epoch_index, my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                                 ~~~~~                                                                                                                                                                   ^~~~~~~~~~~~~~~~~~~
+      |                                                 %10llu
+bp.cc:368:468: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  368 |            printf("%5ld %12ld %12ld %8.4f %10ld %10ld %8.4lf %12.4lf %8.4lf%% %8.4lf %10ld %10.4lf %10.4lf\n", epoch_index, my_instr_count, my_cycle_count, (double)my_instr_count/(double)my_cycle_count, my_br_count, my_br_mispred_count, (double)(my_br_count)/(double)(my_cycle_count), (double)(my_br_mispred_count)/(double)(my_cycle_count), 100.0*((double)(my_br_mispred_count)/(double)(my_br_count)), 1000.0*((double)(my_br_mispred_count)/(double)(my_instr_count)), my_wpc_count, cyc_wp_avg, cyc_wp_pki);
+      |                                                                                      ~~~~~                                                                                                                                                                                                                                                                                                                                                                                         ^~~~~~~~~~~~
+      |                                                                                      %10llu
+In file included from cond_branch_predictor_interface.cc:24:
+./my_cond_branch_predictor.h:2847:11: warning: taking the absolute value of unsigned type 'bool' has no effect [-Wabsolute-value]
+ 2847 |   return (UPDATECONFSTR &
+      |           ^
+./my_cond_branch_predictor.h:2846:24: note: expanded from macro 'UPDATECONFSTR'
+ 2846 | #define UPDATECONFSTR (abs (stride >= 64) ? (UPDATECONFSTR1 || UPDATECONFSTR1) : (UPDATECONFSTR1))
+      |                        ^
+./my_cond_branch_predictor.h:2847:11: note: remove the call to 'abs' since unsigned values cannot be negative
+./my_cond_branch_predictor.h:2846:24: note: expanded from macro 'UPDATECONFSTR'
+ 2846 | #define UPDATECONFSTR (abs (stride >= 64) ? (UPDATECONFSTR1 || UPDATECONFSTR1) : (UPDATECONFSTR1))
+      |                        ^
+./my_cond_branch_predictor.h:2847:11: warning: taking the absolute value of unsigned type 'bool' has no effect [-Wabsolute-value]
+ 2847 |   return (UPDATECONFSTR &
+      |           ^
+./my_cond_branch_predictor.h:2846:46: note: expanded from macro 'UPDATECONFSTR'
+ 2846 | #define UPDATECONFSTR (abs (stride >= 64) ? (UPDATECONFSTR1 || UPDATECONFSTR1) : (UPDATECONFSTR1))
+      |                                              ^
+./my_cond_branch_predictor.h:2845:25: note: expanded from macro 'UPDATECONFSTR1'
+ 2845 | #define UPDATECONFSTR1 (abs (stride >= 8) ? (UPDATECONFSTR2 || UPDATECONFSTR2) : (UPDATECONFSTR2))
+      |                         ^
+./my_cond_branch_predictor.h:2847:11: note: remove the call to 'abs' since unsigned values cannot be negative
+./my_cond_branch_predictor.h:2846:46: note: expanded from macro 'UPDATECONFSTR'
+ 2846 | #define UPDATECONFSTR (abs (stride >= 64) ? (UPDATECONFSTR1 || UPDATECONFSTR1) : (UPDATECONFSTR1))
+      |                                              ^
+./my_cond_branch_predictor.h:2845:25: note: expanded from macro 'UPDATECONFSTR1'
+ 2845 | #define UPDATECONFSTR1 (abs (stride >= 8) ? (UPDATECONFSTR2 || UPDATECONFSTR2) : (UPDATECONFSTR2))
+      |                         ^
+./my_cond_branch_predictor.h:2847:11: warning: taking the absolute value of unsigned type 'bool' has no effect [-Wabsolute-value]
+ 2847 |   return (UPDATECONFSTR &
+      |           ^
+./my_cond_branch_predictor.h:2846:64: note: expanded from macro 'UPDATECONFSTR'
+ 2846 | #define UPDATECONFSTR (abs (stride >= 64) ? (UPDATECONFSTR1 || UPDATECONFSTR1) : (UPDATECONFSTR1))
+      |                                                                ^
+./my_cond_branch_predictor.h:2845:25: note: expanded from macro 'UPDATECONFSTR1'
+ 2845 | #define UPDATECONFSTR1 (abs (stride >= 8) ? (UPDATECONFSTR2 || UPDATECONFSTR2) : (UPDATECONFSTR2))
+      |                         ^
+./my_cond_branch_predictor.h:2847:11: note: remove the call to 'abs' since unsigned values cannot be negative
+./my_cond_branch_predictor.h:2846:64: note: expanded from macro 'UPDATECONFSTR'
+ 2846 | #define UPDATECONFSTR (abs (stride >= 64) ? (UPDATECONFSTR1 || UPDATECONFSTR1) : (UPDATECONFSTR1))
+      |                                                                ^
+./my_cond_branch_predictor.h:2845:25: note: expanded from macro 'UPDATECONFSTR1'
+ 2845 | #define UPDATECONFSTR1 (abs (stride >= 8) ? (UPDATECONFSTR2 || UPDATECONFSTR2) : (UPDATECONFSTR2))
+      |                         ^
+./my_cond_branch_predictor.h:2847:11: warning: taking the absolute value of unsigned type 'bool' has no effect [-Wabsolute-value]
+ 2847 |   return (UPDATECONFSTR &
+      |           ^
+./my_cond_branch_predictor.h:2846:83: note: expanded from macro 'UPDATECONFSTR'
+ 2846 | #define UPDATECONFSTR (abs (stride >= 64) ? (UPDATECONFSTR1 || UPDATECONFSTR1) : (UPDATECONFSTR1))
+      |                                                                                   ^
+./my_cond_branch_predictor.h:2845:25: note: expanded from macro 'UPDATECONFSTR1'
+ 2845 | #define UPDATECONFSTR1 (abs (stride >= 8) ? (UPDATECONFSTR2 || UPDATECONFSTR2) : (UPDATECONFSTR2))
+      |                         ^
+./my_cond_branch_predictor.h:2847:11: note: remove the call to 'abs' since unsigned values cannot be negative
+./my_cond_branch_predictor.h:2846:83: note: expanded from macro 'UPDATECONFSTR'
+ 2846 | #define UPDATECONFSTR (abs (stride >= 64) ? (UPDATECONFSTR1 || UPDATECONFSTR1) : (UPDATECONFSTR1))
+      |                                                                                   ^
+./my_cond_branch_predictor.h:2845:25: note: expanded from macro 'UPDATECONFSTR1'
+ 2845 | #define UPDATECONFSTR1 (abs (stride >= 8) ? (UPDATECONFSTR2 || UPDATECONFSTR2) : (UPDATECONFSTR2))
+      |                         ^
+./my_cond_branch_predictor.h:2862:11: warning: 7 enumeration values not handled in switch: 'condBranchInstClass', 'uncondDirectBranchInstClass', 'uncondIndirectBranchInstClass'... [-Wswitch]
+ 2862 |   switch (U->INSTTYPE)
+      |           ^~~~~~~~~~~
+./my_cond_branch_predictor.h:2862:11: note: add missing switch cases
+ 2862 |   switch (U->INSTTYPE)
+      |           ^
+./my_cond_branch_predictor.h:3277:24: warning: equality comparison with extraneous parentheses [-Wparentheses-equality]
+ 3277 |                                 if ((LDATA[X[i]].u == 0))
+      |                                      ~~~~~~~~~~~~~~^~~~
+./my_cond_branch_predictor.h:3277:24: note: remove extraneous parentheses around the comparison to silence this warning
+ 3277 |                                 if ((LDATA[X[i]].u == 0))
+      |                                     ~              ^   ~
+./my_cond_branch_predictor.h:3277:24: note: use '=' to turn this equality comparison into an assignment
+ 3277 |                                 if ((LDATA[X[i]].u == 0))
+      |                                                    ^~
+      |                                                    =
+./my_cond_branch_predictor.h:3292:26: warning: equality comparison with extraneous parentheses [-Wparentheses-equality]
+ 3292 |                                   if ((LDATA[X[i]].u == 0))
+      |                                        ~~~~~~~~~~~~~~^~~~
+./my_cond_branch_predictor.h:3292:26: note: remove extraneous parentheses around the comparison to silence this warning
+ 3292 |                                   if ((LDATA[X[i]].u == 0))
+      |                                       ~              ^   ~
+./my_cond_branch_predictor.h:3292:26: note: use '=' to turn this equality comparison into an assignment
+ 3292 |                                   if ((LDATA[X[i]].u == 0))
+      |                                                      ^~
+      |                                                      =
+36 warnings generated.
+cbp.cc:215:39: warning: format specifies type 'unsigned long *' but the argument has type 'uint64_t *' (aka 'unsigned long long *') [-Wformat]
+  215 |            if (sscanf(argv[i], "%lu", &epoch_size_insts) == 1)
+      |                                 ~~~   ^~~~~~~~~~~~~~~~~
+      |                                 %llu
+uarchsim.cc:855:34: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  855 |    printf("WINDOW_SIZE = %lu\n", WINDOW_SIZE);
+      |                          ~~~     ^~~~~~~~~~~
+      |                          %llu
+uarchsim.cc:856:34: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  856 |    printf("FETCH_WIDTH = %lu\n", FETCH_WIDTH);
+      |                          ~~~     ^~~~~~~~~~~
+      |                          %llu
+uarchsim.cc:857:39: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  857 |    printf("FETCH_NUM_BRANCH = %lu\n", FETCH_NUM_BRANCH);
+      |                               ~~~     ^~~~~~~~~~~~~~~~
+      |                               %llu
+uarchsim.cc:863:44: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  863 |    printf("PIPELINE_FILL_LATENCY = %lu\n", PIPELINE_FILL_LATENCY);
+      |                                    ~~~     ^~~~~~~~~~~~~~~~~~~~~
+      |                                    %llu
+uarchsim.cc:864:37: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  864 |    printf("NUM_LDST_LANES = %lu%s", NUM_LDST_LANES, ((NUM_LDST_LANES > 0) ? "\n" : " (unbounded)\n"));
+      |                             ~~~     ^~~~~~~~~~~~~~
+      |                             %llu
+uarchsim.cc:865:36: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  865 |    printf("NUM_ALU_LANES = %lu%s", NUM_ALU_LANES, ((NUM_ALU_LANES > 0) ? "\n" : " (unbounded)\n"));
+      |                            ~~~     ^~~~~~~~~~~~~
+      |                            %llu
+uarchsim.cc:881:10: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  880 |       printf("I$: %lu %s, %lu-way set-assoc., %luB block size\n",
+      |                   ~~~
+      |                   %llu
+  881 |          SCALED_SIZE(IC_SIZE), SCALED_UNIT(IC_SIZE), IC_ASSOC, IC_BLOCKSIZE);
+      |          ^~~~~~~~~~~~~~~~~~~~
+uarchsim.cc:832:29: note: expanded from macro 'SCALED_SIZE'
+  832 | #define SCALED_SIZE(size)   ((size/KILOBYTE >= KILOBYTE) ? (size/MEGABYTE) : (size/KILOBYTE))
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+uarchsim.cc:881:54: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  880 |       printf("I$: %lu %s, %lu-way set-assoc., %luB block size\n",
+      |                           ~~~
+      |                           %llu
+  881 |          SCALED_SIZE(IC_SIZE), SCALED_UNIT(IC_SIZE), IC_ASSOC, IC_BLOCKSIZE);
+      |                                                      ^~~~~~~~
+uarchsim.cc:881:64: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  880 |       printf("I$: %lu %s, %lu-way set-assoc., %luB block size\n",
+      |                                               ~~~
+      |                                               %llu
+  881 |          SCALED_SIZE(IC_SIZE), SCALED_UNIT(IC_SIZE), IC_ASSOC, IC_BLOCKSIZE);
+      |                                                                ^~~~~~~~~~~~
+uarchsim.cc:884:7: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  883 |    printf("L1$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                 ~~~
+      |                 %llu
+  884 |       SCALED_SIZE(L1_SIZE), SCALED_UNIT(L1_SIZE), L1_ASSOC, L1_BLOCKSIZE, L1_LATENCY);
+      |       ^~~~~~~~~~~~~~~~~~~~
+uarchsim.cc:832:29: note: expanded from macro 'SCALED_SIZE'
+  832 | #define SCALED_SIZE(size)   ((size/KILOBYTE >= KILOBYTE) ? (size/MEGABYTE) : (size/KILOBYTE))
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+uarchsim.cc:884:51: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  883 |    printf("L1$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                         ~~~
+      |                         %llu
+  884 |       SCALED_SIZE(L1_SIZE), SCALED_UNIT(L1_SIZE), L1_ASSOC, L1_BLOCKSIZE, L1_LATENCY);
+      |                                                   ^~~~~~~~
+uarchsim.cc:884:61: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  883 |    printf("L1$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                                             ~~~
+      |                                             %llu
+  884 |       SCALED_SIZE(L1_SIZE), SCALED_UNIT(L1_SIZE), L1_ASSOC, L1_BLOCKSIZE, L1_LATENCY);
+      |                                                             ^~~~~~~~~~~~
+uarchsim.cc:884:75: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  883 |    printf("L1$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                                                              ~~~
+      |                                                              %llu
+  884 |       SCALED_SIZE(L1_SIZE), SCALED_UNIT(L1_SIZE), L1_ASSOC, L1_BLOCKSIZE, L1_LATENCY);
+      |                                                                           ^~~~~~~~~~
+uarchsim.cc:886:7: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  885 |    printf("L2$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                 ~~~
+      |                 %llu
+  886 |       SCALED_SIZE(L2_SIZE), SCALED_UNIT(L2_SIZE), L2_ASSOC, L2_BLOCKSIZE, L2_LATENCY);
+      |       ^~~~~~~~~~~~~~~~~~~~
+uarchsim.cc:832:29: note: expanded from macro 'SCALED_SIZE'
+  832 | #define SCALED_SIZE(size)   ((size/KILOBYTE >= KILOBYTE) ? (size/MEGABYTE) : (size/KILOBYTE))
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+uarchsim.cc:886:51: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  885 |    printf("L2$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                         ~~~
+      |                         %llu
+  886 |       SCALED_SIZE(L2_SIZE), SCALED_UNIT(L2_SIZE), L2_ASSOC, L2_BLOCKSIZE, L2_LATENCY);
+      |                                                   ^~~~~~~~
+uarchsim.cc:886:61: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  885 |    printf("L2$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                                             ~~~
+      |                                             %llu
+  886 |       SCALED_SIZE(L2_SIZE), SCALED_UNIT(L2_SIZE), L2_ASSOC, L2_BLOCKSIZE, L2_LATENCY);
+      |                                                             ^~~~~~~~~~~~
+uarchsim.cc:886:75: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  885 |    printf("L2$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                                                              ~~~
+      |                                                              %llu
+  886 |       SCALED_SIZE(L2_SIZE), SCALED_UNIT(L2_SIZE), L2_ASSOC, L2_BLOCKSIZE, L2_LATENCY);
+      |                                                                           ^~~~~~~~~~
+uarchsim.cc:888:7: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  887 |    printf("L3$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                 ~~~
+      |                 %llu
+  888 |       SCALED_SIZE(L3_SIZE), SCALED_UNIT(L3_SIZE), L3_ASSOC, L3_BLOCKSIZE, L3_LATENCY);
+      |       ^~~~~~~~~~~~~~~~~~~~
+uarchsim.cc:832:29: note: expanded from macro 'SCALED_SIZE'
+  832 | #define SCALED_SIZE(size)   ((size/KILOBYTE >= KILOBYTE) ? (size/MEGABYTE) : (size/KILOBYTE))
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+uarchsim.cc:888:51: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  887 |    printf("L3$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                         ~~~
+      |                         %llu
+  888 |       SCALED_SIZE(L3_SIZE), SCALED_UNIT(L3_SIZE), L3_ASSOC, L3_BLOCKSIZE, L3_LATENCY);
+      |                                                   ^~~~~~~~
+uarchsim.cc:888:61: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  887 |    printf("L3$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                                             ~~~
+      |                                             %llu
+  888 |       SCALED_SIZE(L3_SIZE), SCALED_UNIT(L3_SIZE), L3_ASSOC, L3_BLOCKSIZE, L3_LATENCY);
+      |                                                             ^~~~~~~~~~~~
+uarchsim.cc:888:75: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  887 |    printf("L3$: %lu %s, %lu-way set-assoc., %luB block size, %lu-cycle search latency\n",
+      |                                                              ~~~
+      |                                                              %llu
+  888 |       SCALED_SIZE(L3_SIZE), SCALED_UNIT(L3_SIZE), L3_ASSOC, L3_BLOCKSIZE, L3_LATENCY);
+      |                                                                           ^~~~~~~~~~
+uarchsim.cc:889:57: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  889 |    printf("Main Memory: %lu-cycle fixed search time\n", MAIN_MEMORY_LATENCY);
+      |                         ~~~                             ^~~~~~~~~~~~~~~~~~~
+      |                         %llu
+uarchsim.cc:891:37: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  891 |    printf("Number of loads: %lu\n", num_load);
+      |                             ~~~     ^~~~~~~~
+      |                             %llu
+uarchsim.cc:892:62: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  892 |    printf("Number of loads that miss in SQ: %lu (%.2f%%)\n", num_load_sqmiss, 100.0*(double)num_load_sqmiss/(double)num_load);
+      |                                             ~~~              ^~~~~~~~~~~~~~~
+      |                                             %llu
+uarchsim.cc:893:62: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  893 |    printf("Number of PFs issued to the memory system %lu\n", stat_pfs_issued_to_mem);
+      |                                                      ~~~     ^~~~~~~~~~~~~~~~~~~~~~
+      |                                                      %llu
+uarchsim.cc:907:35: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  907 |    printf("instructions = %lu\n", num_inst);
+      |                           ~~~     ^~~~~~~~
+      |                           %llu
+uarchsim.cc:908:35: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  908 |    printf("cycles       = %lu\n", cycle);
+      |                           ~~~     ^~~~~
+      |                           %llu
+uarchsim.cc:909:35: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+  909 |    printf("CycWP        = %lu\n", cycles_on_wrong_path);
+      |                           ~~~     ^~~~~~~~~~~~~~~~~~~~
+      |                           %llu
+7 warnings generated.
+1 warning generated.
+28 warnings generated.
+ar r libcbp.a cbp.o my_value_predictor.o parameters.o uarchsim.o cache.o bp.o resource_schedule.o gzstream.o
+ar: creating archive libcbp.a
+g++ -std=c++17 -L./lib -lcbp -lz -O3 -o cbp cond_branch_predictor_interface.o my_cond_branch_predictor.o
+Got 105 traces

@@ -9,5 +9,5 @@ data/results/baseline_sim/
 copyImportantFiles.sh
 *.aux
 *.log
-
-
+sampletraces/
+build/

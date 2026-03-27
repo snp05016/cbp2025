@@ -6,35 +6,35 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Bulleseye Predictor  Register-Value-Aware-Toru Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4631               3.3022               ↓ 4.64% better
-MR                             2.7758               2.5681               ↓ 7.48% better
-IPC                            3.7119               3.5450               ↓ 4.50% worse
-Cycles                         15341076.1023        14401963.4667        ↓ 6.12% better
-BrPerCyc                       0.4388               0.4309               ↓ 1.78% worse
-MispBrPerCyc                   0.0096               0.0089               ↓ 6.54% worse
-CycWPPKI                       159.8244             149.9141             ↓ 6.20% better
+MPKI                           3.4889               3.3022               ↓ 5.35% better
+MR                             2.7395               2.5681               ↓ 6.26% better
+IPC                            3.5132               3.5450               ↑ 0.91% better
+Cycles                         14593783.3048        14401963.4667        ↓ 1.31% better
+BrPerCyc                       0.4271               0.4309               ↑ 0.91% better
+MispBrPerCyc                   0.0093               0.0089               ↓ 4.22% worse
+CycWPPKI                       154.6388             149.9141             ↓ 3.06% better
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Bulleseye Predictor wins: 29 traces
-Register-Value-Aware-Toru wins: 59 traces
-Ties: 0 traces
+Bulleseye Predictor wins: 13 traces
+Register-Value-Aware-Toru wins: 91 traces
+Ties: 1 traces
 
 
 Biggest Improvements (Register-Value-Aware-Toru better):
 --------------------------------------------------------------------------------
-  fp_8_trace                                 7.5897 →   3.6875 (↓ 3.9022)
-  web_7_trace                                7.5938 →   4.3005 (↓ 3.2933)
-  int_21_trace                              23.2648 →  21.6842 (↓ 1.5806)
-  int_16_trace                               6.8140 →   5.7002 (↓ 1.1138)
-  int_17_trace                               5.4692 →   4.7567 (↓ 0.7125)
+  fp_8_trace                                 7.4114 →   3.6875 (↓ 3.7239)
+  int_21_trace                              23.7590 →  21.6842 (↓ 2.0748)
+  web_7_trace                                6.2471 →   4.3005 (↓ 1.9466)
+  fp_1_trace                                15.5798 →  14.9323 (↓ 0.6475)
+  int_2_trace                                9.8611 →   9.2321 (↓ 0.6290)
 
 
 Biggest Regressions (Register-Value-Aware-Toru worse):
 --------------------------------------------------------------------------------
-  web_8_trace                                0.0000 →   4.6201 (↑ 4.6201)
-  int_1_trace                                9.0328 →   9.7511 (↑ 0.7183)
-  int_2_trace                                8.6194 →   9.2321 (↑ 0.6127)
-  int_32_trace                               5.9951 →   6.3313 (↑ 0.3362)
-  int_22_trace                               3.5724 →   3.9029 (↑ 0.3305)
+  fp_12_trace                                0.8206 →   1.0294 (↑ 0.2088)
+  int_13_trace                               0.7048 →   0.8514 (↑ 0.1466)
+  fp_10_trace                                1.9399 →   1.9757 (↑ 0.0358)
+  web_11_trace                               4.6089 →   4.6440 (↑ 0.0351)
+  int_16_trace                               5.6722 →   5.7002 (↑ 0.0280)

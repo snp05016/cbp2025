@@ -9,7 +9,7 @@ Predictor                           Count    Avg MPKI     Avg IPC
 --------------------------------------------------------------------------------
 Ball Fun                            8        2.6779       4.5550      
 Baseline                            8        2.7988       4.5330      
-Bulleseye Predictor                 8        2.6779       4.5550      
+Bulleseye Predictor                 8        2.7583       4.5434      
 Load-Value-Correlator-Man           8        2.7149       4.5605      
 Multi-Perspective Predictor         8        2.6779       4.5550      
 Programming Idiom Predictor-Mose    8        2.6599       4.5625      
@@ -23,7 +23,7 @@ Predictor                           Count    Avg MPKI     Avg IPC
 --------------------------------------------------------------------------------
 Ball Fun                            14       3.8498       4.2305      
 Baseline                            14       4.0147       4.1688      
-Bulleseye Predictor                 14       3.8498       4.2305      
+Bulleseye Predictor                 14       3.8750       4.2216      
 Load-Value-Correlator-Man           14       3.7863       4.2423      
 Multi-Perspective Predictor         14       3.8498       4.2305      
 Programming Idiom Predictor-Mose    14       3.9243       4.1987      
@@ -37,7 +37,7 @@ Predictor                           Count    Avg MPKI     Avg IPC
 --------------------------------------------------------------------------------
 Ball Fun                            16       2.5459       2.8719      
 Baseline                            16       2.6313       2.8581      
-Bulleseye Predictor                 16       2.5459       2.8719      
+Bulleseye Predictor                 16       2.5634       2.8702      
 Load-Value-Correlator-Man           16       2.4703       2.8817      
 Multi-Perspective Predictor         16       2.5459       2.8719      
 Programming Idiom Predictor-Mose    16       2.5878       2.8613      
@@ -51,7 +51,7 @@ Predictor                           Count    Avg MPKI     Avg IPC
 --------------------------------------------------------------------------------
 Ball Fun                            37       4.1197       3.6709      
 Baseline                            37       4.6999       3.5913      
-Bulleseye Predictor                 37       4.1197       3.6709      
+Bulleseye Predictor                 37       4.2306       3.6576      
 Load-Value-Correlator-Man           37       4.2343       3.6535      
 Multi-Perspective Predictor         37       4.1197       3.6709      
 Programming Idiom Predictor-Mose    37       4.3374       3.6340      
@@ -65,7 +65,7 @@ Predictor                           Count    Avg MPKI     Avg IPC
 --------------------------------------------------------------------------------
 Ball Fun                            4        0.9203       5.9874      
 Baseline                            4        1.0621       5.9037      
-Bulleseye Predictor                 4        0.9203       5.9874      
+Bulleseye Predictor                 4        0.9954       5.9409      
 Load-Value-Correlator-Man           4        1.0638       5.8983      
 Multi-Perspective Predictor         4        0.9203       5.9874      
 Programming Idiom Predictor-Mose    4        1.0099       5.9264      
@@ -79,7 +79,7 @@ Predictor                           Count    Avg MPKI     Avg IPC
 --------------------------------------------------------------------------------
 Ball Fun                            9        3.6207       2.8063      
 Baseline                            26       3.8844       2.5704      
-Bulleseye Predictor                 9        3.6207       2.8063      
+Bulleseye Predictor                 26       3.4033       2.6315      
 Load-Value-Correlator-Man           26       3.4244       2.6311      
 Multi-Perspective Predictor         26       3.4629       2.6155      
 Programming Idiom Predictor-Mose    26       3.4657       2.6156      

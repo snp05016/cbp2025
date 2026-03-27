@@ -6,35 +6,35 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Bulleseye Predictor  Multi-Perspective Predictor Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4631               3.4495               ↓ 0.39% better
-MR                             2.7758               2.7030               ↓ 2.62% better
-IPC                            3.7119               3.5180               ↓ 5.22% worse
-Cycles                         15341076.1023        14543959.5143        ↓ 5.20% better
-BrPerCyc                       0.4388               0.4272               ↓ 2.64% worse
-MispBrPerCyc                   0.0096               0.0093               ↓ 3.26% worse
-CycWPPKI                       159.8244             153.8443             ↓ 3.74% better
+MPKI                           3.4889               3.4495               ↓ 1.13% better
+MR                             2.7395               2.7030               ↓ 1.33% better
+IPC                            3.5132               3.5180               ↑ 0.14% better
+Cycles                         14593783.3048        14543959.5143        ↓ 0.34% better
+BrPerCyc                       0.4271               0.4272               ↑ 0.02% better
+MispBrPerCyc                   0.0093               0.0093               ↓ 0.87% worse
+CycWPPKI                       154.6388             153.8443             ↓ 0.51% better
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Bulleseye Predictor wins: 1 traces
-Multi-Perspective Predictor wins: 0 traces
-Ties: 87 traces
+Bulleseye Predictor wins: 36 traces
+Multi-Perspective Predictor wins: 69 traces
+Ties: 0 traces
 
 
 Biggest Improvements (Multi-Perspective Predictor better):
 --------------------------------------------------------------------------------
-  compress_3_trace                           7.6342 →   7.6342 (↓ 0.0000)
-  compress_2_trace                           1.4430 →   1.4430 (↓ 0.0000)
-  compress_4_trace                           1.7784 →   1.7784 (↓ 0.0000)
-  compress_5_trace                           1.8814 →   1.8814 (↓ 0.0000)
-  compress_0_trace                           3.1891 →   3.1891 (↓ 0.0000)
+  int_1_trace                               10.3681 →   9.0328 (↓ 1.3353)
+  int_2_trace                                9.8611 →   8.6194 (↓ 1.2417)
+  int_32_trace                               6.7235 →   5.9951 (↓ 0.7284)
+  int_33_trace                               7.7135 →   7.1681 (↓ 0.5454)
+  int_21_trace                              23.7590 →  23.2648 (↓ 0.4942)
 
 
 Biggest Regressions (Multi-Perspective Predictor worse):
 --------------------------------------------------------------------------------
-  web_8_trace                                0.0000 →   4.7212 (↑ 4.7212)
-  compress_3_trace                           7.6342 →   7.6342 (↑ 0.0000)
-  compress_2_trace                           1.4430 →   1.4430 (↑ 0.0000)
-  compress_4_trace                           1.7784 →   1.7784 (↑ 0.0000)
-  compress_5_trace                           1.8814 →   1.8814 (↑ 0.0000)
+  web_7_trace                                6.2471 →   7.5938 (↑ 1.3467)
+  int_16_trace                               5.6722 →   6.8140 (↑ 1.1418)
+  int_17_trace                               4.7592 →   5.4692 (↑ 0.7100)
+  int_8_trace                                5.8786 →   6.1344 (↑ 0.2558)
+  int_7_trace                                4.4556 →   4.6820 (↑ 0.2264)

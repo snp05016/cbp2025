@@ -8,7 +8,7 @@ Predictor                           Avg IPC      Median       Std Dev
 --------------------------------------------------------------------------------
 Ball Fun                            3.7119       3.5450       1.6663      
 Baseline                            3.4636       3.1982       1.5829      
-Bulleseye Predictor                 3.7119       3.5450       1.6663      
+Bulleseye Predictor                 3.5132       3.2580       1.5916      
 Load-Value-Correlator-Man           3.5159       3.2762       1.5805      
 Multi-Perspective Predictor         3.5180       3.2548       1.6008      
 Programming Idiom Predictor-Mose    3.4974       3.2545       1.5868      
@@ -23,7 +23,7 @@ Predictor                           Avg Cycles      Total Cycles
 --------------------------------------------------------------------------------
 Ball Fun                            15,341,076      1,350,014,697  
 Baseline                            14,824,661      1,556,589,396  
-Bulleseye Predictor                 15,341,076      1,350,014,697  
+Bulleseye Predictor                 14,593,783      1,532,347,247  
 Load-Value-Correlator-Man           14,561,855      1,528,994,758  
 Multi-Perspective Predictor         14,543,960      1,527,115,749  
 Programming Idiom Predictor-Mose    14,667,399      1,540,076,895  
@@ -38,7 +38,7 @@ Predictor                           Avg BrPerCyc
 --------------------------------------------------------------------------------
 Ball Fun                            0.438757       
 Baseline                            0.420251       
-Bulleseye Predictor                 0.438757       
+Bulleseye Predictor                 0.427070       
 Load-Value-Correlator-Man           0.427386       
 Multi-Perspective Predictor         0.427159       
 Programming Idiom Predictor-Mose    0.424762       
@@ -53,7 +53,7 @@ Predictor                           Avg CycWPPKI
 --------------------------------------------------------------------------------
 Ball Fun                            159.8244       
 Baseline                            161.6047       
-Bulleseye Predictor                 159.8244       
+Bulleseye Predictor                 154.6388       
 Load-Value-Correlator-Man           153.8107       
 Multi-Perspective Predictor         153.8443       
 Programming Idiom Predictor-Mose    157.2730       

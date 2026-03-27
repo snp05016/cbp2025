@@ -8,7 +8,7 @@ Predictor                           MPKI         Miss Rate %  Mispred/Cyc
 --------------------------------------------------------------------------------
 Ball Fun                            3.4631       2.7758       0.009564    
 Baseline                            3.8080       2.9679       0.009956    
-Bulleseye Predictor                 3.4631       2.7758       0.009564    
+Bulleseye Predictor                 3.4889       2.7395       0.009332    
 Load-Value-Correlator-Man           3.4687       2.7183       0.009303    
 Multi-Perspective Predictor         3.4495       2.7030       0.009251    
 Programming Idiom Predictor-Mose    3.5453       2.7608       0.009400    
@@ -29,8 +29,8 @@ Baseline:
   Worst: int_21_trace                   MPKI = 24.1502
 
 Bulleseye Predictor:
-  Best:  web_8_trace                    MPKI = 0.0000
-  Worst: int_21_trace                   MPKI = 23.2648
+  Best:  infra_1_trace                  MPKI = 0.3399
+  Worst: int_21_trace                   MPKI = 23.7590
 
 Load-Value-Correlator-Man:
   Best:  infra_1_trace                  MPKI = 0.2923

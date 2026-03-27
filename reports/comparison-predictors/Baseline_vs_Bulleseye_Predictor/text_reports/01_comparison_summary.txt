@@ -6,35 +6,35 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Baseline             Bulleseye Predictor  Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.8080               3.4631               ↓ 9.06% better
-MR                             2.9679               2.7758               ↓ 6.47% better
-IPC                            3.4636               3.7119               ↑ 7.17% better
-Cycles                         14824660.9143        15341076.1023        ↑ 3.48% worse
-BrPerCyc                       0.4203               0.4388               ↑ 4.40% better
-MispBrPerCyc                   0.0100               0.0096               ↓ 3.94% worse
-CycWPPKI                       161.6047             159.8244             ↓ 1.10% better
+MPKI                           3.8080               3.4889               ↓ 8.38% better
+MR                             2.9679               2.7395               ↓ 7.70% better
+IPC                            3.4636               3.5132               ↑ 1.43% better
+Cycles                         14824660.9143        14593783.3048        ↓ 1.56% better
+BrPerCyc                       0.4203               0.4271               ↑ 1.62% better
+MispBrPerCyc                   0.0100               0.0093               ↓ 6.27% worse
+CycWPPKI                       161.6047             154.6388             ↓ 4.31% better
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Baseline wins: 0 traces
-Bulleseye Predictor wins: 88 traces
+Baseline wins: 1 traces
+Bulleseye Predictor wins: 104 traces
 Ties: 0 traces
 
 
 Biggest Improvements (Bulleseye Predictor better):
 --------------------------------------------------------------------------------
-  web_8_trace                                5.1087 →   0.0000 (↓ 5.1087)
-  int_1_trace                               11.6458 →   9.0328 (↓ 2.6130)
-  int_2_trace                               10.9652 →   8.6194 (↓ 2.3458)
-  int_22_trace                               5.3965 →   3.5724 (↓ 1.8241)
-  int_16_trace                               8.1253 →   6.8140 (↓ 1.3113)
+  int_16_trace                               8.1253 →   5.6722 (↓ 2.4531)
+  int_17_trace                               6.3949 →   4.7592 (↓ 1.6357)
+  web_7_trace                                7.7526 →   6.2471 (↓ 1.5055)
+  int_22_trace                               5.3965 →   3.9788 (↓ 1.4177)
+  int_8_trace                                7.1931 →   5.8786 (↓ 1.3145)
 
 
 Biggest Regressions (Bulleseye Predictor worse):
 --------------------------------------------------------------------------------
-  int_25_trace                               1.3243 →   1.3236 (↑ -0.0007)
-  infra_5_trace                              2.2119 →   2.2083 (↑ -0.0036)
-  fp_4_trace                                 0.5736 →   0.5696 (↑ -0.0040)
-  infra_2_trace                              0.4838 →   0.4797 (↑ -0.0041)
-  infra_8_trace                              1.2568 →   1.2520 (↑ -0.0048)
+  fp_4_trace                                 0.5736 →   0.5749 (↑ 0.0013)
+  fp_0_trace                                 3.2270 →   3.2262 (↑ -0.0008)
+  fp_1_trace                                15.5816 →  15.5798 (↑ -0.0018)
+  media_2_trace                              0.5317 →   0.5282 (↑ -0.0035)
+  fp_5_trace                                 0.9364 →   0.9329 (↑ -0.0035)

@@ -244,5 +244,81 @@ The bullseye predictor adds a small 256k "subsystem" on top of the TAGE-SC-L pre
         reinforces the winning predictor and allows it to take over the prediction of that branch. The TAGE is set to default, but as soon as the perceptron wins 128 consecutive predictions, the TAGE updates are suppressed, stopping the
         thrashing cycle (where TAGE and the perceptron keep taking over the prediction of the branch and thus never giving either of them enough time to learn the pattern) once and for all.
 \end{itemize}
+\subsection{Bullseye Predictor vs Baseline Predictor}
+INSERT TEXT HERE
+
+\section{Branch Prediction via Load Value Prediction ( BALL )}
+
+\subsection{Details}
+The BALL (Branch-ALU-Load-Load) predictor is motivated by a key limitation of history-based predictors like TAGE-SC-L: they struggle with \textbf{load-data-dependent branches}. These are branches whose outcomes depend on values loaded from memory, rather than patterns in branch history.
+For such branches, the issue is not insufficient history or storage, but rather that the branch outcome is determined by a chain of computations involving loads and ALU operations. Since TAGE does not explicitly model this data dependency, it fails to capture these patterns effectively.
+The BALL predictor addresses this by explicitly reconstructing the \textbf{data dependence chain} leading up to a mispredicted branch. Instead of predicting the branch directly, it predicts the intermediate values (loads and ALU results) and uses them to compute the final branch outcome.
+The predictor is designed as a \textbf{complementary subsystem} to TAGE-SC-L. When TAGE mispredicts a branch, BALL attempts to handle it using a different strategy based on value prediction.
+The BALL predictor consists of the following main components:
+
+\begin{itemize}
+        \item \textbf{Dependence Chain Construction: }  
+        When a branch is mispredicted, BALL constructs a limited \textbf{Branch-ALU-Load-Load} chain by tracking RAW (read-after-write) dependencies in recently committed instructions. This chain captures how the branch depends on one ALU operation and up to four load instructions. The key idea 
+        is to isolate only the critical instructions that directly influence the branch outcome.
+        \item \textbf{Load Address and Value Prediction: }  
+        Instead of predicting load values directly, BALL first predicts \textbf{load addresses}, and then reads a specialized data structure (BP Data Cache) to obtain the predicted values.  
+        Load addresses are predicted using three main patterns:
+        \begin{itemize}
+                \item Constant stride (fixed or incremental patterns)
+                \item Pointer chasing (using previous load values as base addresses)
+                \item Branch-path history (via a modified E-VTAGE predictor)
+        \end{itemize}
+        This two-step process allows BALL to recover the actual data values that influence the branch.
+        \item \textbf{ALU and Flag Prediction: }  
+        Once load values are predicted, BALL simulates the ALU operation (typically comparisons) to compute the \textbf{flag register value}. These operations are simple (e.g., compare two values or compare against zero) and are learned and stored using small pattern tables indexed by PC.
+        \item \textbf{Branch Outcome Prediction and Selection: }  
+        The predicted flag value is then used to determine the final branch direction. BALL only makes a prediction when all required intermediate values are available with high confidence.  
+        A selector counter arbitrates between BALL and TAGE-SC-L. If BALL consistently predicts correctly for a branch, it is given priority; otherwise, TAGE remains the default predictor.
+\end{itemize}
+
+Overall, BALL shifts the prediction problem from \textbf{control-flow correlation} (used by TAGE) to \textbf{data-flow reconstruction}. By explicitly modeling how data values influence branches, it is able to accurately predict cases that are inherently difficult for traditional predictors.
+
+\subsection{BALL vs Baseline Predictor}
+INSERT TEXT HERE
+
+\section{Programming Idiom Predictor (PIP)}
+\subsection{Details}
+The PIP (Programming-Idiom Predictor) is based on a key idea: a large portion of branches in real programs follow common programming patterns (idioms), and instead of trying to learn these patterns indirectly through history, it is more effective to detect them explicitly and predict them directly.
+Rather than relying solely on history-based predictors like TAGE, PIP introduces a set of small, specialised predictors called idiom trackers, each designed to recognize a specific type of branch behaviour.
+If none of these trackers can make a prediction, the system falls back to a strong baseline predictor composed of TAGE-SC-L and a Multiperspective Perceptron (MPP).
+
+The predictor is composed of 4 main components:
+\begin{itemize}
+        \item \textbf{Idiom Trackers: }These are small, highly targeted predictors that detect specific programming patterns by observing execution behaviour such as instruction operands, memory accesses, and control flow.
+        Two main trackers are used in this design:
+
+        \begin{itemize}
+                \item \textbf{For-loop Tracker: }This tracker identifies loops of the form \texttt{for (i = B; i != E; i += S)} by observing arithmetic instructions whose differences decrease monotonically.
+                Once detected, it predicts loop continuation or exit by projecting the current iteration count forward.
+                Unlike traditional predictors, it can often predict the loop exit correctly on the very first encounter, sometimes achieving near 100\% accuracy.
+                \item \textbf{Null-Terminated String (NTS) Tracker: }This tracker identifies loops iterating over strings (e.g., \texttt{*p != '\textbackslash 0'}) by observing memory loads with sequential addresses.
+                It learns the length of strings and uses this information to predict when the loop will terminate in future executions.
+        \end{itemize}
+        
+        Each tracker maintains confidence counters, and if its predictions are not useful, it is disabled to avoid polluting the system.        
+        \item \textbf{TAGE-SC-L Predictor: }This acts as the primary fallback predictor and is responsible for handling the majority of branches.
+        It is a highly optimized version with increased history length, larger tables, and improved statistical correction mechanisms.
+        It provides strong baseline accuracy for branches that follow history-based patterns.   
+        \item \textbf{Multiperspective Perceptron (MPP): }This predictor complements TAGE by using a wide range of features and correlations that TAGE may not capture.
+        It is only relied upon when TAGE struggles, and it uses a modified training strategy that increases learning pressure when it disagrees with TAGE.
+        This allows it to specialize in difficult branches without interfering with TAGE's strengths.   
+        \item \textbf{Arbiter: }When TAGE and the Perceptron disagree, the arbiter decides which predictor to trust.
+        It uses confidence levels from TAGE and compares them against the magnitude of the perceptron’s prediction.
+        If TAGE is highly confident, it is chosen directly.
+        Otherwise, the arbiter dynamically adjusts thresholds to determine when the perceptron should take over, learning over time which predictor performs better for different branches.
+\end{itemize}
+
+The overall prediction flow is straightforward: idiom trackers get the first chance to predict, and if none of them apply, the system falls back to TAGE and the perceptron, with the arbiter resolving conflicts.
+This design ensures that simple, structured patterns are handled perfectly by specialised hardware, while more complex or irregular branches are handled by powerful general-purpose predictors.
+
+\subsection{Programming Idiom Predictor (PIP) vs Baseline Predictor}
+INSERT TEXT HERE
+
+
 
 \end{document}

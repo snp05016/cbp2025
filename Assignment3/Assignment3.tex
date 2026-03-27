@@ -14,7 +14,7 @@
 \usepackage{fancyhdr}
 \usepackage{float}
 
-% --- make missing packages non-fatal on minimal TeXLive ---
+%,make missing packages non-fatal on minimal TeXLive ---
 % Only load titlesec if it exists; we don't rely on it elsewhere.
 \IfFileExists{titlesec.sty}{\usepackage{titlesec}}{}
 
@@ -24,7 +24,7 @@
   \providecommand{\setlist}[2][]{}
 }
 
-% --- Visual Setup ---
+%,Visual Setup ---
 \hypersetup{
     colorlinks=true,
     linkcolor=blue!40!black,
@@ -145,5 +145,84 @@ The new features that this predictor introduces are the following:
         \item \textbf{Forward Branch IMLI: }Usually IMLI is designed for backward branches, but the author has added a version for \textit{top testing} loops i.e. where the exit is at the top and the uconditional jump
         is at the bottom. This is a very common optimization that compilers do ( check \href{http://www.terraterra.ch/modula-2/sb-m2-v4.html}{here} for reference ). 
 \end{itemize}
+
+\subsubsection{Branch Misalignment and MODHIST}
+
+Consider the following code snippet:
+
+\begin{lstlisting}
+if (x > 0) {
+    if (x < 100) {      % the potentially misaligning branch
+        do_something();
+    }
+}
+\end{lstlisting}
+
+When \texttt{x > 0} and \texttt{x < 100}, both branches execute and both get recorded into the history register. When \texttt{x > 0} but \texttt{x >= 100}, only the outer branch executes. This means the inner branch sometimes shows up 
+in history and sometimes does not, which causes a problem.
+
+Suppose there are two other branches later in the code, call them B and C, 
+that always execute after this block. When the inner branch ran, B and C get pushed one slot further back in the history register. When it did not run, B and C sit one slot closer to the front. Same program, same behavior from B and C, 
+but they appear at different positions in history depending on whether that inner branch fired.
+
+TAGE hashes based on exact bit positions, so it sees these two situations as completely different and stores them in different table entries. Each entry gets trained half as often and the predictor never builds enough 
+confidence to predict reliably. This is the misalignment problem.
+
+MODHIST fixes this by simply not recording branches whose address does not satisfy:
+
+\begin{verbatim}
+branch_address mod N == 0
+\end{verbatim}
+
+The idea is that guard branches like null checks and bounds checks, which are the typical culprits behind misalignment, tend to land at non-aligned addresses in compiled code. By filtering them out, B and C always appear 
+at the same position in history, and the predictor can finally learn a consistent pattern.
+
+\subsection{MPP vs Baseline Predictor}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{mpp_vs_baseline.png}
+\caption{Comparison of MPP and Baseline Predictors}
+\end{figure}
+MPP proves to perform better than the baseline predictor, achieving a mean MPKI difference of 0.38 across all traces. This is a pretty decent improvement.
+One of the most interesting things about the MPP is that it uses two bloom filters to identify branches are trivially T or NT. 
+Looking at the top 10 improvements, 6 of them are \textbf{\textit{int\_}} traces. As mentioned before, integer code is compiled from high level languages and has complex control flow,
+and compilers usually generate \textit{alignment breaking branches} as cited in the paper, \newline
+
+\noindent\fbox{%
+\parbox{0.95\textwidth}{%
+\textit{``A branch branches over another branch. The second branch sometimes appears in the branch history and
+sometimes does not appear, leading to the same branch outcomes appearing in different locations in the global history.''}
+}%
+}
+\newline \newline
+
+These branches appear as null checks, type checks and bound checks. This is where TAGE's strength beceomes an issue i.e. a single misaligned branch "poisons" a long history entry. The MODHIST as mentioned
+above aims to solve this partcular problems, and it seems to be doing a good job at it.
+
+\begin{table}[H]
+\centering
+\caption{Framework-Level Summary: MPP vs Baseline Predictor}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Framework} & \textbf{Improve/Total} & \textbf{Success Ratio (\%)} & \textbf{Total MPKI Improvement} \\
+\midrule
+Web       & 9/9   & 100.0 & -6.3744  \\
+Int       & 28/37 & 75.7  & -18.8764 \\
+Fp        & 8/14  & 57.1  & -2.2088  \\
+Infra     & 5/16  & 31.3  & -1.2662  \\
+Compress  & 1/8   & 12.5  & -0.9672  \\
+Media     & 3/4   & 75.0  & -0.5673  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The improvement in \textbf{\textit{Web\_}} traces is not as dramatic but is remarkably consistant. The precise path history of web traces becomes too specific, i.e. two slightly different web page loads produce
+completely different path histories even though their branch behvaiour is very similar. The MPP's use of the BLURRYPATH feature allows it to generalize better and thus achieve a consistent improvement across all web traces.
+
+The compress and infra traces are interesting because they show very little  improvement over the baseline. For the compress traces I think the explanation  is fairly simple. Their baseline MPKI is already very low, so TAGE-SC-L is 
+already doing a good job and there is not much left for MPP to improve. The  infra traces are honestly less clear to me. My best guess is that these workloads contain branches whose outcomes depend more on runtime data values than on control 
+flow history, in which case none of MPP's history-based features would help. It is also possible that MODHIST's filtering is actually discarding branches that carry useful signal in these specific workloads, which would work against MPP 
+rather than helping it. That said, I want to be clear that these are speculative explanations. Without knowing exactly what workloads these traces represent, it is difficult to say with confidence why MPP struggles to improve them.
+
 
 \end{document}

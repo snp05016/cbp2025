@@ -14,7 +14,7 @@
 \usepackage{fancyhdr}
 \usepackage{float}
 
-%,make missing packages non-fatal on minimal TeXLive ---
+% --- make missing packages non-fatal on minimal TeXLive ---
 % Only load titlesec if it exists; we don't rely on it elsewhere.
 \IfFileExists{titlesec.sty}{\usepackage{titlesec}}{}
 
@@ -24,7 +24,7 @@
   \providecommand{\setlist}[2][]{}
 }
 
-%,Visual Setup ---
+% --- Visual Setup ---
 \hypersetup{
     colorlinks=true,
     linkcolor=blue!40!black,
@@ -142,8 +142,8 @@ The new features that this predictor introduces are the following:
         \item \textbf{ACYCLIC history: }This tries to get the repititive loop structure from the history, keeping only the most recent outcome of each branch address rather than the full sequence of outcomes.
         This is useful because in many cases, the most recent outcome of a branch is more predictive than the full history, especially in loops where the same branches are executed multiple times.
 
-        \item \textbf{Forward Branch IMLI: }Usually IMLI is designed for backward branches, but the author has added a version for \textit{top testing} loops i.e. where the exit is at the top and the uconditional jump
-        is at the bottom. This is a very common optimization that compilers do ( check \href{http://www.terraterra.ch/modula-2/sb-m2-v4.html}{here} for reference ). 
+        \item \textbf{Forward Branch IMLI: }Usually IMLI is designed for backward branches, but the author has added a version for \textit{top testing} loops i.e. where the exit is at the top and the unconditional jump
+        is at the bottom. This is a very common optimization that compilers do (check \href{http://www.terraterra.ch/modula-2/sb-m2-v4.html}{here} for reference). 
 \end{itemize}
 
 \subsubsection{Branch Misalignment and MODHIST}
@@ -184,7 +184,7 @@ at the same position in history, and the predictor can finally learn a consisten
 \caption{Comparison of MPP and Baseline Predictors}
 \end{figure}
 MPP proves to perform better than the baseline predictor, achieving a mean MPKI difference of 0.38 across all traces. This is a pretty decent improvement.
-One of the most interesting things about the MPP is that it uses two bloom filters to identify branches are trivially T or NT. 
+One of the most interesting things about the MPP is that it uses two bloom filters to identify branches that are trivially T or NT.
 Looking at the top 10 improvements, 6 of them are \textbf{\textit{int\_}} traces. As mentioned before, integer code is compiled from high level languages and has complex control flow,
 and compilers usually generate \textit{alignment breaking branches} as cited in the paper, \newline
 
@@ -196,8 +196,8 @@ sometimes does not appear, leading to the same branch outcomes appearing in diff
 }
 \newline \newline
 
-These branches appear as null checks, type checks and bound checks. This is where TAGE's strength beceomes an issue i.e. a single misaligned branch "poisons" a long history entry. The MODHIST as mentioned
-above aims to solve this partcular problems, and it seems to be doing a good job at it.
+These branches appear as null checks, type checks and bound checks. This is where TAGE's strength becomes an issue i.e. a single misaligned branch "poisons" a long history entry. The MODHIST as mentioned
+above aims to solve this particular problem, and it seems to be doing a good job at it.
 
 \begin{table}[H]
 \centering
@@ -216,16 +216,33 @@ Compress  & 1/8   & 12.5  & -0.9672  \\
 \end{tabular}
 \end{table}
 
-The improvement in \textbf{\textit{Web\_}} traces is not as dramatic but is remarkably consistant, having a 100\% success rate. The precise path history of web traces becomes too specific, i.e. two slightly different web page loads produce
-completely different path histories even though their branch behvaiour is very similar. The MPP's use of the BLURRYPATH feature allows it to generalize better and thus achieve a consistent improvement across all web traces.
+The improvement in \textbf{\textit{Web\_}} traces is not as dramatic but is remarkably consistent, having a 100\% success rate. The precise path history of web traces becomes too specific, i.e. two slightly different web page loads produce
+completely different path histories even though their branch behaviour is very similar. The MPP's use of the BLURRYPATH feature allows it to generalize better and thus achieve a consistent improvement across all web traces.
 
-The compress and infra traces are interesting because they show very little  improvement over the baseline. For the compress traces I think the explanation  is fairly simple. Their baseline MPKI is already very low, so TAGE-SC-L is 
-already doing a good job and there is not much left for MPP to improve. The  infra traces are honestly less clear to me. My best guess is that these workloads contain branches whose outcomes depend more on runtime data values than on control 
-flow history, in which case none of MPP's history-based features would help. It is also possible that MODHIST's filtering is actually discarding branches that carry useful signal in these specific workloads, which would work against MPP 
+The compress and infra traces are interesting because they show very little improvement over the baseline. For the compress traces I think the explanation is fairly simple. Their baseline MPKI is already very low, so TAGE-SC-L is
+already doing a good job and there is not much left for MPP to improve. The infra traces are honestly less clear to me. My best guess is that these workloads contain branches whose outcomes depend more on runtime data values than on control
+flow history, in which case none of MPP's history-based features would help. It is also possible that MODHIST's filtering is actually discarding branches that carry useful signal in these specific workloads, which would work against MPP
 rather than helping it. That said, I want to be clear that these are speculative explanations. Without knowing exactly what workloads these traces represent, it is difficult to say with confidence why MPP struggles to improve them.
 
 
 \section{Bullseye Predictor}
 \subsection{Details}
+The bullseye predictor is driven by a core observation, stating that most of the mispredictions in TAGE-SC-L come from a small number of "hard-to-predict" branches. The bullseye predictor is designed to identify these hard-to-predict branches
+and apply a specialized prediction strategy to them, while leaving the rest of the branches to be handled by a more traditional predictor.
+H2P branches appear under different global histories every time they execute. For a predictor like TAGE that relies on global history, this is a very difficult pattern to learn.
+The paper also notes that simply making TAGE bigger doesn't fix this problem, which means even an infinitely large TAGE would barely improve the prediction rates. The main problem isn't storage, but the branch's behaviour not correlating well enough with
+the global history. 
+
+The bullseye predictor adds a small 256k "subsystem" on top of the TAGE-SC-L predictor. It is composed of 3 main components:
+\begin{itemize}
+        \item \textbf{H2P (Hard-to-Predict) Branch Classifier: }This component is responsible for identifying the hard-to-predict branches. This tracks every branch's execution count, MP count and running accuracy (the number of correct predictions
+        divided by the total number of predictions for that branch). When a branch's execution count exceeds a certain threshold and its accuracy falls below a certain number, the classifier flags the branch as an H2P branch, preventing the entire
+        system from being overwhelmed by the noise of these branches and allowing it to focus on the branches that it can predict well. In practice no more than 10 branches are active at once.
+        \item \textbf{Two Perceptron Predictors: } Bullseye predictor uses two perceptron predictors, both of them running in parallel with the TAGE-SC-L predictor. One of them uses local history and
+        the other uses folded global history to essentially "catch" long-range correlation that TAGE-SC-L misses. These perceptrons dedicate their weights to one hard branch rather than sharing tables across and with thousands of branches (something that TAGE does).
+        \item \textbf{Trial phase and arbitration: }A newly flagged branch gets 512 executions to warm up its weights. After that the system compares which predictor is winning (like a tournament predictor). There is a confidence counter that
+        reinforces the winning predictor and allows it to take over the prediction of that branch. The TAGE is set to default, but as soon as the perceptron wins 128 consecutive predictions, the TAGE updates are suppressed, stopping the
+        thrashing cycle (where TAGE and the perceptron keep taking over the prediction of the branch and thus never giving either of them enough time to learn the pattern) once and for all.
+\end{itemize}
 
 \end{document}

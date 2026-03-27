@@ -5,3 +5,5 @@
 \contentsline {subsection}{\numberline {3.1}Details}{2}{subsection.3.1}%
 \contentsline {subsubsection}{\numberline {3.1.1}Branch Misalignment and MODHIST}{2}{subsubsection.3.1.1}%
 \contentsline {subsection}{\numberline {3.2}MPP vs Baseline Predictor}{3}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Bullseye Predictor}{4}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Details}{4}{subsection.4.1}%

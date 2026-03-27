@@ -216,7 +216,7 @@ Compress  & 1/8   & 12.5  & -0.9672  \\
 \end{tabular}
 \end{table}
 
-The improvement in \textbf{\textit{Web\_}} traces is not as dramatic but is remarkably consistant. The precise path history of web traces becomes too specific, i.e. two slightly different web page loads produce
+The improvement in \textbf{\textit{Web\_}} traces is not as dramatic but is remarkably consistant, having a 100\% success rate. The precise path history of web traces becomes too specific, i.e. two slightly different web page loads produce
 completely different path histories even though their branch behvaiour is very similar. The MPP's use of the BLURRYPATH feature allows it to generalize better and thus achieve a consistent improvement across all web traces.
 
 The compress and infra traces are interesting because they show very little  improvement over the baseline. For the compress traces I think the explanation  is fairly simple. Their baseline MPKI is already very low, so TAGE-SC-L is 

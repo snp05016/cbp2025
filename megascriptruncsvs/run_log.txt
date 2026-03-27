@@ -1,5 +1,6 @@
-=== Starting submission runs at Fri Mar 27 05:16:24 MDT 2026 ===
+=== Starting submission runs at Fri Mar 27 05:26:19 MDT 2026 ===
 Processing: BALL-FAN
+=== Compiling with 12 CPU cores ===
 rm -f *.o cbp
 make -C lib clean
 rm -f *.o libcbp.a
@@ -446,3 +447,7 @@ ar r libcbp.a cbp.o my_value_predictor.o parameters.o uarchsim.o cache.o bp.o re
 ar: creating archive libcbp.a
 g++ -std=c++17 -L./lib -lcbp -lz -O3 -o cbp cond_branch_predictor_interface.o my_cond_branch_predictor.o
 Got 105 traces
+
+=== Using 12 CPU cores for parallel trace execution ===
+=== Total traces to process: 105 ===
+

@@ -52,9 +52,18 @@ echo "=== Starting submission runs at $(date) ===" > "$LOG_FILE"
 # Function to clean up after each run
 cleanup() {
     # Remove results directory
-    rm -rf ./results/baseline/
+    rm -rf ./results/baseline/ 2>/dev/null || true
+
     # Remove build artifacts
-    make clean 2>/dev/null || true
+    make clean >/dev/null 2>&1 || true
+
+    # Remove ALL .h and .cc files (they're submission-specific)
+    find . -maxdepth 1 -name "*.h" -delete 2>/dev/null || true
+    rm -f *.cc 2>/dev/null || true
+
+    # Restore minimal base framework file needed by Makefile
+    # (my_cond_branch_predictor.cc can be empty - submissions provide .h)
+    cp BaseFramework/my_cond_branch_predictor.cc . 2>/dev/null || touch my_cond_branch_predictor.cc
 }
 
 # Function to draw progress bar
@@ -93,15 +102,20 @@ process_submission() {
         return
     fi
 
-    # Step 1: Copy all files from submission to main directory
-    echo -e "${YELLOW}Step 1/4: Copying files from submission...${NC}"
+    # Step 1: Clean up ALL files from previous submission
+    echo -e "${YELLOW}Step 1/4: Cleaning up previous submission...${NC}"
+    cleanup
+    echo -e "${GREEN}Cleanup complete${NC}"
+
+    # Step 2: Copy all files from submission to main directory
+    echo -e "${YELLOW}Step 2/4: Copying files from submission...${NC}"
     cp -r "$submission_dir"/* "$MAIN_DIR/" 2>/dev/null || true
     # Remove .DS_Store if copied
     find "$MAIN_DIR" -maxdepth 1 -name ".DS_Store" -delete 2>/dev/null || true
     echo -e "${GREEN}Files copied${NC}"
 
-    # Step 2: Run the scripts
-    echo -e "${YELLOW}Step 2/4: Running ./runScripts.sh...${NC}"
+    # Step 3: Run the scripts
+    echo -e "${YELLOW}Step 3/4: Running ./runScripts.sh...${NC}"
     if ./runScripts.sh 2>&1 | tee -a "$LOG_FILE"; then
         echo -e "${GREEN}runScripts.sh completed successfully${NC}"
     else
@@ -111,8 +125,8 @@ process_submission() {
         return 1
     fi
 
-    # Step 3: Move results.csv to megascriptruncsvs with submission name
-    echo -e "${YELLOW}Step 3/4: Saving results...${NC}"
+    # Step 4: Save results
+    echo -e "${YELLOW}Step 4/4: Saving results...${NC}"
     if [[ -f "./results/baseline/results.csv" ]]; then
         cp "./results/baseline/results.csv" "$RESULTS_CSV_DIR/${submission_name}.csv"
         echo -e "${GREEN}Results saved to $RESULTS_CSV_DIR/${submission_name}.csv${NC}"
@@ -121,10 +135,6 @@ process_submission() {
         echo -e "${RED}WARNING: results.csv not found for $submission_name${NC}"
         echo "WARNING: results.csv not found for $submission_name" >> "$LOG_FILE"
     fi
-
-    # Step 4: Cleanup
-    echo -e "${YELLOW}Step 4/4: Cleanup...${NC}"
-    cleanup
 
     # Calculate and display time taken
     submission_end_time=$(date +%s)

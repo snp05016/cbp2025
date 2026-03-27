@@ -6,29 +6,29 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Load-Value-Correlator-Man Multi-Perspective Predictor Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4687               3.4631               ↓ 0.16% better
-MR                             2.7183               2.7758               ↑ 2.11% worse
-IPC                            3.5159               3.7119               ↑ 5.58% better
-Cycles                         14561854.8381        15341076.1023        ↑ 5.35% worse
-BrPerCyc                       0.4274               0.4388               ↑ 2.66% better
-MispBrPerCyc                   0.0093               0.0096               ↑ 2.80% better
-CycWPPKI                       153.8107             159.8244             ↑ 3.91% worse
+MPKI                           3.4687               3.4495               ↓ 0.55% better
+MR                             2.7183               2.7030               ↓ 0.56% better
+IPC                            3.5159               3.5180               ↑ 0.06% better
+Cycles                         14561854.8381        14543959.5143        ↓ 0.12% better
+BrPerCyc                       0.4274               0.4272               ↓ 0.05% worse
+MispBrPerCyc                   0.0093               0.0093               ↓ 0.55% worse
+CycWPPKI                       153.8107             153.8443             ↑ 0.02% worse
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Load-Value-Correlator-Man wins: 38 traces
-Multi-Perspective Predictor wins: 50 traces
+Load-Value-Correlator-Man wins: 45 traces
+Multi-Perspective Predictor wins: 60 traces
 Ties: 0 traces
 
 
 Biggest Improvements (Multi-Perspective Predictor better):
 --------------------------------------------------------------------------------
-  web_8_trace                                4.6254 →   0.0000 (↓ 4.6254)
   int_1_trace                               10.6773 →   9.0328 (↓ 1.6445)
   int_2_trace                               10.0902 →   8.6194 (↓ 1.4708)
   int_22_trace                               4.8609 →   3.5724 (↓ 1.2885)
   int_32_trace                               6.6835 →   5.9951 (↓ 0.6884)
+  compress_3_trace                           8.1504 →   7.6342 (↓ 0.5162)
 
 
 Biggest Regressions (Multi-Perspective Predictor worse):

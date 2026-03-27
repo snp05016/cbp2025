@@ -6,19 +6,19 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Multi-Perspective Predictor Register-Value-Aware-Toru Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4631               3.3022               ↓ 4.64% better
-MR                             2.7758               2.5681               ↓ 7.48% better
-IPC                            3.7119               3.5450               ↓ 4.50% worse
-Cycles                         15341076.1023        14401963.4667        ↓ 6.12% better
-BrPerCyc                       0.4388               0.4309               ↓ 1.78% worse
-MispBrPerCyc                   0.0096               0.0089               ↓ 6.54% worse
-CycWPPKI                       159.8244             149.9141             ↓ 6.20% better
+MPKI                           3.4495               3.3022               ↓ 4.27% better
+MR                             2.7030               2.5681               ↓ 4.99% better
+IPC                            3.5180               3.5450               ↑ 0.77% better
+Cycles                         14543959.5143        14401963.4667        ↓ 0.98% better
+BrPerCyc                       0.4272               0.4309               ↑ 0.89% better
+MispBrPerCyc                   0.0093               0.0089               ↓ 3.39% worse
+CycWPPKI                       153.8443             149.9141             ↓ 2.55% better
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Multi-Perspective Predictor wins: 29 traces
-Register-Value-Aware-Toru wins: 59 traces
+Multi-Perspective Predictor wins: 32 traces
+Register-Value-Aware-Toru wins: 73 traces
 Ties: 0 traces
 
 
@@ -33,8 +33,8 @@ Biggest Improvements (Register-Value-Aware-Toru better):
 
 Biggest Regressions (Register-Value-Aware-Toru worse):
 --------------------------------------------------------------------------------
-  web_8_trace                                0.0000 →   4.6201 (↑ 4.6201)
   int_1_trace                                9.0328 →   9.7511 (↑ 0.7183)
   int_2_trace                                8.6194 →   9.2321 (↑ 0.6127)
   int_32_trace                               5.9951 →   6.3313 (↑ 0.3362)
   int_22_trace                               3.5724 →   3.9029 (↑ 0.3305)
+  fp_12_trace                                0.7924 →   1.0294 (↑ 0.2370)

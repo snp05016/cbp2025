@@ -10,7 +10,7 @@ Ball Fun                            3.4631       2.7758       0.009564
 Baseline                            3.8080       2.9679       0.009956    
 Bulleseye Predictor                 3.4631       2.7758       0.009564    
 Load-Value-Correlator-Man           3.4687       2.7183       0.009303    
-Multi-Perspective Predictor         3.4631       2.7758       0.009564    
+Multi-Perspective Predictor         3.4495       2.7030       0.009251    
 Programming Idiom Predictor-Mose    3.5453       2.7608       0.009400    
 Register-Value-Aware-Toru           3.3022       2.5681       0.008938    
 TAGE-SC-L-Alberto-Ros               3.3898       2.6697       0.008938    
@@ -37,7 +37,7 @@ Load-Value-Correlator-Man:
   Worst: int_21_trace                   MPKI = 23.5688
 
 Multi-Perspective Predictor:
-  Best:  web_8_trace                    MPKI = 0.0000
+  Best:  infra_1_trace                  MPKI = 0.3503
   Worst: int_21_trace                   MPKI = 23.2648
 
 Programming Idiom Predictor-Mose:

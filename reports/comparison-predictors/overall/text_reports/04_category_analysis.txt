@@ -81,7 +81,7 @@ Ball Fun                            9        3.6207       2.8063
 Baseline                            26       3.8844       2.5704      
 Bulleseye Predictor                 9        3.6207       2.8063      
 Load-Value-Correlator-Man           26       3.4244       2.6311      
-Multi-Perspective Predictor         9        3.6207       2.8063      
+Multi-Perspective Predictor         26       3.4629       2.6155      
 Programming Idiom Predictor-Mose    26       3.4657       2.6156      
 Register-Value-Aware-Toru           26       3.3020       2.6605      
 TAGE-SC-L-Alberto-Ros               26       3.1122       2.3717      

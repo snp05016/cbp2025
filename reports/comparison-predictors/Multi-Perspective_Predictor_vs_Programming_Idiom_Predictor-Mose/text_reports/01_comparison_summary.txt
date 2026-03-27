@@ -6,19 +6,19 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Multi-Perspective Predictor Programming Idiom Predictor-Mose Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4631               3.5453               ↑ 2.37% worse
-MR                             2.7758               2.7608               ↓ 0.54% better
-IPC                            3.7119               3.4974               ↓ 5.78% worse
-Cycles                         15341076.1023        14667399.0000        ↓ 4.39% better
-BrPerCyc                       0.4388               0.4248               ↓ 3.19% worse
-MispBrPerCyc                   0.0096               0.0094               ↓ 1.71% worse
-CycWPPKI                       159.8244             157.2730             ↓ 1.60% better
+MPKI                           3.4495               3.5453               ↑ 2.78% worse
+MR                             2.7030               2.7608               ↑ 2.14% worse
+IPC                            3.5180               3.4974               ↓ 0.59% worse
+Cycles                         14543959.5143        14667399.0000        ↑ 0.85% worse
+BrPerCyc                       0.4272               0.4248               ↓ 0.56% worse
+MispBrPerCyc                   0.0093               0.0094               ↑ 1.61% better
+CycWPPKI                       153.8443             157.2730             ↑ 2.23% worse
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Multi-Perspective Predictor wins: 58 traces
-Programming Idiom Predictor-Mose wins: 30 traces
+Multi-Perspective Predictor wins: 69 traces
+Programming Idiom Predictor-Mose wins: 36 traces
 Ties: 0 traces
 
 
@@ -33,8 +33,8 @@ Biggest Improvements (Programming Idiom Predictor-Mose better):
 
 Biggest Regressions (Programming Idiom Predictor-Mose worse):
 --------------------------------------------------------------------------------
-  web_8_trace                                0.0000 →   4.6116 (↑ 4.6116)
   int_1_trace                                9.0328 →  11.6182 (↑ 2.5854)
   int_2_trace                                8.6194 →  10.8678 (↑ 2.2484)
   int_22_trace                               3.5724 →   5.2470 (↑ 1.6746)
   int_32_trace                               5.9951 →   6.5669 (↑ 0.5718)
+  fp_13_trace                               12.1305 →  12.6051 (↑ 0.4746)

@@ -4,18 +4,94 @@ FRAMEWORK-LEVEL SUMMARY: Baseline vs Multi-Perspective Predictor
 
 | Framework | Improve/Total | Success Ratio (%) | Total MPKI Improvement |
 |-----------|---------------|-------------------|------------------------|
-| Web       | 9/9           | 100.0             | -6.3744               |
-| Int       | 28/37         | 75.7              | -18.8764              |
-| Fp        | 8/14          | 57.1              | -2.2088               |
-| Infra     | 5/16          | 31.3              | -1.2662               |
-| Compress  | 1/8           | 12.5              | -0.9672               |
+| Web       | 26/26         | 100.0             | -10.4414              |
+| Int       | 28/37         | 75.7              | -18.8957              |
+| Fp        | 8/14          | 57.1              | -2.3088               |
 | Media     | 3/4           | 75.0              | -0.5673               |
+| Infra     | 5/16          | 31.3              | -1.3662               |
+| Compress  | 1/8           | 12.5              | -0.9672               |
 
 ====================================================================================================
 KEY FINDINGS
 ====================================================================================================
 
-1. Web traces show perfect improvement (100% success rate) with the highest per-trace average improvement
-2. Int traces have the largest absolute MPKI reduction (-18.88) across 37 traces, with a strong 75.7% success rate
-3. Fp and Media show moderate success rates (57.1% and 75.0% respectively)
-4. Infra and Compress show limited improvements (31.3% and 12.5% success rates)
+1. **Web traces** show perfect improvement (100% success rate, 26/26 traces improved)
+   - Achieved total MPKI reduction of -10.44
+   - Best improvements: web_11 (-1.16), web_15 (-0.93), web_20 (-0.90)
+   - Consistently outperforms baseline across all web workloads
+   - All 26 web traces showed meaningful improvement (no traces marked as "similar")
+
+2. **Int traces** have the largest absolute MPKI reduction (-18.90) with strong 75.7% success rate (28/37)
+   - Top improvements: int_1 (-2.61), int_2 (-2.35), int_22 (-1.82)
+   - 28 traces showed significant improvement (✓)
+   - 9 traces showed marginal improvement (marked as similar: ≈)
+   - MPP's MODHIST feature particularly effective on integer workloads with branch misalignment
+
+3. **Fp traces** show moderate success rate (57.1%, 8/14 traces improved)
+   - Total MPKI reduction: -2.31
+   - Best improvement: fp_13 (-0.56), fp_12 (-0.42), fp_8 (-0.28)
+   - 8 traces showed significant improvement (✓)
+   - 6 traces showed minimal improvement (≈)
+
+4. **Media traces** achieve 75.0% success rate (3/4 traces improved)
+   - Total MPKI reduction: -0.57
+   - Best improvement: media_3 (-0.21), media_0 (-0.18), media_1 (-0.17)
+   - Small dataset but consistent performance on 3 out of 4 traces
+
+5. **Infra traces** show limited improvements (31.3% success rate, 5/16 improved)
+   - Total MPKI reduction: -1.37
+   - Best improvements: infra_13 (-0.21), infra_10 (-0.18), infra_14 (-0.18)
+   - Only 5 traces showed significant improvement (✓)
+   - 11 traces showed minimal improvement (≈)
+   - Suggests these workloads may be less sensitive to history-based prediction enhancements
+
+6. **Compress traces** show minimal improvement (12.5% success rate, 1/8 improved)
+   - Total MPKI reduction: -0.97
+   - Only compress_3 showed meaningful improvement (-0.62)
+   - Remaining 7 traces marked as similar (≈)
+   - Already low baseline MPKI leaves limited room for improvement
+   - Average baseline MPKI for compress traces is ~2.1, already well-predicted
+
+====================================================================================================
+CATEGORY PERFORMANCE RANKING (by success ratio)
+====================================================================================================
+
+1. Web:      100.0% (26/26) - Perfect success rate
+2. Int:       75.7% (28/37) - Strong majority improved
+3. Media:     75.0% (3/4)   - Strong but small sample
+4. Fp:        57.1% (8/14)  - Moderate success
+5. Infra:     31.3% (5/16)  - Limited improvement
+6. Compress:  12.5% (1/8)   - Minimal improvement
+
+====================================================================================================
+CATEGORY PERFORMANCE RANKING (by total MPKI improvement)
+====================================================================================================
+
+1. Int:       -18.90 MPKI (37 traces)
+2. Web:       -10.44 MPKI (26 traces)
+3. Fp:        -2.31 MPKI  (14 traces)
+4. Infra:     -1.37 MPKI  (16 traces)
+5. Compress:  -0.97 MPKI  (8 traces)
+6. Media:     -0.57 MPKI  (4 traces)
+
+Note: Total MPKI improvement is influenced by the number of traces in each category.
+Media has the fewest traces (4), limiting its total improvement potential.
+
+====================================================================================================
+ANALYSIS SUMMARY
+====================================================================================================
+
+**Strengths of MPP:**
+- Exceptional on web workloads (100% improvement rate)
+- Strong on integer workloads (highest total MPKI reduction)
+- MODHIST effectively addresses branch misalignment in compiled code
+- BLURRYPATH helps generalize similar execution patterns
+
+**Weaknesses of MPP:**
+- Limited gains on compress traces (already well-predicted by baseline)
+- Modest improvement on infrastructure workloads
+- Less effective when baseline MPKI is already very low
+
+**Overall:** Multi-Perspective Predictor shows significant improvements over baseline,
+particularly on web (100% success) and int (75.7% success) workloads, with a combined
+MPKI reduction of -35.44 across these two categories alone.

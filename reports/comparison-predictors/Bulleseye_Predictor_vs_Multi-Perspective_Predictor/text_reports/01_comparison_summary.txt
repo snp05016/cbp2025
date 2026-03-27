@@ -6,20 +6,20 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Bulleseye Predictor  Multi-Perspective Predictor Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4631               3.4631               ↑ 0.00% worse
-MR                             2.7758               2.7758               ↑ 0.00% worse
-IPC                            3.7119               3.7119               ↓ 0.00% worse
-Cycles                         15341076.1023        15341076.1023        ↑ 0.00% worse
-BrPerCyc                       0.4388               0.4388               ↓ 0.00% worse
-MispBrPerCyc                   0.0096               0.0096               ↓ 0.00% worse
-CycWPPKI                       159.8244             159.8244             ↑ 0.00% worse
+MPKI                           3.4631               3.4495               ↓ 0.39% better
+MR                             2.7758               2.7030               ↓ 2.62% better
+IPC                            3.7119               3.5180               ↓ 5.22% worse
+Cycles                         15341076.1023        14543959.5143        ↓ 5.20% better
+BrPerCyc                       0.4388               0.4272               ↓ 2.64% worse
+MispBrPerCyc                   0.0096               0.0093               ↓ 3.26% worse
+CycWPPKI                       159.8244             153.8443             ↓ 3.74% better
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Bulleseye Predictor wins: 0 traces
+Bulleseye Predictor wins: 1 traces
 Multi-Perspective Predictor wins: 0 traces
-Ties: 88 traces
+Ties: 87 traces
 
 
 Biggest Improvements (Multi-Perspective Predictor better):
@@ -33,8 +33,8 @@ Biggest Improvements (Multi-Perspective Predictor better):
 
 Biggest Regressions (Multi-Perspective Predictor worse):
 --------------------------------------------------------------------------------
+  web_8_trace                                0.0000 →   4.7212 (↑ 4.7212)
   compress_3_trace                           7.6342 →   7.6342 (↑ 0.0000)
   compress_2_trace                           1.4430 →   1.4430 (↑ 0.0000)
   compress_4_trace                           1.7784 →   1.7784 (↑ 0.0000)
   compress_5_trace                           1.8814 →   1.8814 (↑ 0.0000)
-  compress_0_trace                           3.1891 →   3.1891 (↑ 0.0000)

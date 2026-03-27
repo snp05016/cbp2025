@@ -53,15 +53,15 @@ Load-Value-Correlator-Man
 
 Multi-Perspective Predictor
 --------------------------------------------------------------------------------
-  Total Traces                  :              88
-  Avg MPKI                      :          3.4631
-  Median MPKI                   :          2.2893
-  Std MPKI                      :          3.7445
-  Avg Miss Rate (%)             :          2.7758
-  Avg IPC                       :          3.7119
-  Total Branches                :     508,729,701
-  Total Mispredictions          :      14,228,279
-  Avg Cycles                    :   15341076.1023
+  Total Traces                  :             105
+  Avg MPKI                      :          3.4495
+  Median MPKI                   :          2.7096
+  Std MPKI                      :          3.4612
+  Avg Miss Rate (%)             :          2.7030
+  Avg IPC                       :          3.5180
+  Total Branches                :     570,601,974
+  Total Mispredictions          :      15,566,355
+  Avg Cycles                    :   14543959.5143
 
 Programming Idiom Predictor-Mose
 --------------------------------------------------------------------------------

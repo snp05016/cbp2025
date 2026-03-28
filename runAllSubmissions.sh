@@ -57,9 +57,10 @@ cleanup() {
     # Remove build artifacts
     make clean >/dev/null 2>&1 || true
 
-    # Remove ALL .h and .cc files (they're submission-specific)
-    find . -maxdepth 1 -name "*.h" -delete 2>/dev/null || true
-    rm -f *.cc 2>/dev/null || true
+    # Remove submission-provided predictor files (framework headers/sources must remain)
+    rm -f ./cond_branch_predictor_interface.cc 2>/dev/null || true
+    rm -f ./my_cond_branch_predictor.h 2>/dev/null || true
+    rm -f ./my_cond_branch_predictor.cc 2>/dev/null || true
 
     # Restore minimal base framework file needed by Makefile
     # (my_cond_branch_predictor.cc can be empty - submissions provide .h)

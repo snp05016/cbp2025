@@ -11,6 +11,7 @@ Baseline                            3.8080       2.9679       0.009956
 Bulleseye Predictor                 3.4889       2.7395       0.009332    
 Load-Value-Correlator-Man           3.4687       2.7183       0.009303    
 Multi-Perspective Predictor         3.4495       2.7030       0.009251    
+Oracle                              3.3127       2.5748       0.008959    
 Programming Idiom Predictor-Mose    3.5453       2.7608       0.009400    
 Register-Value-Aware-Toru           3.3022       2.5681       0.008938    
 TAGE-SC-L-Alberto-Ros               3.5012       2.7427       0.009335    
@@ -39,6 +40,10 @@ Load-Value-Correlator-Man:
 Multi-Perspective Predictor:
   Best:  infra_1_trace                  MPKI = 0.3503
   Worst: int_21_trace                   MPKI = 23.2648
+
+Oracle:
+  Best:  infra_1_trace                  MPKI = 0.2923
+  Worst: int_21_trace                   MPKI = 21.6842
 
 Programming Idiom Predictor-Mose:
   Best:  infra_1_trace                  MPKI = 0.3543

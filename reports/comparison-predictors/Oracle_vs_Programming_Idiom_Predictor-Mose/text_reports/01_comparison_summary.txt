@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Oracle vs Programming Idiom Predictor-Mose
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Oracle               Programming Idiom Predictor-Mose Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.3127               3.5453               ↑ 7.02% worse
+MR                             2.5748               2.7608               ↑ 7.23% worse
+IPC                            3.5446               3.4974               ↓ 1.33% worse
+Cycles                         14408038.2286        14667399.0000        ↑ 1.80% worse
+BrPerCyc                       0.4308               0.4248               ↓ 1.41% worse
+MispBrPerCyc                   0.0090               0.0094               ↑ 4.92% better
+CycWPPKI                       149.8241             157.2730             ↑ 4.97% worse
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Oracle wins: 95 traces
+Programming Idiom Predictor-Mose wins: 10 traces
+Ties: 0 traces
+
+
+Biggest Improvements (Programming Idiom Predictor-Mose better):
+--------------------------------------------------------------------------------
+  int_0_trace                                4.8418 →   4.3111 (↓ 0.5307)
+  fp_5_trace                                 0.9250 →   0.5128 (↓ 0.4122)
+  compress_0_trace                           3.0968 →   2.7349 (↓ 0.3619)
+  web_10_trace                               2.8319 →   2.7344 (↓ 0.0975)
+  fp_10_trace                                1.9757 →   1.9276 (↓ 0.0481)
+
+
+Biggest Regressions (Programming Idiom Predictor-Mose worse):
+--------------------------------------------------------------------------------
+  fp_8_trace                                 3.6875 →   7.6591 (↑ 3.9716)
+  web_7_trace                                4.3005 →   6.9881 (↑ 2.6876)
+  int_1_trace                                9.7511 →  11.6182 (↑ 1.8671)
+  int_2_trace                                9.2321 →  10.8678 (↑ 1.6357)
+  int_21_trace                              21.6842 →  23.2204 (↑ 1.5362)

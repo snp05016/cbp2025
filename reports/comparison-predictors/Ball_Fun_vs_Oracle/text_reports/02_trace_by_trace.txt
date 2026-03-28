@@ -1,0 +1,111 @@
+====================================================================================================
+TRACE-BY-TRACE COMPARISON: Ball Fun vs Oracle
+====================================================================================================
+
+Trace                                    Ball Fun MPKI Oracle MPKI  Diff         Status              
+----------------------------------------------------------------------------------------------------
+web_7_trace                              7.7208       4.3005       -3.4203      ✓ Oracle better     
+int_16_trace                             8.1005       5.7002       -2.4003      ✓ Oracle better     
+fp_8_trace                               5.2985       3.6875       -1.6110      ✓ Oracle better     
+int_17_trace                             6.3587       4.7567       -1.6020      ✓ Oracle better     
+int_22_trace                             5.3966       3.9029       -1.4937      ✓ Oracle better     
+int_7_trace                              5.7956       4.3413       -1.4543      ✓ Oracle better     
+int_8_trace                              7.1630       5.7914       -1.3716      ✓ Oracle better     
+int_9_trace                              4.8603       3.6499       -1.2104      ✓ Oracle better     
+web_11_trace                             5.7855       4.6440       -1.1415      ✓ Oracle better     
+int_30_trace                             12.7675      11.7569      -1.0106      ✓ Oracle better     
+int_36_trace                             3.9779       2.9736       -1.0043      ✓ Oracle better     
+web_20_trace                             4.2048       3.2357       -0.9691      ✓ Oracle better     
+web_15_trace                             6.0736       5.1194       -0.9542      ✓ Oracle better     
+web_19_trace                             6.0246       5.0857       -0.9389      ✓ Oracle better     
+int_29_trace                             12.3072      11.4097      -0.8975      ✓ Oracle better     
+int_33_trace                             7.9657       7.2565       -0.7092      ✓ Oracle better     
+fp_1_trace                               15.5816      14.9323      -0.6493      ✓ Oracle better     
+int_32_trace                             6.9621       6.3313       -0.6308      ✓ Oracle better     
+web_25_trace                             6.3681       5.7401       -0.6280      ✓ Oracle better     
+infra_4_trace                            2.4586       1.8311       -0.6275      ✓ Oracle better     
+compress_3_trace                         8.2310       7.6547       -0.5763      ✓ Oracle better     
+web_12_trace                             4.4179       3.8556       -0.5623      ✓ Oracle better     
+int_4_trace                              4.1305       3.5930       -0.5375      ✓ Oracle better     
+web_10_trace                             3.3555       2.8319       -0.5236      ✓ Oracle better     
+web_8_trace                              5.1003       4.6201       -0.4802      ✓ Oracle better     
+web_13_trace                             3.3888       2.9155       -0.4733      ✓ Oracle better     
+fp_9_trace                               4.5477       4.0783       -0.4694      ✓ Oracle better     
+web_24_trace                             2.0490       1.6068       -0.4422      ✓ Oracle better     
+int_28_trace                             3.6692       3.2288       -0.4404      ✓ Oracle better     
+int_20_trace                             2.7600       2.3305       -0.4295      ✓ Oracle better     
+web_4_trace                              4.4589       4.0301       -0.4288      ✓ Oracle better     
+int_35_trace                             2.4776       2.0515       -0.4261      ✓ Oracle better     
+web_9_trace                              2.9333       2.5137       -0.4196      ✓ Oracle better     
+web_2_trace                              4.1788       3.7775       -0.4013      ✓ Oracle better     
+web_1_trace                              3.5288       3.1522       -0.3766      ✓ Oracle better     
+web_3_trace                              3.9470       3.5768       -0.3702      ✓ Oracle better     
+web_5_trace                              4.6806       4.3207       -0.3599      ✓ Oracle better     
+web_6_trace                              4.9189       4.5642       -0.3547      ✓ Oracle better     
+web_17_trace                             1.7308       1.3943       -0.3365      ✓ Oracle better     
+int_11_trace                             4.2187       3.8873       -0.3314      ✓ Oracle better     
+int_34_trace                             3.0739       2.7686       -0.3053      ✓ Oracle better     
+int_0_trace                              5.1331       4.8418       -0.2913      ✓ Oracle better     
+infra_0_trace                            1.2782       0.9872       -0.2910      ✓ Oracle better     
+infra_7_trace                            1.4967       1.2093       -0.2874      ✓ Oracle better     
+int_23_trace                             3.4540       3.1675       -0.2865      ✓ Oracle better     
+web_16_trace                             1.8571       1.5812       -0.2759      ✓ Oracle better     
+web_21_trace                             1.7327       1.4572       -0.2755      ✓ Oracle better     
+infra_3_trace                            1.0538       0.8049       -0.2489      ✓ Oracle better     
+compress_7_trace                         2.0491       1.8067       -0.2424      ✓ Oracle better     
+web_14_trace                             3.6703       3.4365       -0.2338      ✓ Oracle better     
+int_31_trace                             0.8330       0.6026       -0.2304      ✓ Oracle better     
+media_3_trace                            1.4012       1.1746       -0.2266      ✓ Oracle better     
+web_23_trace                             1.1653       0.9431       -0.2222      ✓ Oracle better     
+int_6_trace                              2.9626       2.7427       -0.2199      ✓ Oracle better     
+int_18_trace                             0.8395       0.6300       -0.2095      ✓ Oracle better     
+compress_6_trace                         1.8941       1.6906       -0.2035      ✓ Oracle better     
+web_22_trace                             3.3822       3.1805       -0.2017      ✓ Oracle better     
+fp_3_trace                               2.0208       1.8233       -0.1975      ✓ Oracle better     
+compress_4_trace                         1.8250       1.6297       -0.1953      ✓ Oracle better     
+compress_5_trace                         1.9284       1.7338       -0.1946      ✓ Oracle better     
+infra_13_trace                           4.2496       4.0586       -0.1910      ✓ Oracle better     
+media_0_trace                            1.1819       0.9918       -0.1901      ✓ Oracle better     
+fp_12_trace                              1.2140       1.0294       -0.1846      ✓ Oracle better     
+web_18_trace                             2.8365       2.6603       -0.1762      ✓ Oracle better     
+compress_0_trace                         3.2696       3.0968       -0.1728      ✓ Oracle better     
+compress_1_trace                         1.6841       1.5125       -0.1716      ✓ Oracle better     
+media_1_trace                            1.1588       0.9916       -0.1672      ✓ Oracle better     
+int_5_trace                              2.8583       2.7058       -0.1525      ✓ Oracle better     
+infra_15_trace                           8.4791       8.3267       -0.1524      ✓ Oracle better     
+infra_10_trace                           5.3690       5.2171       -0.1519      ✓ Oracle better     
+infra_14_trace                           5.4178       5.2684       -0.1494      ✓ Oracle better     
+fp_7_trace                               1.1295       0.9805       -0.1490      ✓ Oracle better     
+int_26_trace                             1.3413       1.2045       -0.1368      ✓ Oracle better     
+fp_2_trace                               2.5588       2.4245       -0.1343      ✓ Oracle better     
+fp_11_trace                              0.6972       0.5646       -0.1326      ✓ Oracle better     
+compress_2_trace                         1.4847       1.3543       -0.1304      ✓ Oracle better     
+infra_5_trace                            2.2115       2.0907       -0.1208      ✓ Oracle better     
+int_3_trace                              0.8721       0.7760       -0.0961      ≈ Similar           
+web_0_trace                              1.4009       1.3079       -0.0930      ≈ Similar           
+int_27_trace                             0.8656       0.7820       -0.0836      ≈ Similar           
+infra_12_trace                           1.0757       0.9932       -0.0825      ≈ Similar           
+infra_11_trace                           1.0839       1.0022       -0.0817      ≈ Similar           
+fp_6_trace                               0.9836       0.9122       -0.0714      ≈ Similar           
+int_13_trace                             0.9185       0.8514       -0.0671      ≈ Similar           
+infra_1_trace                            0.3581       0.2923       -0.0658      ≈ Similar           
+fp_4_trace                               0.5742       0.5119       -0.0623      ≈ Similar           
+infra_2_trace                            0.4876       0.4288       -0.0588      ≈ Similar           
+int_24_trace                             0.5673       0.5127       -0.0546      ≈ Similar           
+int_15_trace                             0.4797       0.4318       -0.0479      ≈ Similar           
+infra_6_trace                            1.2615       1.2138       -0.0477      ≈ Similar           
+infra_9_trace                            4.5987       4.5513       -0.0474      ≈ Similar           
+int_12_trace                             0.4582       0.4177       -0.0405      ≈ Similar           
+int_10_trace                             0.5369       0.4966       -0.0403      ≈ Similar           
+int_14_trace                             0.3952       0.3713       -0.0239      ≈ Similar           
+fp_5_trace                               0.9361       0.9250       -0.0111      ≈ Similar           
+infra_8_trace                            1.2565       1.2484       -0.0081      ≈ Similar           
+fp_0_trace                               3.2270       3.2189       -0.0081      ≈ Similar           
+media_2_trace                            0.5226       0.5231       0.0005       ≈ Similar           
+int_25_trace                             1.3214       1.3232       0.0018       ≈ Similar           
+fp_10_trace                              1.8923       1.9757       0.0834       ≈ Similar           
+int_19_trace                             0.6642       0.7603       0.0961       ≈ Similar           
+int_2_trace                              8.7270       9.2321       0.5051       ✗ Ball Fun better   
+int_1_trace                              9.2211       9.7511       0.5300       ✗ Ball Fun better   
+fp_13_trace                              8.9772       12.2224      3.2452       ✗ Ball Fun better   
+int_21_trace                             15.7181      21.6842      5.9661       ✗ Ball Fun better   

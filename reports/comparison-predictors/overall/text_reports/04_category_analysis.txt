@@ -12,6 +12,7 @@ Baseline                            8        2.7988       4.5330
 Bulleseye Predictor                 8        2.7583       4.5434      
 Load-Value-Correlator-Man           8        2.7149       4.5605      
 Multi-Perspective Predictor         8        2.6779       4.5550      
+Oracle                              8        2.5599       4.5892      
 Programming Idiom Predictor-Mose    8        2.6599       4.5625      
 Register-Value-Aware-Toru           8        2.5599       4.5892      
 TAGE-SC-L-Alberto-Ros               8        2.7579       4.5435      
@@ -26,6 +27,7 @@ Baseline                            14       4.0147       4.1688
 Bulleseye Predictor                 14       3.8750       4.2216      
 Load-Value-Correlator-Man           14       3.7863       4.2423      
 Multi-Perspective Predictor         14       3.8498       4.2305      
+Oracle                              14       3.5205       4.2761      
 Programming Idiom Predictor-Mose    14       3.9243       4.1987      
 Register-Value-Aware-Toru           14       3.5205       4.2761      
 TAGE-SC-L-Alberto-Ros               14       3.8823       4.2180      
@@ -40,6 +42,7 @@ Baseline                            16       2.6313       2.8581
 Bulleseye Predictor                 16       2.5634       2.8702      
 Load-Value-Correlator-Man           16       2.4703       2.8817      
 Multi-Perspective Predictor         16       2.5459       2.8719      
+Oracle                              16       2.4703       2.8817      
 Programming Idiom Predictor-Mose    16       2.5878       2.8613      
 Register-Value-Aware-Toru           16       2.3935       2.8903      
 TAGE-SC-L-Alberto-Ros               16       2.5587       2.8709      
@@ -54,6 +57,7 @@ Baseline                            37       4.6999       3.5913
 Bulleseye Predictor                 37       4.2306       3.6576      
 Load-Value-Correlator-Man           37       4.2343       3.6535      
 Multi-Perspective Predictor         37       4.1197       3.6709      
+Oracle                              37       4.0274       3.6859      
 Programming Idiom Predictor-Mose    37       4.3374       3.6340      
 Register-Value-Aware-Toru           37       4.0274       3.6859      
 TAGE-SC-L-Alberto-Ros               37       4.2795       3.6564      
@@ -68,6 +72,7 @@ Baseline                            4        1.0621       5.9037
 Bulleseye Predictor                 4        0.9954       5.9409      
 Load-Value-Correlator-Man           4        1.0638       5.8983      
 Multi-Perspective Predictor         4        0.9203       5.9874      
+Oracle                              4        0.9203       5.9874      
 Programming Idiom Predictor-Mose    4        1.0099       5.9264      
 Register-Value-Aware-Toru           4        0.9515       5.9640      
 TAGE-SC-L-Alberto-Ros               4        0.9639       5.9543      
@@ -82,6 +87,7 @@ Baseline                            26       3.8844       2.5704
 Bulleseye Predictor                 26       3.4033       2.6315      
 Load-Value-Correlator-Man           26       3.4244       2.6311      
 Multi-Perspective Predictor         26       3.4629       2.6155      
+Oracle                              26       3.3020       2.6605      
 Programming Idiom Predictor-Mose    26       3.4657       2.6156      
 Register-Value-Aware-Toru           26       3.3020       2.6605      
 TAGE-SC-L-Alberto-Ros               26       3.3875       2.6358      

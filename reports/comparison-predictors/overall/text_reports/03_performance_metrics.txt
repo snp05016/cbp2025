@@ -11,6 +11,7 @@ Baseline                            3.4636       3.1982       1.5829
 Bulleseye Predictor                 3.5132       3.2580       1.5916      
 Load-Value-Correlator-Man           3.5159       3.2762       1.5805      
 Multi-Perspective Predictor         3.5180       3.2548       1.6008      
+Oracle                              3.5446       3.2718       1.5981      
 Programming Idiom Predictor-Mose    3.4974       3.2545       1.5868      
 Register-Value-Aware-Toru           3.5450       3.2718       1.5969      
 TAGE-SC-L-Alberto-Ros               3.5140       3.2600       1.5926      
@@ -26,6 +27,7 @@ Baseline                            14,824,661      1,556,589,396
 Bulleseye Predictor                 14,593,783      1,532,347,247  
 Load-Value-Correlator-Man           14,561,855      1,528,994,758  
 Multi-Perspective Predictor         14,543,960      1,527,115,749  
+Oracle                              14,408,038      1,512,844,014  
 Programming Idiom Predictor-Mose    14,667,399      1,540,076,895  
 Register-Value-Aware-Toru           14,401,963      1,512,206,164  
 TAGE-SC-L-Alberto-Ros               14,591,982      1,532,158,060  
@@ -41,6 +43,7 @@ Baseline                            0.420251
 Bulleseye Predictor                 0.427070       
 Load-Value-Correlator-Man           0.427386       
 Multi-Perspective Predictor         0.427159       
+Oracle                              0.430821       
 Programming Idiom Predictor-Mose    0.424762       
 Register-Value-Aware-Toru           0.430940       
 TAGE-SC-L-Alberto-Ros               0.427098       
@@ -56,6 +59,7 @@ Baseline                            161.6047
 Bulleseye Predictor                 154.6388       
 Load-Value-Correlator-Man           153.8107       
 Multi-Perspective Predictor         153.8443       
+Oracle                              149.8241       
 Programming Idiom Predictor-Mose    157.2730       
 Register-Value-Aware-Toru           149.9141       
 TAGE-SC-L-Alberto-Ros               155.1061       

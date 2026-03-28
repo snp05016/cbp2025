@@ -1,0 +1,2 @@
+GeoMean MPKI for Representative_Mix: 2.23
+GeoMean 50PercMPKI for Representative_Mix: 2.05

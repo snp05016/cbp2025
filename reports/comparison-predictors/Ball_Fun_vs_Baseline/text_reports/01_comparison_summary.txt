@@ -6,35 +6,35 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Ball Fun             Baseline             Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4631               3.8080               ↑ 9.96% worse
-MR                             2.7758               2.9679               ↑ 6.92% worse
-IPC                            3.7119               3.4636               ↓ 6.69% worse
-Cycles                         15341076.1023        14824660.9143        ↓ 3.37% better
-BrPerCyc                       0.4388               0.4203               ↓ 4.22% worse
-MispBrPerCyc                   0.0096               0.0100               ↑ 4.10% better
-CycWPPKI                       159.8244             161.6047             ↑ 1.11% worse
+MPKI                           3.6140               3.8080               ↑ 5.37% worse
+MR                             2.8350               2.9679               ↑ 4.69% worse
+IPC                            3.4777               3.4636               ↓ 0.40% worse
+Cycles                         14698980.7238        14824660.9143        ↑ 0.86% worse
+BrPerCyc                       0.4222               0.4203               ↓ 0.47% worse
+MispBrPerCyc                   0.0097               0.0100               ↑ 2.38% better
+CycWPPKI                       158.1306             161.6047             ↑ 2.20% worse
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Ball Fun wins: 88 traces
-Baseline wins: 0 traces
-Ties: 0 traces
+Ball Fun wins: 58 traces
+Baseline wins: 45 traces
+Ties: 2 traces
 
 
 Biggest Improvements (Baseline better):
 --------------------------------------------------------------------------------
-  int_25_trace                               1.3236 →   1.3243 (↓ 0.0007)
-  infra_5_trace                              2.2083 →   2.2119 (↓ 0.0036)
-  fp_4_trace                                 0.5696 →   0.5736 (↓ 0.0040)
-  infra_2_trace                              0.4797 →   0.4838 (↓ 0.0041)
-  infra_8_trace                              1.2520 →   1.2568 (↓ 0.0048)
+  int_7_trace                                5.7956 →   5.7589 (↓ 0.0367)
+  web_6_trace                                4.9189 →   4.8893 (↓ 0.0296)
+  infra_15_trace                             8.4791 →   8.4547 (↓ 0.0244)
+  web_4_trace                                4.4589 →   4.4385 (↓ 0.0204)
+  media_3_trace                              1.4012 →   1.3813 (↓ 0.0199)
 
 
 Biggest Regressions (Baseline worse):
 --------------------------------------------------------------------------------
-  web_8_trace                                0.0000 →   5.1087 (↑ 5.1087)
-  int_1_trace                                9.0328 →  11.6458 (↑ 2.6130)
-  int_2_trace                                8.6194 →  10.9652 (↑ 2.3458)
-  int_22_trace                               3.5724 →   5.3965 (↑ 1.8241)
-  int_16_trace                               6.8140 →   8.1253 (↑ 1.3113)
+  int_21_trace                              15.7181 →  24.1502 (↑ 8.4321)
+  fp_13_trace                                8.9772 →  12.6898 (↑ 3.7126)
+  fp_8_trace                                 5.2985 →   7.8738 (↑ 2.5753)
+  int_1_trace                                9.2211 →  11.6458 (↑ 2.4247)
+  int_2_trace                                8.7270 →  10.9652 (↑ 2.2382)

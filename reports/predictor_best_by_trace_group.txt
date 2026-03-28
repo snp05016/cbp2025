@@ -1,0 +1,200 @@
+====================================================================================================
+PREDICTOR BEST-BY-TRACE-GROUP REPORT
+====================================================================================================
+
+Results directory: /Users/saumya/Desktop/Winter26/Cmput429/cbp2025/results
+CSV files loaded: 9
+Predictors loaded: 9
+Trace groups found: compress, fp, infra, int, media, web
+
+Predictor sources:
+  - BALL-FAN: ball-fun.csv
+  - Baseline: baseline.csv
+  - Bullseye Predictor: bulleseye-predictor.csv
+  - Load-Value Correlator (Man): load-value-correlator-man-results.csv
+  - Multi-Perspective Predictor (Jimenez): multi-perspective-predictor.csv
+  - Programming Idiom Predictor (Mose): programming-idiom-predictor-mose.csv
+  - Register-Value Aware (Toru): register-value-aware-toru-results.csv
+  - TAGE-SC-L (Alberto Ros): tage-sc-l-alberto-ros-results.csv
+  - TAGE-SCL (Andrez Seznec): tage-scl-andrez-seznec-results.csv
+
+----------------------------------------------------------------------------------------------------
+TRACE GROUP: compress
+----------------------------------------------------------------------------------------------------
+Winner by mean CycWPPKI: Register-Value Aware (Toru)
+Winner by mean MPKI:     Register-Value Aware (Toru)
+
+Ranking (primary=Mean CycWPPKI, tiebreak=Mean MPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Register-Value Aware (Toru)                  8     91.5285     46.8401    109.0989     37.0384    354.6506      2.5599      1.7122      2.1269      1.3543      7.6547       7        6
+   2  Multi-Perspective Predictor (Jimenez)        8     93.1184     48.5555    109.1656     37.9420    356.4273      2.6779      1.8664      2.0704      1.4430      7.6342       0        1
+   3  Programming Idiom Predictor (Mose)           8     93.4738     48.6526    111.6717     37.8673    364.1609      2.6599      1.8565      2.1840      1.4278      7.9811       1        1
+   4  TAGE-SCL (Andrez Seznec)                     8     93.5508     48.5204    110.3743     37.8468    359.9322      2.6943      1.8701      2.1129      1.4407      7.7625       0        0
+   5  Load-Value Correlator (Man)                  8     93.8046     48.0817    112.3466     37.6991    365.0843      2.7149      1.8354      2.2610      1.4219      8.1504       0        0
+   6  TAGE-SC-L (Alberto Ros)                      8     94.4164     48.9615    111.7032     38.1832    364.1302      2.7579      1.8919      2.2266      1.4576      8.1117       0        0
+   7  Bullseye Predictor                           8     94.6391     48.8851    112.4328     38.1288    366.1485      2.7583      1.8859      2.2328      1.4570      8.1241       0        0
+   8  BALL-FAN                                     8     95.3399     49.4109    112.8979     38.6632    368.0032      2.7957      1.9112      2.2610      1.4847      8.2310       0        0
+   9  Baseline                                     8     95.3440     49.4742    112.9292     38.6241    368.0991      2.7988      1.9179      2.2672      1.4826      8.2499       0        0
+
+Ranking (primary=Mean MPKI, tiebreak=Mean CycWPPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Register-Value Aware (Toru)                  8     91.5285     46.8401    109.0989     37.0384    354.6506      2.5599      1.7122      2.1269      1.3543      7.6547       7        6
+   2  Programming Idiom Predictor (Mose)           8     93.4738     48.6526    111.6717     37.8673    364.1609      2.6599      1.8565      2.1840      1.4278      7.9811       1        1
+   3  Multi-Perspective Predictor (Jimenez)        8     93.1184     48.5555    109.1656     37.9420    356.4273      2.6779      1.8664      2.0704      1.4430      7.6342       0        1
+   4  TAGE-SCL (Andrez Seznec)                     8     93.5508     48.5204    110.3743     37.8468    359.9322      2.6943      1.8701      2.1129      1.4407      7.7625       0        0
+   5  Load-Value Correlator (Man)                  8     93.8046     48.0817    112.3466     37.6991    365.0843      2.7149      1.8354      2.2610      1.4219      8.1504       0        0
+   6  TAGE-SC-L (Alberto Ros)                      8     94.4164     48.9615    111.7032     38.1832    364.1302      2.7579      1.8919      2.2266      1.4576      8.1117       0        0
+   7  Bullseye Predictor                           8     94.6391     48.8851    112.4328     38.1288    366.1485      2.7583      1.8859      2.2328      1.4570      8.1241       0        0
+   8  BALL-FAN                                     8     95.3399     49.4109    112.8979     38.6632    368.0032      2.7957      1.9112      2.2610      1.4847      8.2310       0        0
+   9  Baseline                                     8     95.3440     49.4742    112.9292     38.6241    368.0991      2.7988      1.9179      2.2672      1.4826      8.2499       0        0
+
+----------------------------------------------------------------------------------------------------
+TRACE GROUP: fp
+----------------------------------------------------------------------------------------------------
+Winner by mean CycWPPKI: Register-Value Aware (Toru)
+Winner by mean MPKI:     Register-Value Aware (Toru)
+
+Ranking (primary=Mean CycWPPKI, tiebreak=Mean MPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Register-Value Aware (Toru)                 14    157.5297     78.2601    225.7491     12.5382    879.5392      3.5205      1.8995      4.4448      0.5119     14.9323       6        6
+   2  BALL-FAN                                    14    159.2234     82.5897    226.8088     15.3184    890.7131      3.5456      1.9566      4.1710      0.5742     15.5816       2        2
+   3  Load-Value Correlator (Man)                 14    161.3283     75.1450    228.5903     13.4090    892.4749      3.7863      1.9998      4.6056      0.5457     15.5856       1        0
+   4  Multi-Perspective Predictor (Jimenez)       14    162.2856     75.3010    227.2462     15.1999    886.2929      3.8498      1.9545      4.6796      0.5696     15.5240       3        3
+   5  TAGE-SCL (Andrez Seznec)                    14    162.6709     81.5907    227.9411     12.9648    890.3120      3.8536      1.9409      4.6889      0.5247     15.5537       1        2
+   6  TAGE-SC-L (Alberto Ros)                     14    163.2704     80.3238    228.0980     13.9077    890.9849      3.8823      1.9108      4.7127      0.5696     15.5963       0        0
+   7  Bullseye Predictor                          14    163.5623     76.6194    228.8411     12.7528    891.7387      3.8750      1.9427      4.7181      0.5749     15.5798       0        0
+   8  Programming Idiom Predictor (Mose)          14    165.8233     80.7915    229.2779     14.5385    892.8577      3.9243      1.9609      4.7659      0.5128     15.6250       1        1
+   9  Baseline                                    14    167.2441     82.5650    228.3590     15.3580    890.7131      4.0147      2.0744      4.7390      0.5736     15.5816       0        0
+
+Ranking (primary=Mean MPKI, tiebreak=Mean CycWPPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Register-Value Aware (Toru)                 14    157.5297     78.2601    225.7491     12.5382    879.5392      3.5205      1.8995      4.4448      0.5119     14.9323       6        6
+   2  BALL-FAN                                    14    159.2234     82.5897    226.8088     15.3184    890.7131      3.5456      1.9566      4.1710      0.5742     15.5816       2        2
+   3  Load-Value Correlator (Man)                 14    161.3283     75.1450    228.5903     13.4090    892.4749      3.7863      1.9998      4.6056      0.5457     15.5856       1        0
+   4  Multi-Perspective Predictor (Jimenez)       14    162.2856     75.3010    227.2462     15.1999    886.2929      3.8498      1.9545      4.6796      0.5696     15.5240       3        3
+   5  TAGE-SCL (Andrez Seznec)                    14    162.6709     81.5907    227.9411     12.9648    890.3120      3.8536      1.9409      4.6889      0.5247     15.5537       1        2
+   6  Bullseye Predictor                          14    163.5623     76.6194    228.8411     12.7528    891.7387      3.8750      1.9427      4.7181      0.5749     15.5798       0        0
+   7  TAGE-SC-L (Alberto Ros)                     14    163.2704     80.3238    228.0980     13.9077    890.9849      3.8823      1.9108      4.7127      0.5696     15.5963       0        0
+   8  Programming Idiom Predictor (Mose)          14    165.8233     80.7915    229.2779     14.5385    892.8577      3.9243      1.9609      4.7659      0.5128     15.6250       1        1
+   9  Baseline                                    14    167.2441     82.5650    228.3590     15.3580    890.7131      4.0147      2.0744      4.7390      0.5736     15.5816       0        0
+
+----------------------------------------------------------------------------------------------------
+TRACE GROUP: infra
+----------------------------------------------------------------------------------------------------
+Winner by mean CycWPPKI: Load-Value Correlator (Man)
+Winner by mean MPKI:     Register-Value Aware (Toru)
+
+Ranking (primary=Mean CycWPPKI, tiebreak=Mean MPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Load-Value Correlator (Man)                 16    222.4400    226.6595    205.2933     14.2694    656.8309      2.4703      1.2311      2.3088      0.2923      8.3267       3        2
+   2  Register-Value Aware (Toru)                 16    222.8747    226.0851    204.6600     12.0752    654.2454      2.3935      1.2190      2.2557      0.2954      8.1676       8       11
+   3  TAGE-SCL (Andrez Seznec)                    16    224.0943    225.3487    204.5554     15.3624    658.1001      2.5307      1.3314      2.2426      0.3743      8.2764       5        3
+   4  Multi-Perspective Predictor (Jimenez)       16    225.1671    227.2702    205.2335     14.9922    656.9268      2.5459      1.3485      2.2534      0.3503      8.2957       0        0
+   5  TAGE-SC-L (Alberto Ros)                     16    225.2350    226.2549    205.2957     14.4301    656.7414      2.5587      1.3334      2.2668      0.3472      8.3148       0        0
+   6  Bullseye Predictor                          16    225.6216    226.5770    205.6493     13.7729    656.2521      2.5634      1.3415      2.2791      0.3399      8.3568       0        0
+   7  Baseline                                    16    227.8197    231.3618    205.4874     15.0823    657.8492      2.6313      1.3907      2.3030      0.3574      8.4547       0        0
+   8  BALL-FAN                                    16    227.9120    231.0136    205.6420     15.1468    657.8201      2.6335      1.3874      2.3109      0.3581      8.4791       0        0
+   9  Programming Idiom Predictor (Mose)          16    228.8424    228.3787    209.1335     14.9072    671.4811      2.5878      1.3400      2.2983      0.3543      8.4228       0        0
+
+Ranking (primary=Mean MPKI, tiebreak=Mean CycWPPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Register-Value Aware (Toru)                 16    222.8747    226.0851    204.6600     12.0752    654.2454      2.3935      1.2190      2.2557      0.2954      8.1676       8       11
+   2  Load-Value Correlator (Man)                 16    222.4400    226.6595    205.2933     14.2694    656.8309      2.4703      1.2311      2.3088      0.2923      8.3267       3        2
+   3  TAGE-SCL (Andrez Seznec)                    16    224.0943    225.3487    204.5554     15.3624    658.1001      2.5307      1.3314      2.2426      0.3743      8.2764       5        3
+   4  Multi-Perspective Predictor (Jimenez)       16    225.1671    227.2702    205.2335     14.9922    656.9268      2.5459      1.3485      2.2534      0.3503      8.2957       0        0
+   5  TAGE-SC-L (Alberto Ros)                     16    225.2350    226.2549    205.2957     14.4301    656.7414      2.5587      1.3334      2.2668      0.3472      8.3148       0        0
+   6  Bullseye Predictor                          16    225.6216    226.5770    205.6493     13.7729    656.2521      2.5634      1.3415      2.2791      0.3399      8.3568       0        0
+   7  Programming Idiom Predictor (Mose)          16    228.8424    228.3787    209.1335     14.9072    671.4811      2.5878      1.3400      2.2983      0.3543      8.4228       0        0
+   8  Baseline                                    16    227.8197    231.3618    205.4874     15.0823    657.8492      2.6313      1.3907      2.3030      0.3574      8.4547       0        0
+   9  BALL-FAN                                    16    227.9120    231.0136    205.6420     15.1468    657.8201      2.6335      1.3874      2.3109      0.3581      8.4791       0        0
+
+----------------------------------------------------------------------------------------------------
+TRACE GROUP: int
+----------------------------------------------------------------------------------------------------
+Winner by mean CycWPPKI: Register-Value Aware (Toru)
+Winner by mean MPKI:     Register-Value Aware (Toru)
+
+Ranking (primary=Mean CycWPPKI, tiebreak=Mean MPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Register-Value Aware (Toru)                 37    164.7632    106.3749    191.1677      9.4699    872.0948      4.0274      2.9736      4.3075      0.3713     21.6842      13       11
+   2  TAGE-SCL (Andrez Seznec)                    37    170.6038    107.4011    207.4913      9.4440   1006.1050      4.1605      3.0001      4.5617      0.3781     23.3263       4        0
+   3  Multi-Perspective Predictor (Jimenez)       37    170.7915    114.1227    204.7525      9.8859   1017.7054      4.1197      3.1277      4.5022      0.3832     23.2648      11       12
+   4  Load-Value Correlator (Man)                 37    172.6293    108.2294    209.0540      9.4740   1014.4575      4.2343      2.9848      4.5820      0.3669     23.5688       2        3
+   5  Bullseye Predictor                          37    172.9806    108.4624    208.8258      9.6835   1013.2001      4.2306      2.9654      4.6369      0.3815     23.7590       1        1
+   6  TAGE-SC-L (Alberto Ros)                     37    174.5875    106.7572    210.3406     10.0990   1019.1758      4.2795      2.9562      4.6959      0.3844     23.7948       5        6
+   7  BALL-FAN                                    37    175.9467    130.9983    192.8585     10.1256    872.8828      4.3284      3.4540      3.8610      0.3952     15.7181       0        2
+   8  Programming Idiom Predictor (Mose)          37    176.6439    113.1643    212.4078      9.5033   1028.4843      4.3374      3.0431      4.6652      0.3731     23.2204       1        2
+   9  Baseline                                    37    182.8211    130.9235    213.8119     10.0807   1039.0121      4.6999      3.4824      4.8686      0.3966     24.1502       0        0
+
+Ranking (primary=Mean MPKI, tiebreak=Mean CycWPPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Register-Value Aware (Toru)                 37    164.7632    106.3749    191.1677      9.4699    872.0948      4.0274      2.9736      4.3075      0.3713     21.6842      13       11
+   2  Multi-Perspective Predictor (Jimenez)       37    170.7915    114.1227    204.7525      9.8859   1017.7054      4.1197      3.1277      4.5022      0.3832     23.2648      11       12
+   3  TAGE-SCL (Andrez Seznec)                    37    170.6038    107.4011    207.4913      9.4440   1006.1050      4.1605      3.0001      4.5617      0.3781     23.3263       4        0
+   4  Bullseye Predictor                          37    172.9806    108.4624    208.8258      9.6835   1013.2001      4.2306      2.9654      4.6369      0.3815     23.7590       1        1
+   5  Load-Value Correlator (Man)                 37    172.6293    108.2294    209.0540      9.4740   1014.4575      4.2343      2.9848      4.5820      0.3669     23.5688       2        3
+   6  TAGE-SC-L (Alberto Ros)                     37    174.5875    106.7572    210.3406     10.0990   1019.1758      4.2795      2.9562      4.6959      0.3844     23.7948       5        6
+   7  BALL-FAN                                    37    175.9467    130.9983    192.8585     10.1256    872.8828      4.3284      3.4540      3.8610      0.3952     15.7181       0        2
+   8  Programming Idiom Predictor (Mose)          37    176.6439    113.1643    212.4078      9.5033   1028.4843      4.3374      3.0431      4.6652      0.3731     23.2204       1        2
+   9  Baseline                                    37    182.8211    130.9235    213.8119     10.0807   1039.0121      4.6999      3.4824      4.8686      0.3966     24.1502       0        0
+
+----------------------------------------------------------------------------------------------------
+TRACE GROUP: media
+----------------------------------------------------------------------------------------------------
+Winner by mean CycWPPKI: Multi-Perspective Predictor (Jimenez)
+Winner by mean MPKI:     Multi-Perspective Predictor (Jimenez)
+
+Ranking (primary=Mean CycWPPKI, tiebreak=Mean MPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Multi-Perspective Predictor (Jimenez)        4     29.1993     28.5629      2.3885     27.1830     32.4886      0.9203      0.9917      0.2785      0.5231      1.1746       3        3
+   2  TAGE-SCL (Andrez Seznec)                     4     29.7805     28.5772      2.5463     28.3775     33.5903      0.9573      1.0384      0.3168      0.5057      1.2465       1        1
+   3  Register-Value Aware (Toru)                  4     29.8243     28.9278      2.3788     28.1058     33.3356      0.9515      1.0372      0.3101      0.5058      1.2256       0        0
+   4  TAGE-SC-L (Alberto Ros)                      4     30.1751     29.0136      2.5568     28.6813     33.9921      0.9639      1.0487      0.3198      0.5065      1.2518       0        0
+   5  Bullseye Predictor                           4     30.6655     29.5893      2.6257     28.9095     34.5739      0.9954      1.0820      0.3264      0.5282      1.2893       0        0
+   6  Programming Idiom Predictor (Mose)           4     31.0905     29.8571      2.6906     29.5279     35.1197      1.0099      1.0964      0.3352      0.5319      1.3150       0        0
+   7  Baseline                                     4     31.9591     30.7964      2.9702     29.8774     36.3661      1.0621      1.1677      0.3677      0.5317      1.3813       0        0
+   8  BALL-FAN                                     4     32.0361     30.8423      3.1712     29.7322     36.7277      1.0661      1.1704      0.3785      0.5226      1.4012       0        0
+   9  Load-Value Correlator (Man)                  4     32.1701     31.0626      3.0482     29.8897     36.6655      1.0638      1.1664      0.3719      0.5296      1.3927       0        0
+
+Ranking (primary=Mean MPKI, tiebreak=Mean CycWPPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Multi-Perspective Predictor (Jimenez)        4     29.1993     28.5629      2.3885     27.1830     32.4886      0.9203      0.9917      0.2785      0.5231      1.1746       3        3
+   2  Register-Value Aware (Toru)                  4     29.8243     28.9278      2.3788     28.1058     33.3356      0.9515      1.0372      0.3101      0.5058      1.2256       0        0
+   3  TAGE-SCL (Andrez Seznec)                     4     29.7805     28.5772      2.5463     28.3775     33.5903      0.9573      1.0384      0.3168      0.5057      1.2465       1        1
+   4  TAGE-SC-L (Alberto Ros)                      4     30.1751     29.0136      2.5568     28.6813     33.9921      0.9639      1.0487      0.3198      0.5065      1.2518       0        0
+   5  Bullseye Predictor                           4     30.6655     29.5893      2.6257     28.9095     34.5739      0.9954      1.0820      0.3264      0.5282      1.2893       0        0
+   6  Programming Idiom Predictor (Mose)           4     31.0905     29.8571      2.6906     29.5279     35.1197      1.0099      1.0964      0.3352      0.5319      1.3150       0        0
+   7  Baseline                                     4     31.9591     30.7964      2.9702     29.8774     36.3661      1.0621      1.1677      0.3677      0.5317      1.3813       0        0
+   8  Load-Value Correlator (Man)                  4     32.1701     31.0626      3.0482     29.8897     36.6655      1.0638      1.1664      0.3719      0.5296      1.3927       0        0
+   9  BALL-FAN                                     4     32.0361     30.8423      3.1712     29.7322     36.7277      1.0661      1.1704      0.3785      0.5226      1.4012       0        0
+
+----------------------------------------------------------------------------------------------------
+TRACE GROUP: web
+----------------------------------------------------------------------------------------------------
+Winner by mean CycWPPKI: Register-Value Aware (Toru)
+Winner by mean MPKI:     Register-Value Aware (Toru)
+
+Ranking (primary=Mean CycWPPKI, tiebreak=Mean MPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Register-Value Aware (Toru)                 26    116.2235    117.4734     42.5025     34.7910    199.0889      3.3020      3.3361      1.3359      0.9431      5.7401       5        7
+   2  TAGE-SCL (Andrez Seznec)                    26    117.2158    117.0143     41.8696     35.4086    197.5129      3.3629      3.2962      1.4193      0.9623      6.1046      10        8
+   3  Bullseye Predictor                          26    117.5846    119.1190     41.3833     35.9537    200.8773      3.4033      3.4219      1.4406      0.9654      6.2471       3        1
+   4  TAGE-SC-L (Alberto Ros)                     26    117.7240    116.6980     41.6528     36.7957    199.8661      3.3875      3.3942      1.4063      1.0101      6.0090       2        4
+   5  Load-Value Correlator (Man)                 26    117.9265    118.5185     41.1837     37.2198    201.7077      3.4244      3.3960      1.4252      1.0186      6.1216       3        1
+   6  Multi-Perspective Predictor (Jimenez)       26    119.1521    125.3592     42.0136     35.9825    201.4005      3.4629      3.3327      1.5856      0.9747      7.5938       2        4
+   7  Programming Idiom Predictor (Mose)          26    120.1034    122.3955     42.3817     36.6261    202.8307      3.4657      3.4952      1.5181      0.9772      6.9881       1        1
+   8  Baseline                                    26    127.9613    131.1748     43.9407     40.5552    220.7238      3.8844      3.8209      1.6928      1.1539      7.7526       0        0
+   9  BALL-FAN                                    26    127.9654    131.6380     44.0168     40.5056    220.7583      3.8812      3.8087      1.6867      1.1653      7.7208       0        0
+
+Ranking (primary=Mean MPKI, tiebreak=Mean CycWPPKI):
+Rank  Predictor                                    N     MeanCWP      MedCWP      StdCWP      MinCWP      MaxCWP    MeanMPKI     MedMPKI     StdMPKI     MinMPKI     MaxMPKI  WinCWP  WinMPKI
+   1  Register-Value Aware (Toru)                 26    116.2235    117.4734     42.5025     34.7910    199.0889      3.3020      3.3361      1.3359      0.9431      5.7401       5        7
+   2  TAGE-SCL (Andrez Seznec)                    26    117.2158    117.0143     41.8696     35.4086    197.5129      3.3629      3.2962      1.4193      0.9623      6.1046      10        8
+   3  TAGE-SC-L (Alberto Ros)                     26    117.7240    116.6980     41.6528     36.7957    199.8661      3.3875      3.3942      1.4063      1.0101      6.0090       2        4
+   4  Bullseye Predictor                          26    117.5846    119.1190     41.3833     35.9537    200.8773      3.4033      3.4219      1.4406      0.9654      6.2471       3        1
+   5  Load-Value Correlator (Man)                 26    117.9265    118.5185     41.1837     37.2198    201.7077      3.4244      3.3960      1.4252      1.0186      6.1216       3        1
+   6  Multi-Perspective Predictor (Jimenez)       26    119.1521    125.3592     42.0136     35.9825    201.4005      3.4629      3.3327      1.5856      0.9747      7.5938       2        4
+   7  Programming Idiom Predictor (Mose)          26    120.1034    122.3955     42.3817     36.6261    202.8307      3.4657      3.4952      1.5181      0.9772      6.9881       1        1
+   8  BALL-FAN                                    26    127.9654    131.6380     44.0168     40.5056    220.7583      3.8812      3.8087      1.6867      1.1653      7.7208       0        0
+   9  Baseline                                    26    127.9613    131.1748     43.9407     40.5552    220.7238      3.8844      3.8209      1.6928      1.1539      7.7526       0        0
+

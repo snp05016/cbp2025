@@ -4,7 +4,6 @@ TRACE-BY-TRACE COMPARISON: Bulleseye Predictor vs TAGE-SCL-Andrez-Seznec
 
 Trace                                    Bulleseye Predictor MPKI TAGE-SCL-Andrez-Seznec MPKI Diff         Status              
 ----------------------------------------------------------------------------------------------------
-web_19_trace                             5.0903       0.0000       -5.0903      ✓ TAGE-SCL-Andrez-Seznec better
 int_21_trace                             23.7590      23.3263      -0.4327      ✓ TAGE-SCL-Andrez-Seznec better
 int_32_trace                             6.7235       6.3487       -0.3748      ✓ TAGE-SCL-Andrez-Seznec better
 compress_3_trace                         8.1241       7.7625       -0.3616      ✓ TAGE-SCL-Andrez-Seznec better
@@ -60,6 +59,7 @@ web_18_trace                             2.7449       2.7095       -0.0354      
 media_0_trace                            1.0855       1.0511       -0.0344      ≈ Similar           
 web_5_trace                              4.3019       4.2738       -0.0281      ≈ Similar           
 int_12_trace                             0.4313       0.4037       -0.0276      ≈ Similar           
+web_19_trace                             5.0903       5.0628       -0.0275      ≈ Similar           
 fp_1_trace                               15.5798      15.5537      -0.0261      ≈ Similar           
 fp_8_trace                               7.4114       7.3856       -0.0258      ≈ Similar           
 infra_7_trace                            1.4282       1.4041       -0.0241      ≈ Similar           

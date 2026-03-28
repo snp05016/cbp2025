@@ -6,13 +6,13 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Register-Value-Aware-Toru TAGE-SCL-Andrez-Seznec Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.3022               3.3918               ↑ 2.71% worse
-MR                             2.5681               2.6687               ↑ 3.92% worse
-IPC                            3.5450               3.5081               ↓ 1.04% worse
-Cycles                         14401963.4667        14447201.9524        ↑ 0.31% worse
-BrPerCyc                       0.4309               0.4257               ↓ 1.22% worse
-MispBrPerCyc                   0.0089               0.0092               ↑ 2.42% better
-CycWPPKI                       149.9141             151.7579             ↑ 1.23% worse
+MPKI                           3.3022               3.4400               ↑ 4.17% worse
+MR                             2.5681               2.6969               ↑ 5.02% worse
+IPC                            3.5450               3.5233               ↓ 0.61% worse
+Cycles                         14401963.4667        14536841.7619        ↑ 0.94% worse
+BrPerCyc                       0.4309               0.4283               ↓ 0.62% worse
+MispBrPerCyc                   0.0089               0.0092               ↑ 3.28% better
+CycWPPKI                       149.9141             153.2417             ↑ 2.22% worse
 
 
 Trace-by-Trace Comparison (MPKI):
@@ -24,11 +24,11 @@ Ties: 0 traces
 
 Biggest Improvements (TAGE-SCL-Andrez-Seznec better):
 --------------------------------------------------------------------------------
-  web_19_trace                               5.0857 →   0.0000 (↓ 5.0857)
   web_15_trace                               5.1194 →   5.0241 (↓ 0.0953)
   int_0_trace                                4.8418 →   4.7498 (↓ 0.0920)
   web_20_trace                               3.2357 →   3.1562 (↓ 0.0795)
   web_14_trace                               3.4365 →   3.3625 (↓ 0.0740)
+  web_2_trace                                3.7775 →   3.7103 (↓ 0.0672)
 
 
 Biggest Regressions (TAGE-SCL-Andrez-Seznec worse):

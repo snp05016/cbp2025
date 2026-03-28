@@ -57,8 +57,8 @@ compress_1_trace                         1.6120       1.6289       0.0169       
 fp_0_trace                               3.2399       3.2610       0.0211       ≈ Similar           
 int_19_trace                             0.7913       0.8155       0.0242       ≈ Similar           
 compress_4_trace                         1.7475       1.7729       0.0254       ≈ Similar           
-infra_11_trace                           1.0022       1.0299       0.0277       ≈ Similar           
 compress_6_trace                         1.8222       1.8499       0.0277       ≈ Similar           
+infra_11_trace                           1.0022       1.0299       0.0277       ≈ Similar           
 web_19_trace                             5.1496       5.1795       0.0299       ≈ Similar           
 fp_7_trace                               1.0370       1.0718       0.0348       ≈ Similar           
 fp_1_trace                               15.5856      15.6250      0.0394       ≈ Similar           

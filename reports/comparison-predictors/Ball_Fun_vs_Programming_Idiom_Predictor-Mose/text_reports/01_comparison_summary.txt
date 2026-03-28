@@ -6,35 +6,35 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Ball Fun             Programming Idiom Predictor-Mose Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4631               3.5453               ↑ 2.37% worse
-MR                             2.7758               2.7608               ↓ 0.54% better
-IPC                            3.7119               3.4974               ↓ 5.78% worse
-Cycles                         15341076.1023        14667399.0000        ↓ 4.39% better
-BrPerCyc                       0.4388               0.4248               ↓ 3.19% worse
-MispBrPerCyc                   0.0096               0.0094               ↓ 1.71% worse
-CycWPPKI                       159.8244             157.2730             ↓ 1.60% better
+MPKI                           3.6140               3.5453               ↓ 1.90% better
+MR                             2.8350               2.7608               ↓ 2.62% better
+IPC                            3.4777               3.4974               ↑ 0.57% better
+Cycles                         14698980.7238        14667399.0000        ↓ 0.21% better
+BrPerCyc                       0.4222               0.4248               ↑ 0.60% better
+MispBrPerCyc                   0.0097               0.0094               ↓ 3.34% worse
+CycWPPKI                       158.1306             157.2730             ↓ 0.54% better
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Ball Fun wins: 58 traces
-Programming Idiom Predictor-Mose wins: 30 traces
+Ball Fun wins: 16 traces
+Programming Idiom Predictor-Mose wins: 89 traces
 Ties: 0 traces
 
 
 Biggest Improvements (Programming Idiom Predictor-Mose better):
 --------------------------------------------------------------------------------
-  int_16_trace                               6.8140 →   6.0105 (↓ 0.8035)
-  web_7_trace                                7.5938 →   6.9881 (↓ 0.6057)
-  compress_0_trace                           3.1891 →   2.7349 (↓ 0.4542)
-  int_0_trace                                4.7547 →   4.3111 (↓ 0.4436)
-  int_17_trace                               5.4692 →   5.0345 (↓ 0.4347)
+  int_16_trace                               8.1005 →   6.0105 (↓ 2.0900)
+  int_17_trace                               6.3587 →   5.0345 (↓ 1.3242)
+  int_8_trace                                7.1630 →   5.9655 (↓ 1.1975)
+  int_7_trace                                5.7956 →   4.6386 (↓ 1.1570)
+  web_11_trace                               5.7855 →   4.7711 (↓ 1.0144)
 
 
 Biggest Regressions (Programming Idiom Predictor-Mose worse):
 --------------------------------------------------------------------------------
-  web_8_trace                                0.0000 →   4.6116 (↑ 4.6116)
-  int_1_trace                                9.0328 →  11.6182 (↑ 2.5854)
-  int_2_trace                                8.6194 →  10.8678 (↑ 2.2484)
-  int_22_trace                               3.5724 →   5.2470 (↑ 1.6746)
-  int_32_trace                               5.9951 →   6.5669 (↑ 0.5718)
+  int_21_trace                              15.7181 →  23.2204 (↑ 7.5023)
+  fp_13_trace                                8.9772 →  12.6051 (↑ 3.6279)
+  int_1_trace                                9.2211 →  11.6182 (↑ 2.3971)
+  fp_8_trace                                 5.2985 →   7.6591 (↑ 2.3606)
+  int_2_trace                                8.7270 →  10.8678 (↑ 2.1408)

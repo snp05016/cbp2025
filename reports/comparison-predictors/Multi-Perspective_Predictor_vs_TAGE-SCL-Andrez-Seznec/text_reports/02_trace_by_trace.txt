@@ -4,7 +4,6 @@ TRACE-BY-TRACE COMPARISON: Multi-Perspective Predictor vs TAGE-SCL-Andrez-Seznec
 
 Trace                                    Multi-Perspective Predictor MPKI TAGE-SCL-Andrez-Seznec MPKI Diff         Status              
 ----------------------------------------------------------------------------------------------------
-web_19_trace                             5.1898       0.0000       -5.1898      ✓ TAGE-SCL-Andrez-Seznec better
 web_7_trace                              7.5938       6.1046       -1.4892      ✓ TAGE-SCL-Andrez-Seznec better
 int_16_trace                             6.8140       5.8279       -0.9861      ✓ TAGE-SCL-Andrez-Seznec better
 int_17_trace                             5.4692       4.8436       -0.6256      ✓ TAGE-SCL-Andrez-Seznec better
@@ -21,6 +20,7 @@ int_20_trace                             2.5326       2.3835       -0.1491      
 web_8_trace                              4.7212       4.5779       -0.1433      ✓ TAGE-SCL-Andrez-Seznec better
 web_4_trace                              4.1487       4.0140       -0.1347      ✓ TAGE-SCL-Andrez-Seznec better
 int_36_trace                             3.1277       3.0001       -0.1276      ✓ TAGE-SCL-Andrez-Seznec better
+web_19_trace                             5.1898       5.0628       -0.1270      ✓ TAGE-SCL-Andrez-Seznec better
 web_25_trace                             5.8373       5.7130       -0.1243      ✓ TAGE-SCL-Andrez-Seznec better
 int_18_trace                             0.7793       0.6654       -0.1139      ✓ TAGE-SCL-Andrez-Seznec better
 web_5_trace                              4.3860       4.2738       -0.1122      ✓ TAGE-SCL-Andrez-Seznec better

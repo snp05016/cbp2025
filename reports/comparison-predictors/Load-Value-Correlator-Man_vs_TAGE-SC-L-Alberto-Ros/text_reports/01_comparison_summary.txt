@@ -6,29 +6,29 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Load-Value-Correlator-Man TAGE-SC-L-Alberto-Ros Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4687               3.3898               ↓ 2.27% better
-MR                             2.7183               2.6697               ↓ 1.79% better
-IPC                            3.5159               3.3537               ↓ 4.61% worse
-Cycles                         14561854.8381        14106643.7238        ↓ 3.13% better
-BrPerCyc                       0.4274               0.4012               ↓ 6.13% worse
-MispBrPerCyc                   0.0093               0.0089               ↓ 3.92% worse
-CycWPPKI                       153.8107             151.4364             ↓ 1.54% better
+MPKI                           3.4687               3.5012               ↑ 0.94% worse
+MR                             2.7183               2.7427               ↑ 0.90% worse
+IPC                            3.5159               3.5140               ↓ 0.05% worse
+Cycles                         14561854.8381        14591981.5238        ↑ 0.21% worse
+BrPerCyc                       0.4274               0.4271               ↓ 0.07% worse
+MispBrPerCyc                   0.0093               0.0093               ↑ 0.35% better
+CycWPPKI                       153.8107             155.1061             ↑ 0.84% worse
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Load-Value-Correlator-Man wins: 46 traces
-TAGE-SC-L-Alberto-Ros wins: 59 traces
+Load-Value-Correlator-Man wins: 47 traces
+TAGE-SC-L-Alberto-Ros wins: 58 traces
 Ties: 0 traces
 
 
 Biggest Improvements (TAGE-SC-L-Alberto-Ros better):
 --------------------------------------------------------------------------------
-  int_9_trace                                3.7634 →   0.0000 (↓ 3.7634)
-  web_3_trace                                3.6024 →   0.0000 (↓ 3.6024)
-  web_14_trace                               3.4933 →   0.0000 (↓ 3.4933)
-  fp_6_trace                                 0.9790 →   0.0000 (↓ 0.9790)
   int_16_trace                               5.8167 →   5.5268 (↓ 0.2899)
+  int_31_trace                               0.8205 →   0.6166 (↓ 0.2039)
+  int_17_trace                               4.8546 →   4.6916 (↓ 0.1630)
+  media_3_trace                              1.3927 →   1.2518 (↓ 0.1409)
+  fp_3_trace                                 2.0291 →   1.9060 (↓ 0.1231)
 
 
 Biggest Regressions (TAGE-SC-L-Alberto-Ros worse):

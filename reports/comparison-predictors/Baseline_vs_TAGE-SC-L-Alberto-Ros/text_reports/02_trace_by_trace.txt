@@ -4,19 +4,16 @@ TRACE-BY-TRACE COMPARISON: Baseline vs TAGE-SC-L-Alberto-Ros
 
 Trace                                    Baseline MPKI TAGE-SC-L-Alberto-Ros MPKI Diff         Status              
 ----------------------------------------------------------------------------------------------------
-int_9_trace                              4.8555       0.0000       -4.8555      ✓ TAGE-SC-L-Alberto-Ros better
-web_3_trace                              3.9790       0.0000       -3.9790      ✓ TAGE-SC-L-Alberto-Ros better
-web_14_trace                             3.6627       0.0000       -3.6627      ✓ TAGE-SC-L-Alberto-Ros better
 int_16_trace                             8.1253       5.5268       -2.5985      ✓ TAGE-SC-L-Alberto-Ros better
 web_7_trace                              7.7526       6.0090       -1.7436      ✓ TAGE-SC-L-Alberto-Ros better
 int_17_trace                             6.3949       4.6916       -1.7033      ✓ TAGE-SC-L-Alberto-Ros better
 int_8_trace                              7.1931       5.7846       -1.4085      ✓ TAGE-SC-L-Alberto-Ros better
 int_7_trace                              5.7589       4.3662       -1.3927      ✓ TAGE-SC-L-Alberto-Ros better
+int_9_trace                              4.8555       3.6406       -1.2149      ✓ TAGE-SC-L-Alberto-Ros better
 web_11_trace                             5.7895       4.6736       -1.1159      ✓ TAGE-SC-L-Alberto-Ros better
 int_36_trace                             3.9821       2.9342       -1.0479      ✓ TAGE-SC-L-Alberto-Ros better
 web_15_trace                             6.1054       5.0656       -1.0398      ✓ TAGE-SC-L-Alberto-Ros better
 web_20_trace                             4.2180       3.1869       -1.0311      ✓ TAGE-SC-L-Alberto-Ros better
-fp_6_trace                               1.0193       0.0000       -1.0193      ✓ TAGE-SC-L-Alberto-Ros better
 web_19_trace                             6.0075       5.0555       -0.9520      ✓ TAGE-SC-L-Alberto-Ros better
 int_30_trace                             12.9427      12.1062      -0.8365      ✓ TAGE-SC-L-Alberto-Ros better
 int_29_trace                             12.4572      11.7160      -0.7412      ✓ TAGE-SC-L-Alberto-Ros better
@@ -30,6 +27,7 @@ web_5_trace                              4.7119       4.2642       -0.4477      
 fp_9_trace                               4.5518       4.1115       -0.4403      ✓ TAGE-SC-L-Alberto-Ros better
 web_13_trace                             3.3938       2.9537       -0.4401      ✓ TAGE-SC-L-Alberto-Ros better
 int_20_trace                             2.7912       2.3512       -0.4400      ✓ TAGE-SC-L-Alberto-Ros better
+web_3_trace                              3.9790       3.5579       -0.4211      ✓ TAGE-SC-L-Alberto-Ros better
 web_2_trace                              4.1660       3.7474       -0.4186      ✓ TAGE-SC-L-Alberto-Ros better
 web_4_trace                              4.4385       4.0201       -0.4184      ✓ TAGE-SC-L-Alberto-Ros better
 fp_8_trace                               7.8738       7.4670       -0.4068      ✓ TAGE-SC-L-Alberto-Ros better
@@ -64,6 +62,7 @@ fp_3_trace                               2.0315       1.9060       -0.1255      
 fp_7_trace                               1.1277       1.0028       -0.1249      ✓ TAGE-SC-L-Alberto-Ros better
 media_1_trace                            1.1590       1.0357       -0.1233      ✓ TAGE-SC-L-Alberto-Ros better
 fp_12_trace                              1.2157       1.0944       -0.1213      ✓ TAGE-SC-L-Alberto-Ros better
+fp_6_trace                               1.0193       0.8987       -0.1206      ✓ TAGE-SC-L-Alberto-Ros better
 media_0_trace                            1.1764       1.0617       -0.1147      ✓ TAGE-SC-L-Alberto-Ros better
 int_34_trace                             3.0703       2.9562       -0.1141      ✓ TAGE-SC-L-Alberto-Ros better
 int_18_trace                             0.8474       0.7357       -0.1117      ✓ TAGE-SC-L-Alberto-Ros better
@@ -79,6 +78,7 @@ web_0_trace                              1.3961       1.3299       -0.0662      
 int_27_trace                             0.8728       0.8068       -0.0660      ≈ Similar           
 int_3_trace                              0.8818       0.8168       -0.0650      ≈ Similar           
 infra_9_trace                            4.5907       4.5259       -0.0648      ≈ Similar           
+web_14_trace                             3.6627       3.6001       -0.0626      ≈ Similar           
 infra_6_trace                            1.2642       1.2048       -0.0594      ≈ Similar           
 compress_0_trace                         3.2681       3.2129       -0.0552      ≈ Similar           
 infra_4_trace                            2.4790       2.4266       -0.0524      ≈ Similar           

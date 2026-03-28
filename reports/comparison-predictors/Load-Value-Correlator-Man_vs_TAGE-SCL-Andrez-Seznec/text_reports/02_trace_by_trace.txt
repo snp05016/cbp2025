@@ -4,7 +4,6 @@ TRACE-BY-TRACE COMPARISON: Load-Value-Correlator-Man vs TAGE-SCL-Andrez-Seznec
 
 Trace                                    Load-Value-Correlator-Man MPKI TAGE-SCL-Andrez-Seznec MPKI Diff         Status              
 ----------------------------------------------------------------------------------------------------
-web_19_trace                             5.1496       0.0000       -5.1496      ✓ TAGE-SCL-Andrez-Seznec better
 int_22_trace                             4.8609       4.2827       -0.5782      ✓ TAGE-SCL-Andrez-Seznec better
 compress_3_trace                         8.1504       7.7625       -0.3879      ✓ TAGE-SCL-Andrez-Seznec better
 int_35_trace                             2.3653       2.0167       -0.3486      ✓ TAGE-SCL-Andrez-Seznec better
@@ -37,6 +36,7 @@ web_25_trace                             5.8123       5.7130       -0.0993      
 infra_13_trace                           4.0586       3.9686       -0.0900      ≈ Similar           
 web_6_trace                              4.6256       4.5376       -0.0880      ≈ Similar           
 infra_9_trace                            4.5513       4.4643       -0.0870      ≈ Similar           
+web_19_trace                             5.1496       5.0628       -0.0868      ≈ Similar           
 web_4_trace                              4.0909       4.0140       -0.0769      ≈ Similar           
 infra_14_trace                           5.2684       5.1953       -0.0731      ≈ Similar           
 infra_10_trace                           5.2171       5.1442       -0.0729      ≈ Similar           

@@ -6,35 +6,35 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Ball Fun             TAGE-SC-L-Alberto-Ros Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4631               3.3898               ↓ 2.12% better
-MR                             2.7758               2.6697               ↓ 3.82% better
-IPC                            3.7119               3.3537               ↓ 9.65% worse
-Cycles                         15341076.1023        14106643.7238        ↓ 8.05% better
-BrPerCyc                       0.4388               0.4012               ↓ 8.56% worse
-MispBrPerCyc                   0.0096               0.0089               ↓ 6.54% worse
-CycWPPKI                       159.8244             151.4364             ↓ 5.25% better
+MPKI                           3.6140               3.5012               ↓ 3.12% better
+MR                             2.8350               2.7427               ↓ 3.26% better
+IPC                            3.4777               3.5140               ↑ 1.04% better
+Cycles                         14698980.7238        14591981.5238        ↓ 0.73% better
+BrPerCyc                       0.4222               0.4271               ↑ 1.15% better
+MispBrPerCyc                   0.0097               0.0093               ↓ 4.01% worse
+CycWPPKI                       158.1306             155.1061             ↓ 1.91% better
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Ball Fun wins: 56 traces
-TAGE-SC-L-Alberto-Ros wins: 31 traces
-Ties: 1 traces
+Ball Fun wins: 10 traces
+TAGE-SC-L-Alberto-Ros wins: 95 traces
+Ties: 0 traces
 
 
 Biggest Improvements (TAGE-SC-L-Alberto-Ros better):
 --------------------------------------------------------------------------------
-  int_9_trace                                3.9141 →   0.0000 (↓ 3.9141)
-  web_3_trace                                3.5754 →   0.0000 (↓ 3.5754)
-  web_7_trace                                7.5938 →   6.0090 (↓ 1.5848)
-  int_16_trace                               6.8140 →   5.5268 (↓ 1.2872)
-  fp_6_trace                                 0.8251 →   0.0000 (↓ 0.8251)
+  int_16_trace                               8.1005 →   5.5268 (↓ 2.5737)
+  web_7_trace                                7.7208 →   6.0090 (↓ 1.7118)
+  int_17_trace                               6.3587 →   4.6916 (↓ 1.6671)
+  int_7_trace                                5.7956 →   4.3662 (↓ 1.4294)
+  int_8_trace                                7.1630 →   5.7846 (↓ 1.3784)
 
 
 Biggest Regressions (TAGE-SC-L-Alberto-Ros worse):
 --------------------------------------------------------------------------------
-  web_8_trace                                0.0000 →   4.5731 (↑ 4.5731)
-  int_1_trace                                9.0328 →  11.4406 (↑ 2.4078)
-  int_2_trace                                8.6194 →  10.7227 (↑ 2.1033)
-  int_22_trace                               3.5724 →   4.8095 (↑ 1.2371)
-  int_32_trace                               5.9951 →   6.6269 (↑ 0.6318)
+  int_21_trace                              15.7181 →  23.7948 (↑ 8.0767)
+  fp_13_trace                                8.9772 →  12.4504 (↑ 3.4732)
+  int_1_trace                                9.2211 →  11.4406 (↑ 2.2195)
+  fp_8_trace                                 5.2985 →   7.4670 (↑ 2.1685)
+  int_2_trace                                8.7270 →  10.7227 (↑ 1.9957)

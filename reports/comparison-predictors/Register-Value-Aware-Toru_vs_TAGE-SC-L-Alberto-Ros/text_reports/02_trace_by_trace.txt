@@ -4,10 +4,6 @@ TRACE-BY-TRACE COMPARISON: Register-Value-Aware-Toru vs TAGE-SC-L-Alberto-Ros
 
 Trace                                    Register-Value-Aware-Toru MPKI TAGE-SC-L-Alberto-Ros MPKI Diff         Status              
 ----------------------------------------------------------------------------------------------------
-int_9_trace                              3.6499       0.0000       -3.6499      ✓ TAGE-SC-L-Alberto-Ros better
-web_3_trace                              3.5768       0.0000       -3.5768      ✓ TAGE-SC-L-Alberto-Ros better
-web_14_trace                             3.4365       0.0000       -3.4365      ✓ TAGE-SC-L-Alberto-Ros better
-fp_6_trace                               0.9122       0.0000       -0.9122      ✓ TAGE-SC-L-Alberto-Ros better
 int_16_trace                             5.7002       5.5268       -0.1734      ✓ TAGE-SC-L-Alberto-Ros better
 int_17_trace                             4.7567       4.6916       -0.0651      ≈ Similar           
 fp_10_trace                              1.9757       1.9156       -0.0601      ≈ Similar           
@@ -19,8 +15,11 @@ web_8_trace                              4.6201       4.5731       -0.0470      
 int_36_trace                             2.9736       2.9342       -0.0394      ≈ Similar           
 web_19_trace                             5.0857       5.0555       -0.0302      ≈ Similar           
 web_2_trace                              3.7775       3.7474       -0.0301      ≈ Similar           
+web_3_trace                              3.5768       3.5579       -0.0189      ≈ Similar           
+fp_6_trace                               0.9122       0.8987       -0.0135      ≈ Similar           
 int_25_trace                             1.3232       1.3109       -0.0123      ≈ Similar           
 web_4_trace                              4.0301       4.0201       -0.0100      ≈ Similar           
+int_9_trace                              3.6499       3.6406       -0.0093      ≈ Similar           
 int_19_trace                             0.7603       0.7515       -0.0088      ≈ Similar           
 int_8_trace                              5.7914       5.7846       -0.0068      ≈ Similar           
 media_1_trace                            1.0414       1.0357       -0.0057      ≈ Similar           
@@ -77,6 +76,7 @@ compress_1_trace                         1.5125       1.6580       0.1455       
 infra_15_trace                           8.1676       8.3148       0.1472       ✗ Register-Value-Aware-Toru better
 infra_2_trace                            0.3041       0.4526       0.1485       ✗ Register-Value-Aware-Toru better
 int_11_trace                             3.8873       4.0381       0.1508       ✗ Register-Value-Aware-Toru better
+web_14_trace                             3.4365       3.6001       0.1636       ✗ Register-Value-Aware-Toru better
 int_28_trace                             3.2288       3.3954       0.1666       ✗ Register-Value-Aware-Toru better
 compress_4_trace                         1.6297       1.8006       0.1709       ✗ Register-Value-Aware-Toru better
 compress_5_trace                         1.7338       1.9050       0.1712       ✗ Register-Value-Aware-Toru better

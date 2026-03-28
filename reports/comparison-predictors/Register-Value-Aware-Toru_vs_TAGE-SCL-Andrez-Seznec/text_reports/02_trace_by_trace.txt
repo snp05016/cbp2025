@@ -4,7 +4,6 @@ TRACE-BY-TRACE COMPARISON: Register-Value-Aware-Toru vs TAGE-SCL-Andrez-Seznec
 
 Trace                                    Register-Value-Aware-Toru MPKI TAGE-SCL-Andrez-Seznec MPKI Diff         Status              
 ----------------------------------------------------------------------------------------------------
-web_19_trace                             5.0857       0.0000       -5.0857      ✓ TAGE-SCL-Andrez-Seznec better
 web_15_trace                             5.1194       5.0241       -0.0953      ≈ Similar           
 int_0_trace                              4.8418       4.7498       -0.0920      ≈ Similar           
 web_20_trace                             3.2357       3.1562       -0.0795      ≈ Similar           
@@ -20,6 +19,7 @@ web_6_trace                              4.5642       4.5376       -0.0266      
 infra_11_trace                           0.9728       0.9468       -0.0260      ≈ Similar           
 infra_12_trace                           0.9525       0.9276       -0.0249      ≈ Similar           
 web_3_trace                              3.5768       3.5523       -0.0245      ≈ Similar           
+web_19_trace                             5.0857       5.0628       -0.0229      ≈ Similar           
 infra_9_trace                            4.4829       4.4643       -0.0186      ≈ Similar           
 web_4_trace                              4.0301       4.0140       -0.0161      ≈ Similar           
 media_1_trace                            1.0414       1.0257       -0.0157      ≈ Similar           

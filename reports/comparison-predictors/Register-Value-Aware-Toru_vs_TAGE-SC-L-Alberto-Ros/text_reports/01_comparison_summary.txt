@@ -6,29 +6,29 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Register-Value-Aware-Toru TAGE-SC-L-Alberto-Ros Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.3022               3.3898               ↑ 2.65% worse
-MR                             2.5681               2.6697               ↑ 3.96% worse
-IPC                            3.5450               3.3537               ↓ 5.40% worse
-Cycles                         14401963.4667        14106643.7238        ↓ 2.05% better
-BrPerCyc                       0.4309               0.4012               ↓ 6.90% worse
-MispBrPerCyc                   0.0089               0.0089               ↓ 0.00% worse
-CycWPPKI                       149.9141             151.4364             ↑ 1.02% worse
+MPKI                           3.3022               3.5012               ↑ 6.03% worse
+MR                             2.5681               2.7427               ↑ 6.80% worse
+IPC                            3.5450               3.5140               ↓ 0.88% worse
+Cycles                         14401963.4667        14591981.5238        ↑ 1.32% worse
+BrPerCyc                       0.4309               0.4271               ↓ 0.89% worse
+MispBrPerCyc                   0.0089               0.0093               ↑ 4.44% better
+CycWPPKI                       149.9141             155.1061             ↑ 3.46% worse
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Register-Value-Aware-Toru wins: 84 traces
-TAGE-SC-L-Alberto-Ros wins: 21 traces
+Register-Value-Aware-Toru wins: 85 traces
+TAGE-SC-L-Alberto-Ros wins: 20 traces
 Ties: 0 traces
 
 
 Biggest Improvements (TAGE-SC-L-Alberto-Ros better):
 --------------------------------------------------------------------------------
-  int_9_trace                                3.6499 →   0.0000 (↓ 3.6499)
-  web_3_trace                                3.5768 →   0.0000 (↓ 3.5768)
-  web_14_trace                               3.4365 →   0.0000 (↓ 3.4365)
-  fp_6_trace                                 0.9122 →   0.0000 (↓ 0.9122)
   int_16_trace                               5.7002 →   5.5268 (↓ 0.1734)
+  int_17_trace                               4.7567 →   4.6916 (↓ 0.0651)
+  fp_10_trace                                1.9757 →   1.9156 (↓ 0.0601)
+  web_5_trace                                4.3207 →   4.2642 (↓ 0.0565)
+  web_15_trace                               5.1194 →   5.0656 (↓ 0.0538)
 
 
 Biggest Regressions (TAGE-SC-L-Alberto-Ros worse):

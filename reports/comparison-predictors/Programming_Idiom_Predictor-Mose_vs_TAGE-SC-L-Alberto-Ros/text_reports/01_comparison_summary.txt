@@ -6,13 +6,13 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Programming Idiom Predictor-Mose TAGE-SC-L-Alberto-Ros Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.5453               3.3898               ↓ 4.39% better
-MR                             2.7608               2.6697               ↓ 3.30% better
-IPC                            3.4974               3.3537               ↓ 4.11% worse
-Cycles                         14667399.0000        14106643.7238        ↓ 3.82% better
-BrPerCyc                       0.4248               0.4012               ↓ 5.55% worse
-MispBrPerCyc                   0.0094               0.0089               ↓ 4.91% worse
-CycWPPKI                       157.2730             151.4364             ↓ 3.71% better
+MPKI                           3.5453               3.5012               ↓ 1.24% better
+MR                             2.7608               2.7427               ↓ 0.66% better
+IPC                            3.4974               3.5140               ↑ 0.47% better
+Cycles                         14667399.0000        14591981.5238        ↓ 0.51% better
+BrPerCyc                       0.4248               0.4271               ↑ 0.55% better
+MispBrPerCyc                   0.0094               0.0093               ↓ 0.69% worse
+CycWPPKI                       157.2730             155.1061             ↓ 1.38% better
 
 
 Trace-by-Trace Comparison (MPKI):
@@ -24,11 +24,11 @@ Ties: 0 traces
 
 Biggest Improvements (TAGE-SC-L-Alberto-Ros better):
 --------------------------------------------------------------------------------
-  int_9_trace                                3.9419 →   0.0000 (↓ 3.9419)
-  web_14_trace                               3.6513 →   0.0000 (↓ 3.6513)
-  web_3_trace                                3.6031 →   0.0000 (↓ 3.6031)
   web_7_trace                                6.9881 →   6.0090 (↓ 0.9791)
-  fp_6_trace                                 0.9645 →   0.0000 (↓ 0.9645)
+  int_16_trace                               6.0105 →   5.5268 (↓ 0.4837)
+  int_22_trace                               5.2470 →   4.8095 (↓ 0.4375)
+  fp_9_trace                                 4.4698 →   4.1115 (↓ 0.3583)
+  int_17_trace                               5.0345 →   4.6916 (↓ 0.3429)
 
 
 Biggest Regressions (TAGE-SC-L-Alberto-Ros worse):

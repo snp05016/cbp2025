@@ -6,35 +6,35 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Ball Fun             Load-Value-Correlator-Man Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4631               3.4687               ↑ 0.16% worse
-MR                             2.7758               2.7183               ↓ 2.07% better
-IPC                            3.7119               3.5159               ↓ 5.28% worse
-Cycles                         15341076.1023        14561854.8381        ↓ 5.08% better
-BrPerCyc                       0.4388               0.4274               ↓ 2.59% worse
-MispBrPerCyc                   0.0096               0.0093               ↓ 2.73% worse
-CycWPPKI                       159.8244             153.8107             ↓ 3.76% better
+MPKI                           3.6140               3.4687               ↓ 4.02% better
+MR                             2.8350               2.7183               ↓ 4.12% better
+IPC                            3.4777               3.5159               ↑ 1.10% better
+Cycles                         14698980.7238        14561854.8381        ↓ 0.93% better
+BrPerCyc                       0.4222               0.4274               ↑ 1.22% better
+MispBrPerCyc                   0.0097               0.0093               ↓ 4.34% worse
+CycWPPKI                       158.1306             153.8107             ↓ 2.73% better
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Ball Fun wins: 50 traces
-Load-Value-Correlator-Man wins: 38 traces
+Ball Fun wins: 12 traces
+Load-Value-Correlator-Man wins: 93 traces
 Ties: 0 traces
 
 
 Biggest Improvements (Load-Value-Correlator-Man better):
 --------------------------------------------------------------------------------
-  web_7_trace                                7.5938 →   6.1216 (↓ 1.4722)
-  int_16_trace                               6.8140 →   5.8167 (↓ 0.9973)
-  fp_8_trace                                 7.5897 →   6.6877 (↓ 0.9020)
-  int_17_trace                               5.4692 →   4.8546 (↓ 0.6146)
-  infra_4_trace                              2.3702 →   1.8311 (↓ 0.5391)
+  int_16_trace                               8.1005 →   5.8167 (↓ 2.2838)
+  web_7_trace                                7.7208 →   6.1216 (↓ 1.5992)
+  int_17_trace                               6.3587 →   4.8546 (↓ 1.5041)
+  int_7_trace                                5.7956 →   4.4331 (↓ 1.3625)
+  int_8_trace                                7.1630 →   5.8525 (↓ 1.3105)
 
 
 Biggest Regressions (Load-Value-Correlator-Man worse):
 --------------------------------------------------------------------------------
-  web_8_trace                                0.0000 →   4.6254 (↑ 4.6254)
-  int_1_trace                                9.0328 →  10.6773 (↑ 1.6445)
-  int_2_trace                                8.6194 →  10.0902 (↑ 1.4708)
-  int_22_trace                               3.5724 →   4.8609 (↑ 1.2885)
-  int_32_trace                               5.9951 →   6.6835 (↑ 0.6884)
+  int_21_trace                              15.7181 →  23.5688 (↑ 7.8507)
+  fp_13_trace                                8.9772 →  11.9520 (↑ 2.9748)
+  int_1_trace                                9.2211 →  10.6773 (↑ 1.4562)
+  fp_8_trace                                 5.2985 →   6.6877 (↑ 1.3892)
+  int_2_trace                                8.7270 →  10.0902 (↑ 1.3632)

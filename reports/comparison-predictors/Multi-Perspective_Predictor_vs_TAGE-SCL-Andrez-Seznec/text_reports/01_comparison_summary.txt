@@ -6,13 +6,13 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Multi-Perspective Predictor TAGE-SCL-Andrez-Seznec Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4495               3.3918               ↓ 1.67% better
-MR                             2.7030               2.6687               ↓ 1.27% better
-IPC                            3.5180               3.5081               ↓ 0.28% worse
-Cycles                         14543959.5143        14447201.9524        ↓ 0.67% better
-BrPerCyc                       0.4272               0.4257               ↓ 0.35% worse
-MispBrPerCyc                   0.0093               0.0092               ↓ 1.05% worse
-CycWPPKI                       153.8443             151.7579             ↓ 1.36% better
+MPKI                           3.4495               3.4400               ↓ 0.28% better
+MR                             2.7030               2.6969               ↓ 0.22% better
+IPC                            3.5180               3.5233               ↑ 0.15% better
+Cycles                         14543959.5143        14536841.7619        ↓ 0.05% better
+BrPerCyc                       0.4272               0.4283               ↑ 0.26% better
+MispBrPerCyc                   0.0093               0.0092               ↓ 0.22% worse
+CycWPPKI                       153.8443             153.2417             ↓ 0.39% better
 
 
 Trace-by-Trace Comparison (MPKI):
@@ -24,11 +24,11 @@ Ties: 0 traces
 
 Biggest Improvements (TAGE-SCL-Andrez-Seznec better):
 --------------------------------------------------------------------------------
-  web_19_trace                               5.1898 →   0.0000 (↓ 5.1898)
   web_7_trace                                7.5938 →   6.1046 (↓ 1.4892)
   int_16_trace                               6.8140 →   5.8279 (↓ 0.9861)
   int_17_trace                               5.4692 →   4.8436 (↓ 0.6256)
   int_30_trace                              12.2311 →  11.9056 (↓ 0.3255)
+  int_8_trace                                6.1344 →   5.8380 (↓ 0.2964)
 
 
 Biggest Regressions (TAGE-SCL-Andrez-Seznec worse):

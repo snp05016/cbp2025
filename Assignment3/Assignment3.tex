@@ -225,27 +225,7 @@ flow history, in which case none of MPP's history-based features would help. It 
 rather than helping it. That said, I want to be clear that these are speculative explanations. Without knowing exactly what workloads these traces represent, it is difficult to say with confidence why MPP struggles to improve them.
 
 
-\section{Bullseye Predictor}
-\subsection{Details}
-The bullseye predictor is driven by a core observation, stating that most of the mispredictions in TAGE-SC-L come from a small number of "hard-to-predict" branches. The bullseye predictor is designed to identify these hard-to-predict branches
-and apply a specialized prediction strategy to them, while leaving the rest of the branches to be handled by a more traditional predictor.
-H2P branches appear under different global histories every time they execute. For a predictor like TAGE that relies on global history, this is a very difficult pattern to learn.
-The paper also notes that simply making TAGE bigger doesn't fix this problem, which means even an infinitely large TAGE would barely improve the prediction rates. The main problem isn't storage, but the branch's behaviour not correlating well enough with
-the global history. 
 
-The bullseye predictor adds a small 256k "subsystem" on top of the TAGE-SC-L predictor. It is composed of 3 main components:
-\begin{itemize}
-        \item \textbf{H2P (Hard-to-Predict) Branch Classifier: }This component is responsible for identifying the hard-to-predict branches. This tracks every branch's execution count, MP count and running accuracy (the number of correct predictions
-        divided by the total number of predictions for that branch). When a branch's execution count exceeds a certain threshold and its accuracy falls below a certain number, the classifier flags the branch as an H2P branch, preventing the entire
-        system from being overwhelmed by the noise of these branches and allowing it to focus on the branches that it can predict well. In practice no more than 10 branches are active at once.
-        \item \textbf{Two Perceptron Predictors: } Bullseye predictor uses two perceptron predictors, both of them running in parallel with the TAGE-SC-L predictor. One of them uses local history and
-        the other uses folded global history to essentially "catch" long-range correlation that TAGE-SC-L misses. These perceptrons dedicate their weights to one hard branch rather than sharing tables across and with thousands of branches (something that TAGE does).
-        \item \textbf{Trial phase and arbitration: }A newly flagged branch gets 512 executions to warm up its weights. After that the system compares which predictor is winning (like a tournament predictor). There is a confidence counter that
-        reinforces the winning predictor and allows it to take over the prediction of that branch. The TAGE is set to default, but as soon as the perceptron wins 128 consecutive predictions, the TAGE updates are suppressed, stopping the
-        thrashing cycle (where TAGE and the perceptron keep taking over the prediction of the branch and thus never giving either of them enough time to learn the pattern) once and for all.
-\end{itemize}
-\subsection{Bullseye Predictor vs Baseline Predictor}
-INSERT TEXT HERE
 
 \section{Branch Prediction via Load Value Prediction ( BALL )}
 
@@ -278,8 +258,225 @@ The BALL predictor consists of the following main components:
 
 Overall, BALL shifts the prediction problem from \textbf{control-flow correlation} (used by TAGE) to \textbf{data-flow reconstruction}. By explicitly modeling how data values influence branches, it is able to accurately predict cases that are inherently difficult for traditional predictors.
 
-\subsection{BALL vs Baseline Predictor}
-INSERT TEXT HERE
+\subsection{BALL Predictor vs Baseline}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{ball_fun_vs_baseline.png}
+\caption{Comparison of BALL and Baseline Predictors}
+\end{figure}
+
+The BALL predictor is an unusual case in this comparison. Unlike MPP and Bullseye 
+which are designed to be general-purpose improvements over TAGE-SC-L, BALL was 
+never intended to replace it. It was designed to work alongside TAGE-SC-L as a 
+complementary predictor, specifically targeting branches whose outcomes depend 
+on values loaded from memory. Running it as a standalone predictor against the 
+baseline is therefore testing it in a way it was never designed for, and the 
+graphs show this clearly.
+
+Looking at the MPKI scatter plot, almost every single point sits directly on the 
+equal performance line. Almost all traces show no difference compared to the 
+baseline predictor. The histogram makes this even clearer. Nearly all 105 
+traces land in a single bin right at zero, with a mean difference of only 0.194 
+MPKI. For the vast majority of workloads, BALL and the baseline are producing 
+the same predictions.
+
+The only reason BALL shows any improvement at all is because of a very small 
+number of traces that are different from this pattern. As shown in Table 
+\ref{tab:ball_traces}, there are exactly 9 traces where BALL makes a real 
+difference, and these are the isolated points visible pulling away from the 
+diagonal in the scatter plot.
+
+\begin{table}[h]
+\centering
+\caption{The Only Traces Where BALL Made a Meaningful Difference}
+\label{tab:ball_traces}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Trace} & \textbf{Baseline MPKI} & \textbf{BALL MPKI} & 
+\textbf{Improvement} \\
+\midrule
+\texttt{int\_21}  & 24.1502 & 15.7181 & -8.4321 \\
+\texttt{fp\_13}   & 12.6898 &  8.9772 & -3.7126 \\
+\texttt{fp\_8}    &  7.8738 &  5.2985 & -2.5753 \\
+\texttt{int\_1}   & 11.6458 &  9.2211 & -2.4247 \\
+\texttt{int\_2}   & 10.9652 &  8.7270 & -2.2382 \\
+\texttt{fp\_10}   &  2.1174 &  1.8923 & -0.2251 \\
+\texttt{int\_19}  &  0.8482 &  0.6642 & -0.1840 \\
+\texttt{int\_30}  & 12.9427 & 12.7675 & -0.1752 \\
+\texttt{int\_29}  & 12.4572 & 12.3072 & -0.1500 \\
+\midrule
+\textbf{All other traces (96)} & \multicolumn{3}{c}{No meaningful difference} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The biggest result here is \texttt{int\_21}, which drops by 8.43 MPKI. This is 
+the largest improvement of any predictor on any single trace in this entire 
+comparison. The \texttt{fp\_13} and \texttt{fp\_8} traces show a similar pattern. 
+These are not random. These are the exact traces used as examples in the BALL 
+paper itself. They contain branches that sit at the end of load dependency chains 
+with predictable address patterns, which is exactly the problem BALL was built 
+to solve.
+
+For everything else, BALL has nothing to offer. It does not activate on compress, 
+infra, media, or web workloads because those branches are not load-data-dependent 
+in the way BALL needs them to be. The normalized metrics bar chart confirms this. 
+BALL is better across MPKI, MR and CycWPPKI overall, but only slightly, because 
+those gains come from just 9 traces spread across 105 total.
+
+In short, BALL is a very specialised predictor. It solves one specific problem 
+very well and does nothing outside of that problem. Whether that is useful 
+depends entirely on what workloads you care about.
+
+
+\section{Bullseye Predictor}
+\subsection{Details}
+The bullseye predictor is driven by a core observation, stating that most of the mispredictions in TAGE-SC-L come from a small number of "hard-to-predict" branches. The bullseye predictor is designed to identify these hard-to-predict branches
+and apply a specialized prediction strategy to them, while leaving the rest of the branches to be handled by a more traditional predictor.
+H2P branches appear under different global histories every time they execute. For a predictor like TAGE that relies on global history, this is a very difficult pattern to learn.
+The paper also notes that simply making TAGE bigger doesn't fix this problem, which means even an infinitely large TAGE would barely improve the prediction rates. The main problem isn't storage, but the branch's behaviour not correlating well enough with
+the global history. 
+
+The bullseye predictor adds a small 256k "subsystem" on top of the TAGE-SC-L predictor. It is composed of 3 main components:
+\begin{itemize}
+        \item \textbf{H2P (Hard-to-Predict) Branch Classifier: }This component is responsible for identifying the hard-to-predict branches. This tracks every branch's execution count, MP count and running accuracy (the number of correct predictions
+        divided by the total number of predictions for that branch). When a branch's execution count exceeds a certain threshold and its accuracy falls below a certain number, the classifier flags the branch as an H2P branch, preventing the entire
+        system from being overwhelmed by the noise of these branches and allowing it to focus on the branches that it can predict well. In practice no more than 10 branches are active at once.
+        \item \textbf{Two Perceptron Predictors: } Bullseye predictor uses two perceptron predictors, both of them running in parallel with the TAGE-SC-L predictor. One of them uses local history and
+        the other uses folded global history to essentially "catch" long-range correlation that TAGE-SC-L misses. These perceptrons dedicate their weights to one hard branch rather than sharing tables across and with thousands of branches (something that TAGE does).
+        \item \textbf{Trial phase and arbitration: }A newly flagged branch gets 512 executions to warm up its weights. After that the system compares which predictor is winning (like a tournament predictor). There is a confidence counter that
+        reinforces the winning predictor and allows it to take over the prediction of that branch. The TAGE is set to default, but as soon as the perceptron wins 128 consecutive predictions, the TAGE updates are suppressed, stopping the
+        thrashing cycle (where TAGE and the perceptron keep taking over the prediction of the branch and thus never giving either of them enough time to learn the pattern) once and for all.
+\end{itemize}
+\subsection{Bullseye Predictor vs Baseline}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{bullseye_vs_baseline.png}
+\caption{Comparison of Bullseye and Baseline Predictors}
+\end{figure}
+
+The Bullseye predictor is built around one core idea: most of the mispredictions 
+in TAGE-SC-L come from a very small number of hard-to-predict (H2P) branches, 
+so rather than trying to improve prediction across the board, it identifies those 
+specific branches and handles them with dedicated perceptron predictors. The 
+results here show that this strategy works well, with Bullseye winning on 104 
+out of 105 traces and achieving an overall MPKI of 3.489 compared to the 
+baseline's 3.808, which is an 8.38\% improvement.
+
+Table \ref{tab:bullseye_summary} shows the overall summary statistics across 
+all key metrics.
+
+\begin{table}[H]
+\centering
+\caption{Overall Performance Summary: Baseline vs Bullseye}
+\label{tab:bullseye_summary}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Metric} & \textbf{Baseline} & \textbf{Bullseye} & \textbf{Improvement} \\
+\midrule
+MPKI        & 3.8080 & 3.4889 & 8.38\% better \\
+MR          & 2.9679 & 2.7395 & 7.70\% better \\
+CycWPPKI    & 161.60 & 154.64 & 4.31\% better \\
+IPC         & 3.4636 & 3.5132 & 1.43\% better \\
+Cycles      & 14,824,660 & 14,593,783 & 1.56\% better \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Unlike BALL which only helped on 9 specific traces, Bullseye improves almost 
+every single trace to some degree. The only regression in the entire dataset 
+is \texttt{fp\_4}, which gets worse by just 0.0013 MPKI, which is essentially 
+nothing. This tells us that Bullseye's trial phase and confidence arbitration 
+are doing their job well: the perceptron only takes over a branch when it has 
+proven it can do better than TAGE-SC-L, so there is almost no risk of making 
+things worse.
+
+Table \ref{tab:bullseye_category} breaks down the average MPKI by workload 
+category, which shows where Bullseye helps most and where it has less impact.
+
+\begin{table}[H]
+\centering
+\caption{Average MPKI by Workload Category: Baseline vs Bullseye}
+\label{tab:bullseye_category}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Category} & \textbf{Baseline MPKI} & \textbf{Bullseye MPKI} & 
+\textbf{Improvement} \\
+\midrule
+INT      & 4.3284 & 3.5831 & 17.22\% \\
+WEB      & 3.8812 & 3.4033 & 12.31\% \\
+FP       & 3.5456 & 3.3566 &  5.33\% \\
+COMPRESS & 2.7957 & 2.7583 &  1.34\% \\
+INFRA    & 2.6335 & 2.5634 &  2.66\% \\
+MEDIA    & 1.0661 & 0.9954 &  6.63\% \\
+\midrule
+\textbf{Overall} & \textbf{3.8080} & \textbf{3.4889} & \textbf{8.38\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The integer and web categories benefit the most. For integer workloads, the 
+improvement is 17.22\%, which makes sense because integer code tends to have 
+complex control flow with many hard branches that consistently defeat TAGE-SC-L. 
+These are exactly the kind of branches that Bullseye's H2P Identification Table 
+(HIT) flags and routes to a dedicated perceptron. The top individual improvements 
+back this up, with \texttt{int\_16} dropping by 2.45 MPKI, \texttt{int\_17} by 
+1.64 MPKI, and \texttt{int\_8}, \texttt{int\_7} and \texttt{int\_22} all dropping 
+by over 1.0 MPKI each.
+
+The web category also sees strong improvement at 12.31\%. Web workloads jump 
+across many different code regions, which produces branches that appear under 
+very different global histories each time they run. This is the exact H2P profile 
+that Bullseye is designed to catch, and \texttt{web\_7} dropping by 1.51 MPKI 
+is a good example of this.
+
+Compress and infra remain largely unchanged, which is consistent with what we 
+saw for the other predictors. These workloads have relatively low baseline MPKI 
+to begin with, so the HIT thresholds are rarely crossed and Bullseye simply 
+never activates for most of these branches. There is nothing for it to fix.
+
+Table \ref{tab:bullseye_top} shows the top traces where Bullseye made the 
+biggest difference.
+
+\begin{table}[H]
+\centering
+\caption{Top Traces by MPKI Improvement: Baseline vs Bullseye}
+\label{tab:bullseye_top}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Trace} & \textbf{Baseline MPKI} & \textbf{Bullseye MPKI} & 
+\textbf{Improvement} \\
+\midrule
+\texttt{int\_16}  & 8.1253 & 5.6722 & -2.4531 \\
+\texttt{int\_17}  & 6.3949 & 4.7592 & -1.6357 \\
+\texttt{web\_7}   & 7.7526 & 6.2471 & -1.5055 \\
+\texttt{int\_22}  & 5.3965 & 3.9788 & -1.4177 \\
+\texttt{int\_8}   & 7.1931 & 5.8786 & -1.3145 \\
+\texttt{int\_7}   & 5.7589 & 4.4556 & -1.3033 \\
+\texttt{int\_1}   & 11.6458 & 10.3681 & -1.2777 \\
+\texttt{web\_11}  & 5.7895 & 4.6089 & -1.1806 \\
+\texttt{int\_9}   & 4.8555 & 3.7132 & -1.1423 \\
+\texttt{int\_2}   & 10.9652 & 9.8611 & -1.1041 \\
+\midrule
+\textbf{Only regression} & & & \\
+\texttt{fp\_4}    & 0.5736 & 0.5749 & +0.0013 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+One thing worth noting is that \texttt{int\_21}, which has the highest baseline 
+MPKI of any trace at 24.15, only improves by 0.39 MPKI under Bullseye. This is 
+an interesting contrast with BALL, which reduces \texttt{int\_21} by 8.43 MPKI. 
+The reason is that \texttt{int\_21}'s hard branches are load-data-dependent, 
+which is a problem that perceptron predictors cannot solve through history 
+patterns alone. Bullseye identifies the branch as H2P but its perceptrons 
+cannot find a reliable history-based pattern for it either, so the improvement 
+is minimal. This highlights the key difference between Bullseye and BALL: 
+Bullseye is broadly useful across many types of hard branches, while BALL 
+solves one specific type of hard branch much more deeply.
+
 
 \section{Programming Idiom Predictor (PIP)}
 \subsection{Details}
@@ -316,8 +513,85 @@ The predictor is composed of 4 main components:
 The overall prediction flow is straightforward: idiom trackers get the first chance to predict, and if none of them apply, the system falls back to TAGE and the perceptron, with the arbiter resolving conflicts.
 This design ensures that simple, structured patterns are handled perfectly by specialised hardware, while more complex or irregular branches are handled by powerful general-purpose predictors.
 
-\subsection{Programming Idiom Predictor (PIP) vs Baseline Predictor}
-INSERT TEXT HERE
+\subsection{Programming Idiom Predictor vs Baseline}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{programming_idiom_vs_baseline.png}
+\caption{Comparison of Programming Idiom Predictor and Baseline Predictors}
+\end{figure}
+
+The results show a solid overall improvement, with the predictor winning on 97 
+out of 105 traces and achieving an overall MPKI of 3.545 compared to the 
+baseline's 3.808, which is a 6.90\% improvement.
+
+Table \ref{tab:mose_summary} shows the overall summary statistics across all 
+key metrics.
+
+\begin{table}[H]
+\centering
+\caption{Overall Performance Summary: Baseline vs Programming Idiom Predictor}
+\label{tab:mose_summary}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Metric} & \textbf{Baseline} & \textbf{Programming Idiom} & 
+\textbf{Improvement} \\
+\midrule
+MPKI        & 3.8080 & 3.5453 & 6.90\% better \\
+MR          & 2.9679 & 2.7608 & 6.98\% better \\
+CycWPPKI    & 161.60 & 157.27 & 2.68\% better \\
+IPC         & 3.4636 & 3.4974 & 0.98\% better \\
+Cycles      & 14,824,660 & 14,667,399 & 1.06\% better \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The predictor improves broadly across most traces. It does have 8 regressions 
+compared to Bullseye's 1, but most of them are very small. The worst regression 
+is \texttt{infra\_8} which gets worse by only 0.094 MPKI, and the next worst 
+is \texttt{infra\_5} at 0.060 MPKI. These are small enough that they do not 
+raise serious concerns.
+
+Table \ref{tab:mose_category} shows the average MPKI per workload category.
+
+\begin{table}[H]
+\centering
+\caption{Average MPKI by Workload Category: Baseline vs Programming Idiom Predictor}
+\label{tab:mose_category}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Category} & \textbf{Baseline MPKI} & \textbf{Programming Idiom MPKI} & 
+\textbf{Improvement} \\
+\midrule
+WEB      & 3.8812 & 3.4657 & 10.70\% \\
+COMPRESS & 2.7957 & 2.6599 &  4.86\% \\
+MEDIA    & 1.0661 & 1.0099 &  5.27\% \\
+INFRA    & 2.6335 & 2.5878 &  1.73\% \\
+INT      & 4.3284 & 4.3374 &  $\approx$0\% \\
+FP       & 3.5456 & 3.9243 &  $\approx$0\% \\
+\midrule
+\textbf{Overall} & \textbf{3.8080} & \textbf{3.5453} & \textbf{6.90\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The web category sees the biggest improvement at 10.70\%, which makes sense 
+given that web workloads are full of branches tied to common programming 
+patterns in parsers, string handlers and network code. The compress and media 
+categories also see decent gains. The integer and fp category averages look 
+flat or slightly worse, but this is a bit misleading. Looking at the individual 
+trace results, the predictor actually wins on most integer and fp traces. The 
+category average is being pulled down by a few very high MPKI traces like 
+\texttt{fp\_1} at 15.58 MPKI where the predictor simply cannot help. The 
+regressions on \texttt{infra\_8} and \texttt{infra\_5} are the only two traces 
+that stand out as real losses, and without knowing the exact nature of these 
+workloads it is difficult to say why they regress.
+
+Overall, the Programming Idiom Predictor sits between Bullseye and BALL in 
+terms of its character. It is more broadly useful than BALL, improving traces 
+across many categories rather than just a handful. It is slightly less 
+consistent than Bullseye which had only one regression, but its overall MPKI 
+improvement of 6.90\% is competitive with Bullseye's 8.38\%.
 
 
 

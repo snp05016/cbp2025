@@ -5,15 +5,15 @@ OVERALL SUMMARY STATISTICS - ALL PREDICTORS
 
 Ball Fun
 --------------------------------------------------------------------------------
-  Total Traces                  :              88
-  Avg MPKI                      :          3.4631
-  Median MPKI                   :          2.2893
-  Std MPKI                      :          3.7445
-  Avg Miss Rate (%)             :          2.7758
-  Avg IPC                       :          3.7119
-  Total Branches                :     508,729,701
-  Total Mispredictions          :      14,228,279
-  Avg Cycles                    :   15341076.1023
+  Total Traces                  :             105
+  Avg MPKI                      :          3.6140
+  Median MPKI                   :          2.8583
+  Std MPKI                      :          3.1283
+  Avg Miss Rate (%)             :          2.8350
+  Avg IPC                       :          3.4777
+  Total Branches                :     570,601,974
+  Total Mispredictions          :      16,305,647
+  Avg Cycles                    :   14698980.7238
 
 Baseline
 --------------------------------------------------------------------------------
@@ -90,23 +90,23 @@ Register-Value-Aware-Toru
 TAGE-SC-L-Alberto-Ros
 --------------------------------------------------------------------------------
   Total Traces                  :             105
-  Avg MPKI                      :          3.3898
-  Median MPKI                   :          2.4266
-  Std MPKI                      :          3.6085
-  Avg Miss Rate (%)             :          2.6697
-  Avg IPC                       :          3.3537
-  Total Branches                :     540,688,496
-  Total Mispredictions          :      15,291,112
-  Avg Cycles                    :   14106643.7238
+  Avg MPKI                      :          3.5012
+  Median MPKI                   :          2.7196
+  Std MPKI                      :          3.5535
+  Avg Miss Rate (%)             :          2.7427
+  Avg IPC                       :          3.5140
+  Total Branches                :     570,601,974
+  Total Mispredictions          :      15,867,010
+  Avg Cycles                    :   14591981.5238
 
 TAGE-SCL-Andrez-Seznec
 --------------------------------------------------------------------------------
   Total Traces                  :             105
-  Avg MPKI                      :          3.3918
-  Median MPKI                   :          2.5338
-  Std MPKI                      :          3.4881
-  Avg Miss Rate (%)             :          2.6687
-  Avg IPC                       :          3.5081
-  Total Branches                :     568,039,972
-  Total Mispredictions          :      15,477,354
-  Avg Cycles                    :   14447201.9524
+  Avg MPKI                      :          3.4400
+  Median MPKI                   :          2.7095
+  Std MPKI                      :          3.4757
+  Avg Miss Rate (%)             :          2.6969
+  Avg IPC                       :          3.5233
+  Total Branches                :     570,601,974
+  Total Mispredictions          :      15,553,296
+  Avg Cycles                    :   14536841.7619

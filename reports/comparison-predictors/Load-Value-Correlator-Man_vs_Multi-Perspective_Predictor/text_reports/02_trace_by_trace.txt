@@ -38,8 +38,8 @@ int_6_trace                              2.8740       2.8209       -0.0531      
 web_24_trace                             1.7205       1.6677       -0.0528      ≈ Similar           
 web_16_trace                             1.6099       1.5610       -0.0489      ≈ Similar           
 infra_10_trace                           5.2171       5.1697       -0.0474      ≈ Similar           
-int_3_trace                              0.8552       0.8104       -0.0448      ≈ Similar           
 web_10_trace                             2.8788       2.8340       -0.0448      ≈ Similar           
+int_3_trace                              0.8552       0.8104       -0.0448      ≈ Similar           
 web_22_trace                             3.2715       3.2276       -0.0439      ≈ Similar           
 web_0_trace                              1.3157       1.2718       -0.0439      ≈ Similar           
 web_23_trace                             1.0186       0.9747       -0.0439      ≈ Similar           

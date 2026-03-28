@@ -75,8 +75,8 @@ web_13_trace                             2.9499       2.9155       -0.0344      
 web_4_trace                              4.0569       4.0301       -0.0268      ≈ Similar           
 infra_12_trace                           0.9772       0.9525       -0.0247      ≈ Similar           
 infra_11_trace                           0.9969       0.9728       -0.0241      ≈ Similar           
-web_17_trace                             1.4167       1.3943       -0.0224      ≈ Similar           
 media_2_trace                            0.5282       0.5058       -0.0224      ≈ Similar           
+web_17_trace                             1.4167       1.3943       -0.0224      ≈ Similar           
 web_23_trace                             0.9654       0.9431       -0.0223      ≈ Similar           
 int_20_trace                             2.3513       2.3305       -0.0208      ≈ Similar           
 int_10_trace                             0.5155       0.4966       -0.0189      ≈ Similar           

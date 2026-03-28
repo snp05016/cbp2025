@@ -6,35 +6,35 @@ Summary Statistics:
 --------------------------------------------------------------------------------
 Metric                         Ball Fun             Multi-Perspective Predictor Difference     
 --------------------------------------------------------------------------------
-MPKI                           3.4631               3.4495               ↓ 0.39% better
-MR                             2.7758               2.7030               ↓ 2.62% better
-IPC                            3.7119               3.5180               ↓ 5.22% worse
-Cycles                         15341076.1023        14543959.5143        ↓ 5.20% better
-BrPerCyc                       0.4388               0.4272               ↓ 2.64% worse
-MispBrPerCyc                   0.0096               0.0093               ↓ 3.26% worse
-CycWPPKI                       159.8244             153.8443             ↓ 3.74% better
+MPKI                           3.6140               3.4495               ↓ 4.55% better
+MR                             2.8350               2.7030               ↓ 4.66% better
+IPC                            3.4777               3.5180               ↑ 1.16% better
+Cycles                         14698980.7238        14543959.5143        ↓ 1.05% better
+BrPerCyc                       0.4222               0.4272               ↑ 1.17% better
+MispBrPerCyc                   0.0097               0.0093               ↓ 4.87% worse
+CycWPPKI                       158.1306             153.8443             ↓ 2.71% better
 
 
 Trace-by-Trace Comparison (MPKI):
 --------------------------------------------------------------------------------
-Ball Fun wins: 1 traces
-Multi-Perspective Predictor wins: 0 traces
-Ties: 87 traces
+Ball Fun wins: 7 traces
+Multi-Perspective Predictor wins: 98 traces
+Ties: 0 traces
 
 
 Biggest Improvements (Multi-Perspective Predictor better):
 --------------------------------------------------------------------------------
-  compress_3_trace                           7.6342 →   7.6342 (↓ 0.0000)
-  compress_2_trace                           1.4430 →   1.4430 (↓ 0.0000)
-  compress_4_trace                           1.7784 →   1.7784 (↓ 0.0000)
-  compress_5_trace                           1.8814 →   1.8814 (↓ 0.0000)
-  compress_0_trace                           3.1891 →   3.1891 (↓ 0.0000)
+  int_22_trace                               5.3966 →   3.5724 (↓ 1.8242)
+  int_16_trace                               8.1005 →   6.8140 (↓ 1.2865)
+  web_11_trace                               5.7855 →   4.6299 (↓ 1.1556)
+  int_7_trace                                5.7956 →   4.6820 (↓ 1.1136)
+  int_8_trace                                7.1630 →   6.1344 (↓ 1.0286)
 
 
 Biggest Regressions (Multi-Perspective Predictor worse):
 --------------------------------------------------------------------------------
-  web_8_trace                                0.0000 →   4.7212 (↑ 4.7212)
-  compress_3_trace                           7.6342 →   7.6342 (↑ 0.0000)
-  compress_2_trace                           1.4430 →   1.4430 (↑ 0.0000)
-  compress_4_trace                           1.7784 →   1.7784 (↑ 0.0000)
-  compress_5_trace                           1.8814 →   1.8814 (↑ 0.0000)
+  int_21_trace                              15.7181 →  23.2648 (↑ 7.5467)
+  fp_13_trace                                8.9772 →  12.1305 (↑ 3.1533)
+  fp_8_trace                                 5.2985 →   7.5897 (↑ 2.2912)
+  fp_10_trace                                1.8923 →   2.0976 (↑ 0.2053)
+  int_19_trace                               0.6642 →   0.7875 (↑ 0.1233)

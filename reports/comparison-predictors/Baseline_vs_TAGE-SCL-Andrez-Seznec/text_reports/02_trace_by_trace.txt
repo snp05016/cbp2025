@@ -4,7 +4,6 @@ TRACE-BY-TRACE COMPARISON: Baseline vs TAGE-SCL-Andrez-Seznec
 
 Trace                                    Baseline MPKI TAGE-SCL-Andrez-Seznec MPKI Diff         Status              
 ----------------------------------------------------------------------------------------------------
-web_19_trace                             6.0075       0.0000       -6.0075      ✓ TAGE-SCL-Andrez-Seznec better
 int_16_trace                             8.1253       5.8279       -2.2974      ✓ TAGE-SCL-Andrez-Seznec better
 web_7_trace                              7.7526       6.1046       -1.6480      ✓ TAGE-SCL-Andrez-Seznec better
 int_17_trace                             6.3949       4.8436       -1.5513      ✓ TAGE-SCL-Andrez-Seznec better
@@ -20,6 +19,7 @@ int_30_trace                             12.9427      11.9056      -1.0371      
 int_29_trace                             12.4572      11.4747      -0.9825      ✓ TAGE-SCL-Andrez-Seznec better
 int_36_trace                             3.9821       3.0001       -0.9820      ✓ TAGE-SCL-Andrez-Seznec better
 int_2_trace                              10.9652      9.9876       -0.9776      ✓ TAGE-SCL-Andrez-Seznec better
+web_19_trace                             6.0075       5.0628       -0.9447      ✓ TAGE-SCL-Andrez-Seznec better
 int_21_trace                             24.1502      23.3263      -0.8239      ✓ TAGE-SCL-Andrez-Seznec better
 web_25_trace                             6.3793       5.7130       -0.6663      ✓ TAGE-SCL-Andrez-Seznec better
 int_32_trace                             6.9551       6.3487       -0.6064      ✓ TAGE-SCL-Andrez-Seznec better

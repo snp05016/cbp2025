@@ -4,7 +4,6 @@ TRACE-BY-TRACE COMPARISON: Programming Idiom Predictor-Mose vs TAGE-SCL-Andrez-S
 
 Trace                                    Programming Idiom Predictor-Mose MPKI TAGE-SCL-Andrez-Seznec MPKI Diff         Status              
 ----------------------------------------------------------------------------------------------------
-web_19_trace                             5.1795       0.0000       -5.1795      ✓ TAGE-SCL-Andrez-Seznec better
 int_1_trace                              11.6182      10.5130      -1.1052      ✓ TAGE-SCL-Andrez-Seznec better
 int_22_trace                             5.2470       4.2827       -0.9643      ✓ TAGE-SCL-Andrez-Seznec better
 web_7_trace                              6.9881       6.1046       -0.8835      ✓ TAGE-SCL-Andrez-Seznec better
@@ -38,6 +37,7 @@ int_18_trace                             0.8006       0.6654       -0.1352      
 int_8_trace                              5.9655       5.8380       -0.1275      ✓ TAGE-SCL-Andrez-Seznec better
 web_2_trace                              3.8330       3.7103       -0.1227      ✓ TAGE-SCL-Andrez-Seznec better
 fp_3_trace                               1.9942       1.8767       -0.1175      ✓ TAGE-SCL-Andrez-Seznec better
+web_19_trace                             5.1795       5.0628       -0.1167      ✓ TAGE-SCL-Andrez-Seznec better
 fp_6_trace                               0.9645       0.8550       -0.1095      ✓ TAGE-SCL-Andrez-Seznec better
 fp_7_trace                               1.0718       0.9648       -0.1070      ✓ TAGE-SCL-Andrez-Seznec better
 web_12_trace                             3.9832       3.8768       -0.1064      ✓ TAGE-SCL-Andrez-Seznec better

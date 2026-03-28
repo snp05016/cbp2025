@@ -42,6 +42,52 @@ SUBMISSIONS_DIR="./Submissions"
 RESULTS_CSV_DIR="./megascriptruncsvs"
 MAIN_DIR=$(pwd)
 
+# Snapshot/restore support: restore specific files after each submission.
+# This avoids submissions leaving behind custom Makefiles / headers.
+BASELINE_DIR=""
+FILES_TO_RESTORE=(
+    "Makefile"
+    "cond_branch_predictor_interface.cc"
+    "my_cond_branch_predictor.cc"
+    "cbp.h"
+    "cbp2016_tage_sc_l_192kb.h"
+    "cbp2016_tage_sc_l.h"
+    "my_cond_branch_predictor.h"
+)
+
+snapshot_baseline_files() {
+    BASELINE_DIR=$(mktemp -d -t cbp2025-baseline-XXXXXXXX) || return 1
+    # Ensure the temp dir is cleaned up even if the script exits early.
+    trap '[[ -n "${BASELINE_DIR}" ]] && rm -rf "${BASELINE_DIR}"' EXIT
+
+    for f in "${FILES_TO_RESTORE[@]}"; do
+        if [[ -f "${MAIN_DIR}/${f}" ]]; then
+            cp -p "${MAIN_DIR}/${f}" "${BASELINE_DIR}/${f}"
+        else
+            # Marker file indicates the baseline did not have this file.
+            : > "${BASELINE_DIR}/${f}.missing"
+        fi
+    done
+}
+
+restore_baseline_files() {
+    if [[ -z "${BASELINE_DIR}" ]] || [[ ! -d "${BASELINE_DIR}" ]]; then
+        echo -e "${RED}ERROR: Baseline snapshot directory is missing; cannot restore.${NC}"
+        return 1
+    fi
+
+    for f in "${FILES_TO_RESTORE[@]}"; do
+        if [[ -f "${BASELINE_DIR}/${f}" ]]; then
+            cp -p "${BASELINE_DIR}/${f}" "${MAIN_DIR}/${f}"
+        elif [[ -f "${BASELINE_DIR}/${f}.missing" ]]; then
+            # File did not exist in baseline; ensure it does not exist now.
+            rm -f "${MAIN_DIR}/${f}" 2>/dev/null || true
+        else
+            echo -e "${YELLOW}WARNING: Baseline for '${f}' missing; skipping restore.${NC}" >&2
+        fi
+    done
+}
+
 # Create megascriptruncsvs directory if it doesn't exist
 mkdir -p "$RESULTS_CSV_DIR"
 
@@ -49,23 +95,8 @@ mkdir -p "$RESULTS_CSV_DIR"
 LOG_FILE="$RESULTS_CSV_DIR/run_log.txt"
 echo "=== Starting submission runs at $(date) ===" > "$LOG_FILE"
 
-# Function to clean up after each run
-cleanup() {
-    # Remove results directory
-    rm -rf ./results/baseline/ 2>/dev/null || true
-
-    # Remove build artifacts
-    make clean >/dev/null 2>&1 || true
-
-    # Remove submission-provided predictor files (framework headers/sources must remain)
-    rm -f ./cond_branch_predictor_interface.cc 2>/dev/null || true
-    rm -f ./my_cond_branch_predictor.h 2>/dev/null || true
-    rm -f ./my_cond_branch_predictor.cc 2>/dev/null || true
-
-    # Restore minimal base framework file needed by Makefile
-    # (my_cond_branch_predictor.cc can be empty - submissions provide .h)
-    cp BaseFramework/my_cond_branch_predictor.cc . 2>/dev/null || touch my_cond_branch_predictor.cc
-}
+# Take a baseline snapshot of the workspace BEFORE any submissions run.
+snapshot_baseline_files
 
 # Function to draw progress bar
 draw_progress_bar() {
@@ -105,7 +136,8 @@ process_submission() {
 
     # Step 1: Clean up ALL files from previous submission
     echo -e "${YELLOW}Step 1/4: Cleaning up previous submission...${NC}"
-    cleanup
+    # Reset the critical files back to the pre-submission baseline.
+    restore_baseline_files
     echo -e "${GREEN}Cleanup complete${NC}"
 
     # Step 2: Copy all files from submission to main directory
@@ -122,7 +154,8 @@ process_submission() {
     else
         echo -e "${RED}ERROR: runScripts.sh failed for $submission_name${NC}"
         echo "ERROR: runScripts.sh failed for $submission_name" >> "$LOG_FILE"
-        cleanup
+        # Ensure we always return the workspace to baseline before moving on.
+        restore_baseline_files
         return 1
     fi
 
@@ -136,6 +169,9 @@ process_submission() {
         echo -e "${RED}WARNING: results.csv not found for $submission_name${NC}"
         echo "WARNING: results.csv not found for $submission_name" >> "$LOG_FILE"
     fi
+
+    # Reset workspace to baseline so the next submission starts clean.
+    restore_baseline_files
 
     # Calculate and display time taken
     submission_end_time=$(date +%s)

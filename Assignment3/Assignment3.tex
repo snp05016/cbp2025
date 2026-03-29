@@ -594,5 +594,155 @@ consistent than Bullseye which had only one regression, but its overall MPKI
 improvement of 6.90\% is competitive with Bullseye's 8.38\%.
 
 
+\section{Delta Analysis}
+\subsection{Bullseye vs Multi-Perspective Predictor}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{bullseye_vs_mpp_delta.png}
+\caption{Delta Curve: Bullseye vs Multi-Perspective Predictor}
+\end{figure}
+
+Looking at the delta curve, the relationship between Bullseye and MPP is 
+genuinely competitive. The curve crosses zero fairly early, meaning neither 
+predictor dominates the other cleanly across all traces. Bullseye wins on 
+34.3\% of traces (the pink region on the left) and MPP wins on 65.7\% of 
+traces (the green region on the right), with a mean delta of +0.039 MPKI 
+in favour of MPP overall.
+
+Table \ref{tab:bullseye_vs_mpp} summarises the key numbers.
+
+\begin{table}[H]
+\centering
+\caption{Head to Head Summary: Bullseye vs MPP}
+\label{tab:bullseye_vs_mpp}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Metric} & \textbf{Bullseye} & \textbf{MPP} \\
+\midrule
+Avg MPKI            & 3.4889 & 3.4495 \\
+Avg Miss Rate (\%)  & 2.7395 & 2.7030 \\
+CycWPPKI            & 154.64 & 153.84 \\
+Traces Won          & 36 / 105 & 69 / 105 \\
+Mean Delta          & \multicolumn{2}{c}{+0.039 (MPP better)} \\
+Best Single Trace   & web\_7 ($-$1.35) & int\_1 (+1.34) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The left side of the delta curve tells an interesting story. Bullseye's biggest 
+wins are on \texttt{web\_7} ($-$1.35 MPKI) and \texttt{int\_16} ($-$1.14 MPKI). 
+These are traces with a small number of hard-to-predict branches that Bullseye's 
+H2P identification mechanism successfully isolates and hands off to dedicated 
+perceptrons. MPP's broad multi-perspective approach does not capture these 
+branches as effectively because it spreads its hardware budget across all 
+branches rather than dedicating resources to the worst offenders.
+
+On the right side, MPP pulls ahead on the integer-heavy traces like \texttt{int\_1} 
+(+1.34 MPKI) and \texttt{int\_2} (+1.24 MPKI). These are traces with many 
+moderately hard branches spread across the workload rather than a few extreme 
+outliers. MPP's MODHIST filtering, BLURRYPATH and the other novel history 
+features work well here because the problem is history pollution rather than 
+a small number of genuinely hard branches. Bullseye's HIT mechanism flags some 
+of these branches but its perceptrons cannot find a better pattern than what 
+MPP's richer history representation already captures.
+
+The shape of the curve is also worth noting. The left tail drops steeply and 
+quickly, meaning Bullseye's wins are concentrated on a small number of traces 
+with large improvements. The right side rises slowly and gradually, meaning 
+MPP's wins are spread across many traces with smaller individual improvements. 
+This reflects the core design difference between the two predictors. Bullseye 
+is targeted and deep, MPP is broad and consistent.
+
+Overall MPP edges out Bullseye with a lower average MPKI of 3.4495 vs 3.4889, 
+but the margin is small enough that the two predictors are genuinely competitive. 
+The choice between them would depend on the workload. For workloads with a few 
+dominant hard branches, Bullseye is likely better. For workloads with many 
+moderately hard branches spread across the code, MPP is the stronger choice.
+
+\subsection{BALL vs Bullseye Predictor}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{ball_vs_bullseye_delta.png}
+\caption{Delta Curve: BALL vs Bullseye Predictor}
+\end{figure}
+
+The delta curve has a clear structure: a sharp drop on the left over a few traces, a long flat middle section, and a gradual rise on the right where Bullseye performs better. Bullseye wins on 91.4% of traces with a mean delta of +0.125 MPKI.
+
+Table \ref{tab:ball_vs_bullseye} summarises the key numbers.
+
+\begin{table}[H]
+\centering
+\caption{Head to Head Summary: BALL vs Bullseye}
+\label{tab:ball_vs_bullseye}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Metric} & \textbf{BALL} & \textbf{Bullseye} \\
+\midrule
+Avg MPKI            & 3.6140 & 3.4889 \\
+Avg Miss Rate (\%)  & 2.8350 & 2.7395 \\
+CycWPPKI            & 158.13 & 154.64 \\
+Traces Won          & 9 / 105 & 96 / 105 \\
+Mean Delta          & \multicolumn{2}{c}{+0.125 (Bullseye better)} \\
+Best Single Trace   & \texttt{int\_21} ($-$8.04) & \texttt{int\_16} (+2.43) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The left side shows BALL’s wins, and they are large. On \texttt{int\_21} BALL beats Bullseye by 8.04 MPKI, on \texttt{fp\_13} by 3.47 MPKI, and on \texttt{fp\_8} by 2.11 MPKI. These are load-data-dependent branches. Bullseye treats them as H2P and applies perceptrons, but these branches do not follow stable history patterns. Their behavior depends on runtime data values, which BALL directly models.
+The flat middle section shows traces where both predictors behave similarly. In these cases, both fall back to TAGE-SC-L. BALL does not activate because there are no load-dependent chains, and Bullseye does not trigger strong H2P behavior.
+The right side shows Bullseye’s advantage. On \texttt{int\_16} it gains 2.43 MPKI and on \texttt{int\_17} 1.60 MPKI. These branches depend on complex history patterns. Bullseye’s perceptrons can learn these patterns once identified as H2P. BALL has no mechanism for this case.
+
+Overall, Bullseye performs better on average (3.4889 vs 3.6140 MPKI) and across most traces. BALL is significantly better only on the specific cases it targets. The predictors solve different problems, which is reflected in the curve.
+
+\section{Complementarity Analysis}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{complementarity_category.png}
+\caption{Predictor Complementarity by Workload Category}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{complementarity_distribution.png}
+\caption{Predictor Combination Distribution Across All Traces}
+\end{figure}
+
+Looking at each predictor against the baseline individually only tells part of 
+the story. A more interesting question is whether these predictors are all 
+solving the same problem or different ones. If they overlap heavily, combining 
+them would not help much. If they target different branches, a combined predictor 
+could be much better than any single one. To answer this, I categorized each 
+trace by which combination of predictors meaningfully improved it, using a 
+threshold of 0.1 MPKI reduction over the baseline.
+
+The most important finding is that 41 out of 105 traces fall under MPP + 
+Bullseye + PIP together. These three predictors are largely solving the same 
+problem through different mechanisms, so combining all three would not give 
+triple the improvement on these traces.
+
+BALL is a completely different story. It only appears in 9 traces total, and 
+these are almost entirely separate from the traces that MPP, Bullseye and PIP 
+improve. This confirms that BALL targets load-data-dependent branches which are 
+a genuinely different problem. A combination of BALL with any of the other three 
+would give close to additive improvement because they are not competing for the 
+same traces.
+
+The 26 traces under ``None'' are also significant. These are traces that no 
+predictor could improve meaningfully, representing branches that are resistant 
+to both history-based prediction and load value prediction. This sets a 
+practical floor on how much any of these designs can improve over the baseline 
+and directly motivates the oracle analysis in the next section.
+
+Looking at the category breakdown, web traces are almost entirely covered by 
+MPP + Bullseye + PIP together, confirming that web workloads respond well to 
+history-based approaches in general. Integer traces show more variety, with a 
+large portion improved by all three but also a significant number that only MPP 
+can fix, suggesting MPP's novel history features are finding patterns that 
+Bullseye and PIP miss. FP traces have a lot of grey meaning many fp workloads 
+resist all predictors, but the few that BALL uniquely fixes are concentrated 
+here. Compress remains almost entirely grey, consistent with everything seen 
+so far.
 \end{document}

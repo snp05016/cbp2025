@@ -14,3 +14,7 @@
 \contentsline {section}{\numberline {6}Programming Idiom Predictor (PIP)}{10}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Details}{10}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Programming Idiom Predictor vs Baseline}{11}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Delta Analysis}{12}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Bullseye vs Multi-Perspective Predictor}{12}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}BALL vs Bullseye Predictor}{14}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Complementarity Analysis}{15}{section.8}%

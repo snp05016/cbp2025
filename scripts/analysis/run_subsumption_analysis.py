@@ -1,47 +1,65 @@
-"""
-Automated subsumption analysis runner for all predictor result files.
+"""scripts/analysis/run_subsumption_analysis.py
 
-This script automatically discovers and processes all predictor CSV files
-in the current directory, combines them, and runs delta-based subsumption analysis.
+Automated subsumption analysis runner for predictor result CSV files.
+
+This script discovers predictor CSVs in a directory (defaults to the repo's
+`results/` folder), combines them into a single table, and runs delta-based
+pairwise subsumption analysis.
 
 Usage:
-    python run_subsumption_analysis.py [--output-dir <dir>]
+    python run_subsumption_analysis.py [--input-dir <dir>] [--recursive] [--output-dir <dir>]
 """
 
 import pandas as pd
 import argparse
 import sys
 from pathlib import Path
+import re
 
 # Import the analyzer from the main script
 from delta_subsumption_analysis import SubsumptionAnalyzer
 
 
-def discover_csv_files() -> list:
+def _repo_root() -> Path:
+    # scripts/analysis/run_subsumption_analysis.py -> scripts/analysis -> scripts -> repo root
+    return Path(__file__).resolve().parents[2]
+
+
+def discover_csv_files(input_dir: Path, recursive: bool) -> list[Path]:
+    """Discover predictor CSV files.
+
+    Notes:
+      - This intentionally ignores analysis output artifacts to avoid
+        re-ingesting previously generated combined/delta/summary CSVs.
+      - It also ignores obvious non-result CSVs (e.g., status.csv) if present.
     """
-    Discover all predictor CSV files in the current directory.
-    
-    Returns:
-        List of Path objects for relevant CSV files
-    """
-    current_dir = Path('.')
-    csv_files = []
-    
-    # Files to process
-    target_files = [
-        'baseline.csv',
-        'load-value-correlator-man-results.csv',
-        'register-value-aware-toru-results.csv',
-        'tage-sc-l-alberto-ros-results.csv',
-        'tage-scl-andrez-seznec-results.csv'
-    ]
-    
-    for filename in target_files:
-        filepath = current_dir / filename
-        if filepath.exists():
-            csv_files.append(filepath)
-            print(f"✓ Found: {filename}")
-    
+    if not input_dir.exists():
+        return []
+
+    if recursive:
+        candidates = sorted(p for p in input_dir.rglob('*.csv') if p.is_file())
+    else:
+        candidates = sorted(p for p in input_dir.glob('*.csv') if p.is_file())
+
+    skip_names = {
+        'combined_predictor_results.csv',
+        'pairwise_deltas.csv',
+        'subsumption_summary.csv',
+        'status.csv',
+    }
+
+    csv_files: list[Path] = []
+    for p in candidates:
+        if p.name in skip_names:
+            continue
+        # Heuristic: only accept files that look like predictor outputs.
+        # (Most have Run+MPKI columns; we will validate later, but skip here
+        # if filename is clearly unrelated.)
+        csv_files.append(p)
+
+    for p in csv_files:
+        print(f"✓ Found: {p.relative_to(input_dir)}")
+
     return csv_files
 
 
@@ -63,7 +81,14 @@ def extract_predictor_name(filename: str) -> str:
         'tage-scl-andrez-seznec-results.csv': 'TAGE-SCL'
     }
     
-    return name_map.get(filename, Path(filename).stem)
+    stem = Path(filename).stem
+    # Prefer stable short names for known files; otherwise use file stem.
+    name = name_map.get(filename, stem)
+    # Keep predictor_name filesystem-friendly (used later in plot filenames).
+    name = re.sub(r'\s+', '_', name.strip())
+    name = re.sub(r'[^A-Za-z0-9._-]+', '_', name)
+    name = re.sub(r'_+', '_', name).strip('._-') or stem
+    return name
 
 
 def load_and_combine_csvs(csv_files: list) -> pd.DataFrame:
@@ -146,6 +171,10 @@ def main():
         description='Automated subsumption analysis for all predictor results',
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
+    parser.add_argument('--input-dir', type=str, default=str(_repo_root() / 'results'),
+                       help="Directory containing predictor CSVs (default: repo's results/)")
+    parser.add_argument('--recursive', action='store_true',
+                       help='Recursively search for CSVs under --input-dir')
     parser.add_argument('--output-dir', type=str, default='subsumption_analysis',
                        help='Output directory for analysis results (default: subsumption_analysis)')
     
@@ -156,11 +185,12 @@ def main():
     print("="*80)
     
     # Discover CSV files
-    print("\nDiscovering predictor CSV files...")
-    csv_files = discover_csv_files()
+    input_dir = Path(args.input_dir)
+    print(f"\nDiscovering predictor CSV files under: {input_dir}...")
+    csv_files = discover_csv_files(input_dir=input_dir, recursive=args.recursive)
     
     if not csv_files:
-        print("\nError: No CSV files found in current directory", file=sys.stderr)
+        print(f"\nError: No CSV files found under: {input_dir}", file=sys.stderr)
         sys.exit(1)
     
     print(f"\nFound {len(csv_files)} CSV file(s)")

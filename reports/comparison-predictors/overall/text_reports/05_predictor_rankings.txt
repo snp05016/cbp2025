@@ -6,80 +6,74 @@ PREDICTOR RANKINGS
 Mispredictions Per Kilo Instructions (lower is better):
 --------------------------------------------------------------------------------
   1. 🥇 Register-Value-Aware-Toru                      3.3022
-  2. 🥈 Oracle                                         3.3127
-  3. 🥉 TAGE-SCL-Andrez-Seznec                         3.4400
-  4.    Multi-Perspective Predictor                    3.4495
-  5.    Load-Value-Correlator-Man                      3.4687
-  6.    Bulleseye Predictor                            3.4889
-  7.    TAGE-SC-L-Alberto-Ros                          3.5012
-  8.    Programming Idiom Predictor-Mose               3.5453
-  9.    Ball Fun                                       3.6140
-  10.    Baseline                                       3.8080
+  2. 🥈 TAGE-SCL-Andrez-Seznec                         3.4400
+  3. 🥉 Multi-Perspective Predictor                    3.4495
+  4.    Load-Value-Correlator-Man                      3.4687
+  5.    Bulleseye Predictor                            3.4889
+  6.    TAGE-SC-L-Alberto-Ros                          3.5012
+  7.    Programming Idiom Predictor-Mose               3.5453
+  8.    Ball Fun                                       3.6140
+  9.    Baseline                                       3.8080
 
 Miss Rate (lower is better):
 --------------------------------------------------------------------------------
   1. 🥇 Register-Value-Aware-Toru                      2.5681
-  2. 🥈 Oracle                                         2.5748
-  3. 🥉 TAGE-SCL-Andrez-Seznec                         2.6969
-  4.    Multi-Perspective Predictor                    2.7030
-  5.    Load-Value-Correlator-Man                      2.7183
-  6.    Bulleseye Predictor                            2.7395
-  7.    TAGE-SC-L-Alberto-Ros                          2.7427
-  8.    Programming Idiom Predictor-Mose               2.7608
-  9.    Ball Fun                                       2.8350
-  10.    Baseline                                       2.9679
+  2. 🥈 TAGE-SCL-Andrez-Seznec                         2.6969
+  3. 🥉 Multi-Perspective Predictor                    2.7030
+  4.    Load-Value-Correlator-Man                      2.7183
+  5.    Bulleseye Predictor                            2.7395
+  6.    TAGE-SC-L-Alberto-Ros                          2.7427
+  7.    Programming Idiom Predictor-Mose               2.7608
+  8.    Ball Fun                                       2.8350
+  9.    Baseline                                       2.9679
 
 Instructions Per Cycle (higher is better):
 --------------------------------------------------------------------------------
   1. 🥇 Register-Value-Aware-Toru                      3.5450
-  2. 🥈 Oracle                                         3.5446
-  3. 🥉 TAGE-SCL-Andrez-Seznec                         3.5233
-  4.    Multi-Perspective Predictor                    3.5180
-  5.    Load-Value-Correlator-Man                      3.5159
-  6.    TAGE-SC-L-Alberto-Ros                          3.5140
-  7.    Bulleseye Predictor                            3.5132
-  8.    Programming Idiom Predictor-Mose               3.4974
-  9.    Ball Fun                                       3.4777
-  10.    Baseline                                       3.4636
+  2. 🥈 TAGE-SCL-Andrez-Seznec                         3.5233
+  3. 🥉 Multi-Perspective Predictor                    3.5180
+  4.    Load-Value-Correlator-Man                      3.5159
+  5.    TAGE-SC-L-Alberto-Ros                          3.5140
+  6.    Bulleseye Predictor                            3.5132
+  7.    Programming Idiom Predictor-Mose               3.4974
+  8.    Ball Fun                                       3.4777
+  9.    Baseline                                       3.4636
 
 Average Cycles (lower is better):
 --------------------------------------------------------------------------------
   1. 🥇 Register-Value-Aware-Toru                14401963.4667
-  2. 🥈 Oracle                                   14408038.2286
-  3. 🥉 TAGE-SCL-Andrez-Seznec                   14536841.7619
-  4.    Multi-Perspective Predictor              14543959.5143
-  5.    Load-Value-Correlator-Man                14561854.8381
-  6.    TAGE-SC-L-Alberto-Ros                    14591981.5238
-  7.    Bulleseye Predictor                      14593783.3048
-  8.    Programming Idiom Predictor-Mose         14667399.0000
-  9.    Ball Fun                                 14698980.7238
-  10.    Baseline                                 14824660.9143
+  2. 🥈 TAGE-SCL-Andrez-Seznec                   14536841.7619
+  3. 🥉 Multi-Perspective Predictor              14543959.5143
+  4.    Load-Value-Correlator-Man                14561854.8381
+  5.    TAGE-SC-L-Alberto-Ros                    14591981.5238
+  6.    Bulleseye Predictor                      14593783.3048
+  7.    Programming Idiom Predictor-Mose         14667399.0000
+  8.    Ball Fun                                 14698980.7238
+  9.    Baseline                                 14824660.9143
 
 Cycles Wasted Per Kilo Instructions (lower is better):
 --------------------------------------------------------------------------------
-  1. 🥇 Oracle                                       149.8241
-  2. 🥈 Register-Value-Aware-Toru                    149.9141
-  3. 🥉 TAGE-SCL-Andrez-Seznec                       153.2417
-  4.    Load-Value-Correlator-Man                    153.8107
-  5.    Multi-Perspective Predictor                  153.8443
-  6.    Bulleseye Predictor                          154.6388
-  7.    TAGE-SC-L-Alberto-Ros                        155.1061
-  8.    Programming Idiom Predictor-Mose             157.2730
-  9.    Ball Fun                                     158.1306
-  10.    Baseline                                     161.6047
+  1. 🥇 Register-Value-Aware-Toru                    149.9141
+  2. 🥈 TAGE-SCL-Andrez-Seznec                       153.2417
+  3. 🥉 Load-Value-Correlator-Man                    153.8107
+  4.    Multi-Perspective Predictor                  153.8443
+  5.    Bulleseye Predictor                          154.6388
+  6.    TAGE-SC-L-Alberto-Ros                        155.1061
+  7.    Programming Idiom Predictor-Mose             157.2730
+  8.    Ball Fun                                     158.1306
+  9.    Baseline                                     161.6047
 
 
 ================================================================================
 COMPOSITE RANKING (Lower score is better)
 ================================================================================
 
-  1. 🥇 Register-Value-Aware-Toru                Score: 6
-  2. 🥈 Oracle                                   Score: 9
-  3. 🥉 TAGE-SCL-Andrez-Seznec                   Score: 15
-  4.    Multi-Perspective Predictor              Score: 21
-  5.    Load-Value-Correlator-Man                Score: 24
-  6.    Bulleseye Predictor                      Score: 32
-  7.    TAGE-SC-L-Alberto-Ros                    Score: 33
-  8.    Programming Idiom Predictor-Mose         Score: 40
-  9.    Ball Fun                                 Score: 45
-  10.    Baseline                                 Score: 50
+  1. 🥇 Register-Value-Aware-Toru                Score: 5
+  2. 🥈 TAGE-SCL-Andrez-Seznec                   Score: 10
+  3. 🥉 Multi-Perspective Predictor              Score: 16
+  4.    Load-Value-Correlator-Man                Score: 19
+  5.    Bulleseye Predictor                      Score: 27
+  6.    TAGE-SC-L-Alberto-Ros                    Score: 28
+  7.    Programming Idiom Predictor-Mose         Score: 35
+  8.    Ball Fun                                 Score: 40
+  9.    Baseline                                 Score: 45

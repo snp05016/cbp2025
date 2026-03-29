@@ -1,0 +1,37 @@
+Predictor_A,Predictor_B,Valid_Traces,Skipped_Traces,Avg_Delta_MPKI,Pct_B_Better,Worst_MPKI_A,Worst_MPKI_B,Classification
+Baseline,LVCP,105,0,0.33928571428571436,95.23809523809524,24.1502,23.5688,B strictly subsumes A
+Baseline,RVA-Toru,105,0,0.5057247619047619,100.0,24.1502,21.6842,B strictly subsumes A
+Baseline,TAGE-SC-L,105,0,0.30676285714285717,97.14285714285714,24.1502,23.7948,B strictly subsumes A
+Baseline,TAGE-SCL,105,0,0.3679638095238095,96.19047619047619,24.1502,23.3263,B strictly subsumes A
+Baseline,ball-fun,105,0,0.19397619047619055,55.23809523809524,24.1502,15.7181,A and B are complementary
+Baseline,bulleseye-predictor,105,0,0.31908190476190473,99.04761904761905,24.1502,23.759,B strictly subsumes A
+Baseline,multi-perspective-predictor,105,0,0.3584304761904762,100.0,24.1502,23.2648,B strictly subsumes A
+Baseline,programming-idiom-predictor-mose,105,0,0.2626704761904762,92.38095238095238,24.1502,23.2204,B strictly subsumes A
+LVCP,RVA-Toru,105,0,0.1664390476190476,87.61904761904762,23.5688,21.6842,B mostly subsumes A
+LVCP,TAGE-SC-L,105,0,-0.032522857142857124,55.23809523809524,23.5688,23.7948,A and B are complementary
+LVCP,TAGE-SCL,105,0,0.028678095238095256,67.61904761904762,23.5688,23.3263,A and B are complementary
+LVCP,ball-fun,105,0,-0.1453095238095238,11.428571428571429,23.5688,15.7181,A weakly dominates B
+LVCP,bulleseye-predictor,105,0,-0.020203809523809516,54.285714285714285,23.5688,23.759,A and B are complementary
+LVCP,multi-perspective-predictor,105,0,0.01914476190476193,57.142857142857146,23.5688,23.2648,A and B are complementary
+LVCP,programming-idiom-predictor-mose,105,0,-0.07661523809523813,35.23809523809524,23.5688,23.2204,A and B are complementary
+RVA-Toru,TAGE-SC-L,105,0,-0.1989619047619047,19.047619047619047,21.6842,23.7948,A weakly dominates B
+RVA-Toru,TAGE-SCL,105,0,-0.13776095238095235,29.523809523809526,21.6842,23.3263,A weakly dominates B
+RVA-Toru,ball-fun,105,0,-0.3117485714285714,6.666666666666667,21.6842,15.7181,A weakly dominates B
+RVA-Toru,bulleseye-predictor,105,0,-0.18664285714285708,12.380952380952381,21.6842,23.759,A weakly dominates B
+RVA-Toru,multi-perspective-predictor,105,0,-0.14729428571428566,30.476190476190474,21.6842,23.2648,A and B are complementary
+RVA-Toru,programming-idiom-predictor-mose,105,0,-0.24305428571428572,9.523809523809524,21.6842,23.2204,A weakly dominates B
+TAGE-SC-L,TAGE-SCL,105,0,0.061200952380952384,76.19047619047619,23.7948,23.3263,B mostly subsumes A
+TAGE-SC-L,ball-fun,105,0,-0.11278666666666666,9.523809523809524,23.7948,15.7181,A weakly dominates B
+TAGE-SC-L,bulleseye-predictor,105,0,0.012319047619047603,35.23809523809524,23.7948,23.759,A and B are complementary
+TAGE-SC-L,multi-perspective-predictor,105,0,0.05166761904761905,62.857142857142854,23.7948,23.2648,A and B are complementary
+TAGE-SC-L,programming-idiom-predictor-mose,105,0,-0.04409238095238103,29.523809523809526,23.7948,23.2204,A weakly dominates B
+TAGE-SCL,ball-fun,105,0,-0.17398761904761903,10.476190476190476,23.3263,15.7181,A weakly dominates B
+TAGE-SCL,bulleseye-predictor,105,0,-0.04888190476190478,24.761904761904763,23.3263,23.759,A weakly dominates B
+TAGE-SCL,multi-perspective-predictor,105,0,-0.009533333333333328,48.57142857142857,23.3263,23.2648,A and B are complementary
+TAGE-SCL,programming-idiom-predictor-mose,105,0,-0.10529333333333339,22.857142857142858,23.3263,23.2204,A weakly dominates B
+ball-fun,bulleseye-predictor,105,0,0.1251057142857143,91.42857142857143,15.7181,23.759,B weakly dominates A
+ball-fun,multi-perspective-predictor,105,0,0.16445428571428572,93.33333333333333,15.7181,23.2648,B weakly dominates A
+ball-fun,programming-idiom-predictor-mose,105,0,0.06869428571428565,84.76190476190476,15.7181,23.2204,B weakly dominates A
+bulleseye-predictor,multi-perspective-predictor,105,0,0.03934857142857144,65.71428571428571,23.759,23.2648,A and B are complementary
+bulleseye-predictor,programming-idiom-predictor-mose,105,0,-0.05641142857142862,29.523809523809526,23.759,23.2204,A weakly dominates B
+multi-perspective-predictor,programming-idiom-predictor-mose,105,0,-0.09576000000000007,34.285714285714285,23.2648,23.2204,A and B are complementary

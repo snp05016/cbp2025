@@ -21,6 +21,7 @@ import argparse
 import sys
 from pathlib import Path
 from typing import Tuple, Dict
+import re
 
 
 class DeltaCurveGenerator:
@@ -38,6 +39,14 @@ class DeltaCurveGenerator:
         self.predictors = sorted(df['predictor_name'].unique())
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
+
+    @staticmethod
+    def _slugify(text: str) -> str:
+        text = str(text).strip()
+        text = re.sub(r'\s+', '_', text)
+        text = re.sub(r'[^A-Za-z0-9._-]+', '_', text)
+        text = re.sub(r'_+', '_', text)
+        return text.strip('._-') or 'predictor'
     
     def _get_valid_deltas(self, pred_a: str, pred_b: str) -> Tuple[np.ndarray, int]:
         """
@@ -187,13 +196,15 @@ class DeltaCurveGenerator:
         plt.tight_layout()
         
         # Save plot
-        plot_file = self.output_dir / f'delta_curve_{pred_a}_vs_{pred_b}.png'
+        safe_a = self._slugify(pred_a)
+        safe_b = self._slugify(pred_b)
+        plot_file = self.output_dir / f'delta_curve_{safe_a}_vs_{safe_b}.png'
         plt.savefig(plot_file, dpi=300, bbox_inches='tight')
         print(f"✓ Saved: {plot_file}")
         plt.close()
         
         # Save delta data
-        csv_file = self.output_dir / f'deltas_{pred_a}_vs_{pred_b}.csv'
+        csv_file = self.output_dir / f'deltas_{safe_a}_vs_{safe_b}.csv'
         delta_df.to_csv(csv_file, index=False)
         
         # Print summary

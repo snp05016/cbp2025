@@ -63,18 +63,6 @@ Multi-Perspective Predictor
   Total Mispredictions          :      15,566,355
   Avg Cycles                    :   14543959.5143
 
-Oracle
---------------------------------------------------------------------------------
-  Total Traces                  :             105
-  Avg MPKI                      :          3.3127
-  Median MPKI                   :          2.6603
-  Std MPKI                      :          3.3102
-  Avg Miss Rate (%)             :          2.5748
-  Avg IPC                       :          3.5446
-  Total Branches                :     570,601,974
-  Total Mispredictions          :      15,007,481
-  Avg Cycles                    :   14408038.2286
-
 Programming Idiom Predictor-Mose
 --------------------------------------------------------------------------------
   Total Traces                  :             105

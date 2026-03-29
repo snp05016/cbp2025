@@ -1,23 +1,21 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
+import argparse
 import os
+import re
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 # ==========================================
 # CONFIGURATION & CONSTANTS
 # ==========================================
 
-# Input Files (must be in the same directory as script)
-FILES = {
-    'Baseline': 'baseline.csv',
-    'LVCP': 'load-value-correlator-man-results.csv',
-    'RVA-Toru': 'register-value-aware-toru-results.csv',
-    'TAGE-SCL (Andrez)': 'tage-scl-andrez-seznec-results.csv',
-    'TAGE-SC-L (Alberto)': 'tage-sc-l-alberto-ros-results.csv'
-}
-
-# Output Directory
-OUTPUT_DIR = 'subsumption_analysis/figures/'
+# Output Directory (can be overridden via CLI)
+DEFAULT_OUTPUT_DIR = 'subsumption_analysis/figures_all_pairs'
 
 # Plot Styling for High Readability
 # Removed 'grid.axis' to fix KeyError
@@ -37,132 +35,200 @@ plt.rcParams.update({
 # DATA PROCESSING
 # ==========================================
 
-def load_and_merge_data():
-    """
-    Loads CSVs, extracts 'Run' and 'MPKI', merges on 'Run'.
-    """
-    dfs = []
-    
+SKIP_CSV_NAMES = {
+    'combined_predictor_results.csv',
+    'pairwise_deltas.csv',
+    'subsumption_summary.csv',
+    'status.csv',
+}
+
+
+def _slugify(text: str) -> str:
+    text = str(text).strip()
+    text = re.sub(r'\s+', '_', text)
+    text = re.sub(r'[^A-Za-z0-9._-]+', '_', text)
+    text = re.sub(r'_+', '_', text)
+    return text.strip('._-') or 'predictor'
+
+
+def discover_predictor_csvs(results_dir: Path, recursive: bool) -> list[Path]:
+    if recursive:
+        candidates = sorted(p for p in results_dir.rglob('*.csv') if p.is_file())
+    else:
+        candidates = sorted(p for p in results_dir.glob('*.csv') if p.is_file())
+
+    csvs: list[Path] = []
+    for p in candidates:
+        if p.name in SKIP_CSV_NAMES:
+            continue
+        csvs.append(p)
+    return csvs
+
+
+def load_predictor_table(csv_file: Path, predictor_name: str) -> pd.DataFrame | None:
+    """Load a single predictor CSV and normalize to [trace_name, predictor_name, MPKI]."""
     try:
-        base_df = pd.read_csv(FILES['Baseline'])
-        base_df = base_df[['Run', 'MPKI']].rename(columns={'MPKI': 'Baseline'})
-        dfs.append(base_df)
-    except FileNotFoundError:
-        print(f"Error: mandatory file {FILES['Baseline']} not found.")
+        df = pd.read_csv(csv_file)
+    except Exception as e:
+        print(f"✗ Failed to read {csv_file}: {e}")
         return None
 
-    for name, filename in FILES.items():
-        if name == 'Baseline': continue
-        if not os.path.exists(filename):
-            print(f"Error: file {filename} not found.")
-            continue
-        df = pd.read_csv(filename)
-        df = df[['Run', 'MPKI']].rename(columns={'MPKI': name})
-        dfs.append(df)
+    if 'Run' not in df.columns or 'MPKI' not in df.columns:
+        print(f"- Skipping {csv_file.name} (missing 'Run' and/or 'MPKI')")
+        return None
 
-    merged_df = dfs[0]
-    for df in dfs[1:]:
-        merged_df = pd.merge(merged_df, df, on='Run', how='inner')
+    out = df[['Run', 'MPKI']].copy()
+    out.rename(columns={'Run': 'trace_name'}, inplace=True)
+    out['trace_name'] = out['trace_name'].astype(str).str.strip()
+    out['MPKI'] = pd.to_numeric(out['MPKI'], errors='coerce')
+    out['predictor_name'] = predictor_name
+    out = out.dropna(subset=['trace_name', 'MPKI'])
+    return out[['trace_name', 'predictor_name', 'MPKI']]
 
-    return merged_df
 
-def calculate_deltas(df):
-    """Calculating Delta = MPKI_A - MPKI_B"""
-    df['LVCP_to_RVAToru'] = df['LVCP'] - df['RVA-Toru']
-    df['Andrez_to_RVAToru'] = df['TAGE-SCL (Andrez)'] - df['RVA-Toru']
-    df['Andrez_to_Alberto'] = df['TAGE-SCL (Andrez)'] - df['TAGE-SC-L (Alberto)']
-    return df
+def compute_pairwise_deltas(long_df: pd.DataFrame) -> pd.DataFrame:
+    """Compute per-trace MPKI deltas for every predictor pair.
+
+    Delta definition: Δ(A→B) = MPKI_A - MPKI_B. Positive means B is better.
+
+    Excludes traces where either MPKI is <= 0 (treated as invalid/degenerate).
+    """
+    predictors = sorted(long_df['predictor_name'].unique())
+    deltas: list[pd.DataFrame] = []
+
+    for i, pred_a in enumerate(predictors):
+        data_a = long_df[long_df['predictor_name'] == pred_a][['trace_name', 'MPKI']].rename(
+            columns={'MPKI': 'MPKI_A'}
+        )
+        for pred_b in predictors[i + 1:]:
+            data_b = long_df[long_df['predictor_name'] == pred_b][['trace_name', 'MPKI']].rename(
+                columns={'MPKI': 'MPKI_B'}
+            )
+            merged = pd.merge(data_a, data_b, on='trace_name', how='inner')
+            valid = merged[(merged['MPKI_A'] > 0) & (merged['MPKI_B'] > 0)].copy()
+            if valid.empty:
+                continue
+            valid['pred_a'] = pred_a
+            valid['pred_b'] = pred_b
+            valid['delta'] = valid['MPKI_A'] - valid['MPKI_B']
+            deltas.append(valid[['pred_a', 'pred_b', 'trace_name', 'MPKI_A', 'MPKI_B', 'delta']])
+
+    if not deltas:
+        return pd.DataFrame(columns=['pred_a', 'pred_b', 'trace_name', 'MPKI_A', 'MPKI_B', 'delta'])
+
+    return pd.concat(deltas, ignore_index=True)
 
 # ==========================================
 # PLOTTING FUNCTION (Violin Plot)
 # ==========================================
 
-def plot_readable_violin_summary(df):
-    """
-    Generates a highly readable violin plot showing delta distributions.
-    """
-    comparisons = [
-        ('LVCP_to_RVAToru', 'LVCP\n↓\nRVA-Toru'),
-        ('Andrez_to_RVAToru', 'TAGE-SCL (Andrez)\n↓\nRVA-Toru'),
-        ('Andrez_to_Alberto', 'TAGE-SCL (Andrez)\n↓\nTAGE-SC-L (Alberto)')
-    ]
+def plot_pair_violin(deltas: np.ndarray, pred_a: str, pred_b: str, output_dir: Path) -> Path:
+    """Generate a single violin plot for one predictor pair."""
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Prepare data: filter zeros and create list of arrays
-    data_to_plot = []
-    labels = []
-    medians = []
-    
-    for col, label in comparisons:
-        clean_data = df[col][df[col] != 0].values
-        data_to_plot.append(clean_data)
-        labels.append(label)
-        medians.append(np.median(clean_data))
+    deltas = deltas[np.isfinite(deltas)]
+    median = float(np.median(deltas)) if len(deltas) else float('nan')
 
-    # Setup Figure
-    fig, ax = plt.subplots(figsize=(11, 7))
-
-    # Manually enable grid for Y-axis only (Replaces the failed rcParams setting)
+    fig, ax = plt.subplots(figsize=(9, 6))
     ax.grid(True, axis='y', linestyle='--', alpha=0.4)
 
-    # Create Violin Plot
-    parts = ax.violinplot(data_to_plot, showmeans=False, showmedians=False, vert=True)
-
-    # --- Custom Styling for Readability ---
-    colors = ['#1f77b4', '#ff7f0e', '#2ca02c'] # Distinct color for each comparison
-
-    for i, pc in enumerate(parts['bodies']):
-        pc.set_facecolor(colors[i])
+    parts = ax.violinplot([deltas], showmeans=False, showmedians=False, vert=True)
+    for pc in parts['bodies']:
+        pc.set_facecolor('#1f77b4')
         pc.set_edgecolor('black')
         pc.set_alpha(0.6)
 
-    # Add standard lines (min/max/bars) back in, styled black
     for partname in ('cbars', 'cmins', 'cmaxes'):
-        v = parts[partname]
-        v.set_edgecolor('black')
-        v.set_linewidth(1)
+        if partname in parts:
+            v = parts[partname]
+            v.set_edgecolor('black')
+            v.set_linewidth(1)
 
-    # Add clear white dots for the medians
-    inds = np.arange(1, len(medians) + 1)
-    ax.scatter(inds, medians, marker='o', color='white', s=60, zorder=3, edgecolors='black', linewidth=1.5, label='Median Δ')
+    ax.scatter([1], [median], marker='o', color='white', s=60, zorder=3,
+               edgecolors='black', linewidth=1.5, label='Median Δ')
 
-    # Add heavy zero line
     ax.axhline(y=0, color='black', linestyle='-', linewidth=2, alpha=0.8)
 
-    # Labels and Ticks
-    ax.set_xticks(inds)
-    ax.set_xticklabels(labels)
+    ax.set_xticks([1])
+    ax.set_xticklabels([f"{pred_a}\n↓\n{pred_b}"])
     ax.set_ylabel(r'$\Delta$ MPKI (Higher is better for 2nd predictor)')
-    ax.set_title('Delta MPKI Distribution Summary (Violin View)', pad=20)
-    
-    # Add an annotation explaining the zero line
-    ax.text(len(labels) + 0.6, 0, 'Zero Gain\n(No Difference)', 
-            verticalalignment='center', fontsize=11, color='black', style='italic')
-    
-    # Adjust layout to prevent cutting off labels
+    ax.set_title(f"Delta MPKI Distribution (Violin)\n{pred_a} vs {pred_b}")
+    ax.legend(loc='upper right')
     plt.tight_layout()
 
-    # Save
-    filepath = os.path.join(OUTPUT_DIR, 'delta_violin_summary_readable.png')
+    safe_a = _slugify(pred_a)
+    safe_b = _slugify(pred_b)
+    filepath = output_dir / f"delta_violin_{safe_a}_vs_{safe_b}.png"
     plt.savefig(filepath, dpi=300, bbox_inches='tight')
-    plt.close()
-    print(f"Generated readable graph: {filepath}")
+    plt.close(fig)
+    return filepath
 
 # ==========================================
 # MAIN
 # ==========================================
 
 def main():
-    if not os.path.exists(OUTPUT_DIR):
-        os.makedirs(OUTPUT_DIR)
+    parser = argparse.ArgumentParser(
+        description='Generate pairwise delta subsumption violin plots for all predictors'
+    )
+    parser.add_argument('--results-dir', type=str, default='results',
+                        help='Directory containing predictor CSVs (default: results)')
+    parser.add_argument('--recursive', action='store_true',
+                        help='Recursively search for CSVs under --results-dir')
+    parser.add_argument('--output-dir', type=str, default=DEFAULT_OUTPUT_DIR,
+                        help=f'Output directory (default: {DEFAULT_OUTPUT_DIR})')
+    args = parser.parse_args()
 
-    print("Processing data...")
-    df = load_and_merge_data()
-    if df is None: return
-    df = calculate_deltas(df)
-    
-    print("Generating highly readable violin plot...")
-    plot_readable_violin_summary(df)
-    print("Done.")
+    results_dir = Path(args.results_dir)
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    print(f"Discovering CSVs under: {results_dir}")
+    csv_files = discover_predictor_csvs(results_dir, recursive=args.recursive)
+    if not csv_files:
+        print(f"Error: no CSV files found under {results_dir}")
+        return
+
+    print(f"Found {len(csv_files)} CSV(s). Loading MPKI tables...")
+    tables: list[pd.DataFrame] = []
+    for csv_file in csv_files:
+        predictor_name = csv_file.stem
+        t = load_predictor_table(csv_file, predictor_name=predictor_name)
+        if t is not None and not t.empty:
+            tables.append(t)
+
+    if not tables:
+        print("Error: no usable predictor CSVs (need columns 'Run' and 'MPKI').")
+        return
+
+    long_df = pd.concat(tables, ignore_index=True)
+    predictors = sorted(long_df['predictor_name'].unique())
+    print(f"Loaded {len(long_df)} rows across {len(predictors)} predictor(s).")
+
+    print("Computing pairwise deltas...")
+    delta_df = compute_pairwise_deltas(long_df)
+    if delta_df.empty:
+        print("No valid pairwise deltas could be computed (check MPKI values / shared traces).")
+        return
+
+    delta_csv = output_dir / 'pairwise_deltas_all_predictors.csv'
+    delta_df.to_csv(delta_csv, index=False)
+    print(f"✓ Wrote delta table: {delta_csv}")
+
+    print("Generating per-pair violin plots...")
+    pairs_out_dir = output_dir / 'pairwise_violin_plots'
+    pairs_out_dir.mkdir(parents=True, exist_ok=True)
+
+    plot_count = 0
+    for (pred_a, pred_b), grp in delta_df.groupby(['pred_a', 'pred_b'], sort=True):
+        deltas = grp['delta'].to_numpy(dtype=float)
+        if len(deltas) == 0:
+            continue
+        out = plot_pair_violin(deltas, pred_a=pred_a, pred_b=pred_b, output_dir=pairs_out_dir)
+        plot_count += 1
+        print(f"✓ {out}")
+
+    print(f"Done. Generated {plot_count} plot(s) in: {pairs_out_dir}")
 
 if __name__ == "__main__":
     main()

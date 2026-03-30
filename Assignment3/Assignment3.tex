@@ -61,7 +61,7 @@
     captionpos=b
 }
 
-\title{\textbf{A Comprehensive analysis of the CBP 2025 Branch Predictors entries: LVCP, RVA-Toru, and TAGE-SC 2025}}
+\title{\textbf{A Comprehensive analysis of the CBP 2025 Branch Predictors entries: MPP, BALL, and the Bullseye Predictor}}
 \author{Saumya Patel}
 \date{\today}
 
@@ -81,8 +81,8 @@
 In the previous assignment, I evaluated the following branch predictors:
 \begin{itemize}
 \item Load Value Correlator Predictor (LVCP)
-\item Register-Value-Aware Branch Predictor (RVA-Toru)
-\item TAGE-SC 2025 André Seznec Predictor
+\item Register-Value-Aware Branch Predictor
+\item TAGE-SCL-Seznec Predictor
 \item TAGE-SC-L Alberto Ros Predictor
 \end{itemize}
 In this report, I will continue my analysis of these predictors by performing a similar analysis of the remaining CBP2025 entries, namely
@@ -96,7 +96,7 @@ I will do a similar analysis of these predictors as I did for the first four and
 and rank them based on their performance. 
 
 \subsection{The Oracle Predictor}
-The Oracle predictor is a theoretical construct that represents the best possible branch predictor that is not ahead of time. The point of this predictor is
+The Oracle predictor is a theoretical construct that \textbf{represents the theoretical upper bound achievable without future knowledge}. The point of this predictor is
 to check the maximum possible performance of a branch predictor on the given traces. It is important to note that the Oracle predictor is not a real predictor 
 and cannot be implemented in hardware, but it serves as a useful benchmark for evaluating the performance of other predictors.
 More implementation details about the Oracle predictor can be found in the later sections of this report. 
@@ -109,7 +109,7 @@ The methodology for evaluating the predictor is the same as the one used in the 
         \item Misprediction Rate ( MR )
         \item Misprediction Rate Per Kilo Instructions ( MPKI )
         \item Wrong Path Cycles ( CycWP )
-        \item Wrong Path Cycles Per Kilo Instructions ( CycWPKI ) 
+        \item Wrong Path Cycles Per Kilo Instructions ( CycWPPKI ) 
 \end{itemize}
 
 Furthermore, I also compared the predictors against each other to draw a final conclusion about their performance. The metrics that I used were,
@@ -181,9 +181,10 @@ at the same position in history, and the predictor can finally learn a consisten
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{mpp_vs_baseline.png}
-\caption{Comparison of MPP and Baseline Predictors}
+\caption{Comparison of Baseline and MPP Predictors}
+\label{fig:mpp_vs_baseline}
 \end{figure}
-MPP proves to perform better than the baseline predictor, achieving a mean MPKI difference of 0.38 across all traces. This is a pretty decent improvement.
+MPP proves to perform better than the baseline predictor, \textbf{achieving a mean MPKI difference of 0.36 across all traces}. This is a pretty decent improvement.
 One of the most interesting things about the MPP is that it uses two bloom filters to identify branches that are trivially T or NT.
 Looking at the top 10 improvements, 6 of them are \textbf{\textit{int\_}} traces. As mentioned before, integer code is compiled from high level languages and has complex control flow,
 and compilers usually generate \textit{alignment breaking branches} as cited in the paper, \newline
@@ -196,12 +197,13 @@ sometimes does not appear, leading to the same branch outcomes appearing in diff
 }
 \newline \newline
 
-These branches appear as null checks, type checks and bound checks. This is where TAGE's strength becomes an issue i.e. a single misaligned branch "poisons" a long history entry. The MODHIST as mentioned
+These branches appear as null checks, type checks and bound checks. This is where TAGE's strength becomes an issue i.e. \textbf{a single misaligned branch "poisons" a long history entry}. The MODHIST as mentioned
 above aims to solve this particular problem, and it seems to be doing a good job at it.
 
 \begin{table}[H]
 \centering
 \caption{Framework-Level Summary: MPP vs Baseline Predictor}
+\label{tab:mpp_framework_summary}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Framework} & \textbf{Improve/Total} & \textbf{Success Ratio (\%)} & \textbf{Total MPKI Improvement} \\
@@ -216,8 +218,8 @@ Compress  & 1/8   & 12.5  & -0.9672  \\
 \end{tabular}
 \end{table}
 
-The improvement in \textbf{\textit{Web\_}} traces is not as dramatic but is remarkably consistent, having a 100\% success rate. The precise path history of web traces becomes too specific, i.e. two slightly different web page loads produce
-completely different path histories even though their branch behaviour is very similar. The MPP's use of the BLURRYPATH feature allows it to generalize better and thus achieve a consistent improvement across all web traces.
+The improvement in \textbf{\textit{Web\_}} traces is not as dramatic but is \textbf{remarkably consistent, having a 100\% success rate}. The precise path history of web traces becomes too specific, i.e. two slightly different web page loads produce
+completely different path histories even though their branch behaviour is very similar. This may be due to MPP's BLURRYPATH feature, which records coarser memory regions and could help it generalize better to achieve a consistent improvement across all web traces.
 
 The compress and infra traces are interesting because they show very little improvement over the baseline. For the compress traces I think the explanation is fairly simple. Their baseline MPKI is already very low, so TAGE-SC-L is
 already doing a good job and there is not much left for MPP to improve. The infra traces are honestly less clear to me. My best guess is that these workloads contain branches whose outcomes depend more on runtime data values than on control
@@ -227,7 +229,7 @@ rather than helping it. That said, I want to be clear that these are speculative
 
 
 
-\section{Branch Prediction via Load Value Prediction ( BALL )}
+\section{Branch Prediction via Load Value Prediction ( BALL -- Branch ALU-Load-Load Predictor )}
 
 \subsection{Details}
 The BALL (Branch-ALU-Load-Load) predictor is motivated by a key limitation of history-based predictors like TAGE-SC-L: they struggle with \textbf{load-data-dependent branches}. These are branches whose outcomes depend on values loaded from memory, rather than patterns in branch history.
@@ -264,6 +266,7 @@ Overall, BALL shifts the prediction problem from \textbf{control-flow correlatio
 \centering
 \includegraphics[width=0.8\textwidth]{ball_fun_vs_baseline.png}
 \caption{Comparison of BALL and Baseline Predictors}
+\label{fig:ball_vs_baseline}
 \end{figure}
 
 The BALL predictor is an unusual case in this comparison. Unlike MPP and Bullseye 
@@ -311,7 +314,7 @@ diagonal in the scatter plot.
 \end{tabular}
 \end{table}
 
-The biggest result here is \texttt{int\_21}, which drops by 8.43 MPKI. This is 
+The biggest result here is \texttt{int\_21}, which \textbf{drops by 8.43 MPKI}. This is
 the largest improvement of any predictor on any single trace in this entire 
 comparison. The \texttt{fp\_13} and \texttt{fp\_8} traces show a similar pattern. 
 These are not random. These are the exact traces used as examples in the BALL 
@@ -325,7 +328,7 @@ in the way BALL needs them to be. The normalized metrics bar chart confirms this
 BALL is better across MPKI, MR and CycWPPKI overall, but only slightly, because 
 those gains come from just 9 traces spread across 105 total.
 
-In short, BALL is a very specialised predictor. It solves one specific problem 
+In short, \textbf{BALL is a very specialised predictor}. It solves one specific problem
 very well and does nothing outside of that problem. Whether that is useful 
 depends entirely on what workloads you care about.
 
@@ -338,7 +341,7 @@ H2P branches appear under different global histories every time they execute. Fo
 The paper also notes that simply making TAGE bigger doesn't fix this problem, which means even an infinitely large TAGE would barely improve the prediction rates. The main problem isn't storage, but the branch's behaviour not correlating well enough with
 the global history. 
 
-The bullseye predictor adds a small 256k "subsystem" on top of the TAGE-SC-L predictor. It is composed of 3 main components:
+The bullseye predictor adds a small 28KB "subsystem" on top of the TAGE-SC-L predictor. It is composed of 3 main components:
 \begin{itemize}
         \item \textbf{H2P (Hard-to-Predict) Branch Classifier: }This component is responsible for identifying the hard-to-predict branches. This tracks every branch's execution count, MP count and running accuracy (the number of correct predictions
         divided by the total number of predictions for that branch). When a branch's execution count exceeds a certain threshold and its accuracy falls below a certain number, the classifier flags the branch as an H2P branch, preventing the entire
@@ -355,14 +358,15 @@ The bullseye predictor adds a small 256k "subsystem" on top of the TAGE-SC-L pre
 \centering
 \includegraphics[width=0.8\textwidth]{bullseye_vs_baseline.png}
 \caption{Comparison of Bullseye and Baseline Predictors}
+\label{fig:bullseye_vs_baseline}
 \end{figure}
 
 The Bullseye predictor is built around one core idea: most of the mispredictions 
 in TAGE-SC-L come from a very small number of hard-to-predict (H2P) branches, 
 so rather than trying to improve prediction across the board, it identifies those 
 specific branches and handles them with dedicated perceptron predictors. The 
-results here show that this strategy works well, with Bullseye winning on 104 
-out of 105 traces and achieving an overall MPKI of 3.489 compared to the 
+results here show that this strategy works well, with \textbf{Bullseye winning on 104
+out of 105 traces} and achieving an overall MPKI of 3.489 compared to the 
 baseline's 3.808, which is an 8.38\% improvement.
 
 Table \ref{tab:bullseye_summary} shows the overall summary statistics across 
@@ -417,8 +421,8 @@ MEDIA    & 1.0661 & 0.9954 &  6.63\% \\
 \end{tabular}
 \end{table}
 
-The integer and web categories benefit the most. For integer workloads, the 
-improvement is 17.22\%, which makes sense because integer code tends to have 
+The integer and web categories benefit the most. For integer workloads, \textbf{the
+improvement is 17.22\%}, which makes sense because integer code tends to have 
 complex control flow with many hard branches that consistently defeat TAGE-SC-L. 
 These are exactly the kind of branches that Bullseye's H2P Identification Table 
 (HIT) flags and routes to a dedicated perceptron. The top individual improvements 
@@ -467,8 +471,8 @@ biggest difference.
 \end{table}
 
 One thing worth noting is that \texttt{int\_21}, which has the highest baseline 
-MPKI of any trace at 24.15, only improves by 0.39 MPKI under Bullseye. This is 
-an interesting contrast with BALL, which reduces \texttt{int\_21} by 8.43 MPKI. 
+MPKI of any trace at 24.15, only improves by 0.39 MPKI under Bullseye. This is
+an interesting contrast with BALL, which \textbf{reduces \texttt{int\_21} by 8.43 MPKI}.
 The reason is that \texttt{int\_21}'s hard branches are load-data-dependent, 
 which is a problem that perceptron predictors cannot solve through history 
 patterns alone. Bullseye identifies the branch as H2P but its perceptrons 
@@ -519,6 +523,7 @@ This design ensures that simple, structured patterns are handled perfectly by sp
 \centering
 \includegraphics[width=0.8\textwidth]{programming_idiom_vs_baseline.png}
 \caption{Comparison of Programming Idiom Predictor and Baseline Predictors}
+\label{fig:pip_vs_baseline}
 \end{figure}
 
 The results show a solid overall improvement, with the predictor winning on 97 
@@ -575,16 +580,18 @@ FP       & 3.5456 & 3.9243 &  $\approx$0\% \\
 \end{tabular}
 \end{table}
 
-The web category sees the biggest improvement at 10.70\%, which makes sense 
-given that web workloads are full of branches tied to common programming 
-patterns in parsers, string handlers and network code. The compress and media 
-categories also see decent gains. The integer and fp category averages look 
-flat or slightly worse, but this is a bit misleading. Looking at the individual 
-trace results, the predictor actually wins on most integer and fp traces. The 
-category average is being pulled down by a few very high MPKI traces like 
-\texttt{fp\_1} at 15.58 MPKI where the predictor simply cannot help. The 
-regressions on \texttt{infra\_8} and \texttt{infra\_5} are the only two traces 
-that stand out as real losses, and without knowing the exact nature of these 
+\textbf{The web category sees the biggest improvement at 10.70\%}, which makes sense
+given that web workloads are full of branches tied to common programming
+patterns in parsers, string handlers and network code. The compress and media
+categories also see decent gains. The FP category shows a real regression of
+approximately 10.9\% (from 3.5456 to 3.9243 MPKI). Looking at individual trace
+results, the predictor does win on most FP traces, but the category average is
+being pulled down by a few very high MPKI traces like \texttt{fp\_1} at 15.58
+MPKI where the pattern-matching overhead may be adding noise without finding
+useful idioms. The integer category average appears flat, but this is similarly
+affected by outliers. The regressions on \texttt{infra\_8} and \texttt{infra\_5}
+are the only two traces that stand out as real losses, and without knowing the
+exact nature of these 
 workloads it is difficult to say why they regress.
 
 Overall, the Programming Idiom Predictor sits between Bullseye and BALL in 
@@ -601,10 +608,11 @@ improvement of 6.90\% is competitive with Bullseye's 8.38\%.
 \centering
 \includegraphics[width=0.8\textwidth]{bullseye_vs_mpp_delta.png}
 \caption{Delta Curve: Bullseye vs Multi-Perspective Predictor}
+\label{fig:bullseye_vs_mpp_delta}
 \end{figure}
 
-Looking at the delta curve, the relationship between Bullseye and MPP is 
-genuinely competitive. The curve crosses zero fairly early, meaning neither 
+Looking at the delta curve, \textbf{the relationship between Bullseye and MPP is
+genuinely competitive}. The curve crosses zero fairly early, meaning neither 
 predictor dominates the other cleanly across all traces. Bullseye wins on 
 34.3\% of traces (the pink region on the left) and MPP wins on 65.7\% of 
 traces (the green region on the right), with a mean delta of +0.039 MPKI 
@@ -629,6 +637,8 @@ Best Single Trace   & web\_7 ($-$1.35) & int\_1 (+1.34) \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+The 105 traces are completely partitioned between the two predictors with no ties.
 
 The left side of the delta curve tells an interesting story. Bullseye's biggest 
 wins are on \texttt{web\_7} ($-$1.35 MPKI) and \texttt{int\_16} ($-$1.14 MPKI). 
@@ -666,9 +676,10 @@ moderately hard branches spread across the code, MPP is the stronger choice.
 \centering
 \includegraphics[width=0.8\textwidth]{ball_vs_bullseye_delta.png}
 \caption{Delta Curve: BALL vs Bullseye Predictor}
+\label{fig:ball_vs_bullseye_delta}
 \end{figure}
 
-The delta curve has a clear structure: a sharp drop on the left over a few traces, a long flat middle section, and a gradual rise on the right where Bullseye performs better. Bullseye wins on 91.4% of traces with a mean delta of +0.125 MPKI.
+The delta curve has a clear structure: a sharp drop on the left over a few traces, a long flat middle section, and a gradual rise on the right where Bullseye performs better. Bullseye wins on 91.4\% of traces with a mean delta of +0.125 MPKI.
 
 Table \ref{tab:ball_vs_bullseye} summarises the key numbers.
 
@@ -690,6 +701,8 @@ Best Single Trace   & \texttt{int\_21} ($-$8.04) & \texttt{int\_16} (+2.43) \\
 \end{tabular}
 \end{table}
 
+The 105 traces are completely partitioned between the two predictors with no ties.
+
 The left side shows BALL’s wins, and they are large. On \texttt{int\_21} BALL beats Bullseye by 8.04 MPKI, on \texttt{fp\_13} by 3.47 MPKI, and on \texttt{fp\_8} by 2.11 MPKI. These are load-data-dependent branches. Bullseye treats them as H2P and applies perceptrons, but these branches do not follow stable history patterns. Their behavior depends on runtime data values, which BALL directly models.
 The flat middle section shows traces where both predictors behave similarly. In these cases, both fall back to TAGE-SC-L. BALL does not activate because there are no load-dependent chains, and Bullseye does not trigger strong H2P behavior.
 The right side shows Bullseye’s advantage. On \texttt{int\_16} it gains 2.43 MPKI and on \texttt{int\_17} 1.60 MPKI. These branches depend on complex history patterns. Bullseye’s perceptrons can learn these patterns once identified as H2P. BALL has no mechanism for this case.
@@ -702,12 +715,14 @@ Overall, Bullseye performs better on average (3.4889 vs 3.6140 MPKI) and across 
 \centering
 \includegraphics[width=0.8\textwidth]{complementarity_category.png}
 \caption{Predictor Complementarity by Workload Category}
+\label{fig:complementarity_category}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{complementarity_distribution.png}
 \caption{Predictor Combination Distribution Across All Traces}
+\label{fig:complementarity_distribution}
 \end{figure}
 
 Looking at each predictor against the baseline individually only tells part of 
@@ -715,22 +730,24 @@ the story. A more interesting question is whether these predictors are all
 solving the same problem or different ones. If they overlap heavily, combining 
 them would not help much. If they target different branches, a combined predictor 
 could be much better than any single one. To answer this, I categorized each 
-trace by which combination of predictors meaningfully improved it, using a 
-threshold of 0.1 MPKI reduction over the baseline.
+trace by which combination of predictors meaningfully improved it, using a
+threshold of 0.1 MPKI reduction over the baseline. This threshold represents
+a practically significant reduction without being so small that measurement
+noise is counted as improvement.
 
-The most important finding is that 41 out of 105 traces fall under MPP + 
-Bullseye + PIP together. These three predictors are largely solving the same 
+\textbf{The most important finding is that 41 out of 105 traces fall under MPP +
+Bullseye + PIP together}. These three predictors are largely solving the same 
 problem through different mechanisms, so combining all three would not give 
 triple the improvement on these traces.
 
-BALL is a completely different story. It only appears in 9 traces total, and 
+\textbf{BALL is a completely different story}. It only appears in 9 traces total, and
 these are almost entirely separate from the traces that MPP, Bullseye and PIP 
 improve. This confirms that BALL targets load-data-dependent branches which are 
 a genuinely different problem. A combination of BALL with any of the other three 
 would give close to additive improvement because they are not competing for the 
 same traces.
 
-The 26 traces under ``None'' are also significant. These are traces that no 
+\textbf{The 26 traces under ``None'' are also significant}. These are traces that no
 predictor could improve meaningfully, representing branches that are resistant 
 to both history-based prediction and load value prediction. This sets a 
 practical floor on how much any of these designs can improve over the baseline 
@@ -745,4 +762,432 @@ Bullseye and PIP miss. FP traces have a lot of grey meaning many fp workloads
 resist all predictors, but the few that BALL uniquely fixes are concentrated 
 here. Compress remains almost entirely grey, consistent with everything seen 
 so far.
+
+\section{Overall Rankings}
+
+\subsection{Methodology}
+
+To compare all predictors fairly I needed a way to rank them that does not 
+rely on just one metric. A predictor might have great MPKI but poor IPC, or 
+low CycWPPKI but a high miss rate. To account for this I used a rank-sum 
+approach across five metrics, which gives each predictor an overall composite 
+score that reflects its performance across all dimensions equally.
+
+The five metrics used are:
+
+\begin{itemize}
+    \item \textbf{MPKI} (Mispredictions Per Kilo Instructions) - lower is better. 
+    This is the most direct measure of how often a predictor gets a branch wrong. 
+    In a competition setting this is the most intuitive metric because it directly 
+    counts prediction failures normalized by program size, making it comparable 
+    across traces of different lengths.
+
+    \item \textbf{MR} (Miss Rate) - lower is better. Miss rate confirms that 
+    improvements in MPKI are not just a result of a workload having fewer branches 
+    overall. A predictor could have low MPKI simply because a workload does not 
+    branch very often. Miss rate removes this effect by expressing mispredictions 
+    as a proportion of total branches, confirming that the predictor is genuinely 
+    better and not just getting lucky with branch density.
+
+    \item \textbf{IPC} (Instructions Per Cycle) - higher is better. IPC might 
+    seem less relevant for a branch prediction competition but it is actually one 
+    of the most important metrics from a practical standpoint. A better branch 
+    predictor should allow the processor to make forward progress faster by 
+    reducing pipeline flushes and re-fetches. If a predictor improves MPKI but 
+    does not translate that into better IPC, the improvement may not be as 
+    meaningful in a real processor as the raw misprediction numbers suggest.
+
+    \item \textbf{Cycles} (Average cycle count) - lower is better. Fewer total 
+    cycles means the processor finishes the workload faster, which is the 
+    ultimate goal of any microarchitectural optimization. This metric captures 
+    the end-to-end impact of better branch prediction on execution time.
+
+    \item \textbf{CycWPPKI} (Cycles Wasted Per Kilo Instructions) - lower is 
+    better. This metric captures not just how often a predictor is wrong but how 
+    expensive each mistake is. A misprediction on a branch with a long wrong-path 
+    execution costs far more than one with a short wrong path. Two predictors with 
+    identical MPKI can have very different CycWPPKI values depending on which 
+    branches they are getting wrong.
+\end{itemize}
+
+It is worth noting that the CBP 2025 competition hosts ranked predictors based 
+on CycWPPKI alone. I found this an interesting decision and after thinking about 
+it I understand why they made it. CycWPPKI is arguably the single most complete 
+metric for a branch prediction competition because it captures both dimensions 
+of the problem at once: how often you are wrong and how much it costs when you 
+are wrong. A predictor that rarely mispredicts but always does so on expensive 
+long wrong-path branches would score poorly on CycWPPKI even if its MPKI looks 
+good. In that sense it is a more honest measure of real-world impact than MPKI 
+alone.
+
+That said, I feel like looking at only one metric leaves important information 
+on the table. MPKI tells you about raw prediction quality, miss rate confirms 
+the improvement is genuine, IPC shows whether the gains translate to actual 
+execution improvement, and cycles gives you the bottom line on performance. 
+Each metric catches something the others might miss. For this reason I use all 
+five in the composite ranking rather than following the competition's single 
+metric approach.
+
+For each metric I compute the arithmetic mean across all 105 traces for every 
+predictor and rank them accordingly. Each predictor receives a rank of 1 through 
+N for each metric. These ranks are then summed to produce the composite score. 
+A lower composite score means better overall performance. For example, a 
+predictor that ranks 1st in MPKI, 2nd in MR, 1st in IPC, 2nd in Cycles and 
+1st in CycWPPKI would have a composite score of 7.
+
+The key property of this approach is that every metric contributes equally. 
+I am not saying MPKI matters more than IPC or that CycWPPKI is more important 
+than miss rate. Each dimension of predictor performance gets the same vote in 
+the final ranking.
+
+One thing worth keeping in mind when reading composite scores is that the same 
+score can mean different things. A score of 15 could come from consistently 
+finishing 3rd in everything, or from winning three metrics outright while 
+finishing last in two. Both give the same number but represent very different 
+predictor profiles. For this reason I present the individual metric rankings 
+alongside the composite score rather than just reporting the final number.
+
+For traces within the same workload category I also compute group-specific 
+rankings separately for int, fp, web, compress, infra and media workloads. 
+This reveals whether a predictor is broadly good across everything or 
+specialized for certain workload types. Within each group, CycWPPKI is used 
+as the primary sort criterion with MPKI as the tiebreaker, since CycWPPKI 
+captures both the frequency and the cost of mispredictions in a single number.
+
+\subsection{Results}
+
+Table \ref{tab:overall_rankings} shows the full ranking of all predictors 
+across every metric, along with the composite score.
+
+\begin{table}[H]
+\centering
+\caption{Overall Predictor Rankings Across All Metrics}
+\label{tab:overall_rankings}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrr}
+\toprule
+\textbf{Predictor} & \textbf{MPKI} & \textbf{MR (\%)} & \textbf{IPC} & 
+\textbf{Avg Cycles} & \textbf{CycWPPKI} & \textbf{Composite Score} & 
+\textbf{Rank} \\
+\midrule
+Register-Value-Aware  & 3.3022 & 2.5681 & 3.5450 & 14,401,963 & 149.91 & 5  & 1st \\
+TAGE-SCL-Seznec       & 3.4400 & 2.6969 & 3.5233 & 14,536,841 & 153.24 & 10 & 2nd \\
+MPP                   & 3.4495 & 2.7030 & 3.5180 & 14,543,959 & 153.84 & 16 & 3rd \\
+Load-Value-Correlator & 3.4687 & 2.7183 & 3.5159 & 14,561,854 & 153.81 & 19 & 4th \\
+Bullseye              & 3.4889 & 2.7395 & 3.5132 & 14,593,783 & 154.64 & 27 & 5th \\
+TAGE-SC-L(Alberto-Ros) & 3.5012 & 2.7427 & 3.5140 & 14,591,981 & 155.11 & 28 & 6th \\
+Programming Idiom     & 3.5453 & 2.7608 & 3.4974 & 14,667,399 & 157.27 & 35 & 7th \\
+BALL                  & 3.6140 & 2.8350 & 3.4777 & 14,698,980 & 158.13 & 40 & 8th \\
+Baseline              & 3.8080 & 2.9679 & 3.4636 & 14,824,660 & 161.60 & 45 & 9th \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+Table \ref{tab:cycwppki_ranking} shows the CycWPPKI-only ranking, which is 
+the official metric used by the CBP 2025 competition hosts to determine the 
+winner.
+
+\begin{table}[H]
+\centering
+\caption{Official CBP 2025 Ranking by CycWPPKI}
+\label{tab:cycwppki_ranking}
+\begin{tabular}{lrl}
+\toprule
+\textbf{Rank} & \textbf{CycWPPKI} & \textbf{Predictor} \\
+\midrule
+1st & 149.91 & Register-Value-Aware \\
+2nd & 153.24 & TAGE-SCL-Seznec \\
+3rd & 153.81 & Load-Value-Correlator \\
+4th & 153.84 & MPP \\
+5th & 154.64 & Bullseye \\
+6th & 155.11 & TAGE-SC-L(Alberto-Ros) \\
+7th & 157.27 & Programming Idiom \\
+8th & 158.13 & BALL \\
+9th & 161.60 & Baseline \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The CycWPPKI ranking matches the official CBP 2025 competition results exactly, 
+which validates that the simulation and analysis pipeline used in this report 
+is correct.
+
+Looking at the composite ranking, \textbf{Register-Value-Aware is the clear winner with
+a perfect composite score of 5}, meaning it ranked 1st across all five metrics. 
+This is not a close race at the top, it leads every single metric by a 
+meaningful margin, with an MPKI of 3.30 compared to the next best of 3.44 and 
+a CycWPPKI of 149.91 compared to 153.24. It is the strongest predictor in this 
+comparison by any measure.
+
+TAGE-SCL-Seznec takes a clear second place with a composite score of 10, also 
+finishing 2nd consistently across all metrics. The gap between 2nd and 3rd is 
+notable, MPP at score 16 and Load-Value-Correlator at 19 are reasonably 
+close to each other but a fair distance behind the top two.
+
+One interesting result in the CycWPPKI ranking is that Load-Value-Correlator 
+finishes 3rd while MPP finishes 4th, even though MPP has a lower MPKI. This is 
+exactly the case I described in the methodology section, two predictors with 
+similar MPKI can differ on CycWPPKI depending on which branches they are getting 
+wrong. Load-Value-Correlator is apparently getting its mispredictions wrong on 
+cheaper branches than MPP, making it more efficient even with slightly more 
+mispredictions overall.
+
+BALL finishes 8th out of 9, just above the baseline. This is consistent with
+everything seen in the individual comparisons. As a standalone predictor \textbf{BALL
+only activates on 9 traces and does nothing elsewhere}, so its aggregate numbers
+are always going to look weak compared to general-purpose predictors. This does
+not mean BALL is a bad design, it means it was never designed to be evaluated
+this way. BALL's low rank should be interpreted in this context and does not
+reflect its value as a complementary predictor.
+
+Every predictor beats the baseline on every metric, which confirms that all 
+the designs evaluated here represent genuine improvements over the 2016 
+champion TAGE-SC-L.
+
+\subsection{Oracle Predictor}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{stacked_bar_winning_traces_per_predictor.png}
+\caption{Different predictors perform best on different workload categories, motivating a category-level oracle that selects the best predictor per workload type.}
+\label{fig:oracle_wins}
+\end{figure}
+
+Looking at Figure~\ref{fig:oracle_wins}, no single predictor is the best choice 
+for every trace. Different predictors win on different traces, and this holds 
+within every workload category. This is the motivation for building an oracle 
+predictor. Rather than committing to one predictor for all workloads, the idea 
+is to ask: what if we could always use the best predictor for each workload 
+category?
+
+To build the oracle, I looked at the results across all traces for each workload 
+category and identified which predictor performed best on average within that 
+group. The oracle then uses that predictor for every trace belonging to that 
+category. This is not something that could be done in a real processor since it 
+requires knowing the results ahead of time, but it gives a useful upper bound on 
+how much performance could be gained by better matching predictors to workloads.
+
+The category winners I found are shown in Table~\ref{tab:oracle_winners}.
+
+\begin{table}[H]
+\centering
+\caption{Best predictor per workload category used by the oracle. The oracle selects predictors based on lowest average CycWPPKI per category, which is the official CBP 2025 competition metric.}
+\label{tab:oracle_winners}
+\begin{tabular}{ll}
+\toprule
+\textbf{Workload Category} & \textbf{Predictor Selected} \\
+\midrule
+compress & Register-Value-Aware \\
+fp       & Register-Value-Aware \\
+infra    & Load-Value Correlator (Man) \\
+int      & Register-Value-Aware \\
+media    & Multi-Perspective Predictor (Jimenez) \\
+web      & Register-Value-Aware \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Register-Value Aware wins four out of six categories}, which is consistent with
+it being the overall competition winner. The two exceptions are interesting. For 
+infra traces, the Load-Value Correlator edges it out, which suggests these 
+workloads contain a higher proportion of branches that depend on loaded memory 
+values. For media traces, MPP wins, which is the one category where its novel 
+history features give it a consistent edge over everything else. The oracle 
+captures both of these cases by switching predictors where it matters.
+
+Table~\ref{tab:oracle_results} shows the full CycWPPKI ranking with the oracle 
+included, and Table~\ref{tab:oracle_stats} shows its detailed performance summary.
+
+\begin{table}[H]
+\centering
+\caption{Overall CycWPPKI ranking including the oracle predictor}
+\label{tab:oracle_results}
+\begin{tabular}{lrl}
+\toprule
+\textbf{Rank} & \textbf{CycWPPKI} & \textbf{Predictor} \\
+\midrule
+1st  & 149.82 & Oracle \\
+2nd  & 149.91 & Register-Value-Aware \\
+3rd  & 153.24 & TAGE-SCL-Seznec \\
+4th  & 153.81 & Load-Value Correlator (Man) \\
+5th  & 153.84 & Multi-Perspective Predictor \\
+6th  & 154.64 & Bullseye Predictor \\
+7th  & 155.11 & TAGE-SC-L (Alberto Ros) \\
+8th  & 157.27 & Programming Idiom Predictor \\
+9th  & 158.13 & BALL \\
+10th & 161.60 & Baseline \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Oracle predictor performance summary across all 105 traces}
+\label{tab:oracle_stats}
+\begin{tabular}{lr}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Total traces         & 105 \\
+Avg MPKI             & 3.3127 \\
+Median MPKI          & 2.6603 \\
+Std MPKI             & 3.3102 \\
+Avg miss rate (\%)   & 2.5748 \\
+Avg IPC              & 3.5446 \\
+Total branches       & 570,601,974 \\
+Total mispredictions & 15,007,481 \\
+Avg cycles           & 14,408,038 \\
+CycWPPKI             & 149.82 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{The gap between the oracle and Register-Value Aware is just 0.09 CycWPPKI}.
+Interestingly, the oracle's average MPKI of 3.3127 is slightly worse than
+Register-Value-Aware's 3.3022, even though the oracle beats it on CycWPPKI.
+This is because the oracle trades slightly worse MPKI for better wrong-path
+cycle efficiency by selecting different predictors per category that minimize
+the cost of mispredictions rather than their raw frequency. Similarly, the
+oracle IPC of 3.5446 is marginally lower than Register-Value-Aware's 3.5450,
+a small anomaly that reflects the same trade-off.
+
+\textbf{It is important to note that this is a category-level oracle, not a trace-level
+oracle}. A true trace-level oracle would always pick the best predictor per
+individual trace and would achieve a much lower CycWPPKI. The 0.09 gap partly
+reflects the coarseness of category-level selection, as traces within the same
+category do not all have the same optimal predictor.
+
+Even with the benefit of knowing which predictor wins each category ahead of 
+time, there is almost nothing left to gain over simply running Register-Value
+Aware on everything. \textbf{Register-Value-Aware's margin over the oracle (0.09
+CycWPPKI) is approximately 37 times smaller than its margin over the next-best
+predictor (3.33 CycWPPKI)}. This shows how close Register-Value Aware already
+is to the ceiling of what category-level selection can achieve. 
+
+\section{Conclusion}
+
+In this report I evaluated four branch predictors against the TAGE-SC-L 2016 
+baseline: MPP, BALL, Bullseye, and the Programming Idiom Predictor. Combined 
+with the four predictors from the previous assignment, this gives a full picture 
+of the CBP 2025 field.
+
+The clearest pattern across all the results is the divide between general-purpose 
+predictors and specialized ones. Bullseye proved to be the strongest 
+general-purpose predictor among the four evaluated here. By targeting only the 
+hard-to-predict branches and leaving everything else to the baseline, it delivered 
+consistent improvements across almost every trace with only one regression in the 
+entire dataset. MPP is also a strong general-purpose predictor, but the 
+complementarity analysis showed that MPP and Bullseye are largely solving the same 
+problem. They overlap heavily on 41 traces, so combining them would not give 
+meaningfully better results than using either one alone.
+
+BALL sits in a completely different category. It ignores branch history entirely 
+and instead predicts branches by working out what value a load instruction will 
+return. This means it only activates on a small number of traces, but on those 
+traces no other predictor comes close to matching its improvement. Because of 
+this, BALL is genuinely orthogonal to history-based predictors like Bullseye and 
+MPP. The complementarity analysis confirmed this directly: BALL's 9 winning traces 
+are almost entirely separate from the traces that any other predictor improves.
+
+The oracle analysis put a ceiling on how much is left to gain. Even with the 
+benefit of knowing the best predictor per workload category ahead of time, the 
+oracle only beats Register-Value Aware by 0.09 CycWPPKI. This tells us that 
+Register-Value Aware is already very close to the limit of what category-level 
+selection can achieve. The 26 traces that no predictor could meaningfully improve 
+represent a harder problem: branches whose outcomes have no learnable pattern in 
+either history or load values.
+
+\textbf{The path forward from these results points toward hybrid designs}. A predictor
+that pairs a strong general-purpose base like Bullseye with a targeted module 
+like BALL could cover both broad branch behaviors and the specific load-dependent
+cases that history-based predictors cannot reach. \textbf{The complementarity analysis
+gives a concrete argument for this: the gains from such a combination would be
+largely additive}, because the two components are targeting different branches
+entirely.
+\begin{thebibliography}{99}
+
+\bibitem{mpp2025}
+D. A. Jiménez,
+``Multiperspective Perceptron Predictor,''
+in \textit{Proceedings of the 6th Championship Branch Prediction (CBP-6)},
+Tokyo, Japan, June 2025.
+
+\bibitem{ball2025}
+J. Fan,
+``Branch Prediction via Load Value Prediction: A Case of BALL 
+(Branch-ALU-Load-Load) Predictor,''
+in \textit{Proceedings of the 6th Championship Branch Prediction (CBP-6)},
+Tokyo, Japan, June 2025.
+
+\bibitem{bullseye2025}
+E. Behrendt, S. W. Pun, and P. J. Nair,
+``Taming Wild Branches: Overcoming Hard-to-Predict Branches using the 
+Bullseye Predictor,''
+in \textit{Proceedings of the 6th Championship Branch Prediction (CBP-6)},
+Tokyo, Japan, June 2025.
+
+\bibitem{pip2025}
+K. Mose et al.,
+``PIP: An Ensemble of Programming-Idiom Predictors,''
+in \textit{Proceedings of the 6th Championship Branch Prediction (CBP-6)},
+Tokyo, Japan, June 2025.
+
+\bibitem{tage2016}
+A. Seznec,
+``TAGE-SC-L Branch Predictors Again,''
+in \textit{Proceedings of the 5th Championship Branch Prediction (CBP-5)},
+Seoul, South Korea, October 2016.
+
+\bibitem{perceptron2001}
+D. A. Jiménez and C. Lin,
+``Dynamic Branch Prediction with Perceptrons,''
+in \textit{Proceedings of the 7th International Symposium on 
+High-Performance Computer Architecture (HPCA-7)},
+pp. 197--206, 2001.
+
+\bibitem{hashedperceptron2005}
+D. Tarjan and K. Skadron,
+``Merging Path and Gshare Indexing in Perceptron Branch Prediction,''
+\textit{ACM Transactions on Architecture and Code Optimization},
+vol. 2, no. 3, pp. 280--300, September 2005.
+
+\bibitem{ogehl2005}
+A. Seznec,
+``Analysis of the O-GEometric History Length Branch Predictor,''
+in \textit{Proceedings of the 32nd International Symposium on 
+Computer Architecture (ISCA-32)},
+pp. 394--405, 2005.
+
+\bibitem{imli2015}
+A. Seznec, J. San Miguel, and J. Albericio,
+``The Inner Most Loop Iteration Counter: A New Dimension in Branch History,''
+in \textit{Proceedings of the 48th International Symposium on 
+Microarchitecture (MICRO-48)},
+Waikiki, Hawaii, pp. 347--357, 2015.
+
+\bibitem{evtage2018}
+A. Seznec,
+``Exploring Value Prediction with the EVES Predictor,''
+in \textit{CVP-1: 1st Championship Value Prediction},
+2018.
+
+\bibitem{lin2019}
+C. Lin and S. J. Tarsa,
+``Branch Prediction Is Not A Solved Problem: Measurements, Opportunities, 
+and Future Directions,''
+in \textit{Proceedings of the 2019 IEEE International Symposium on 
+Workload Characterization (IISWC)},
+pp. 228--238, 2019.
+
+\bibitem{branchrunahead2021}
+S. Pruett and Y. Patt,
+``Branch Runahead: An Alternative to Branch Prediction for Impossible to 
+Predict Branches,''
+in \textit{Proceedings of the 54th Annual IEEE/ACM International Symposium 
+on Microarchitecture (MICRO-54)},
+pp. 804--815, 2021.
+
+\end{thebibliography}
+
+
 \end{document}

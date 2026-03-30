@@ -5,7 +5,7 @@
 \contentsline {subsection}{\numberline {3.1}Details}{2}{subsection.3.1}%
 \contentsline {subsubsection}{\numberline {3.1.1}Branch Misalignment and MODHIST}{2}{subsubsection.3.1.1}%
 \contentsline {subsection}{\numberline {3.2}MPP vs Baseline Predictor}{3}{subsection.3.2}%
-\contentsline {section}{\numberline {4}Branch Prediction via Load Value Prediction ( BALL )}{4}{section.4}%
+\contentsline {section}{\numberline {4}Branch Prediction via Load Value Prediction ( BALL -- Branch ALU-Load-Load Predictor )}{4}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Details}{4}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}BALL Predictor vs Baseline}{6}{subsection.4.2}%
 \contentsline {section}{\numberline {5}Bullseye Predictor}{7}{section.5}%
@@ -18,3 +18,8 @@
 \contentsline {subsection}{\numberline {7.1}Bullseye vs Multi-Perspective Predictor}{12}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}BALL vs Bullseye Predictor}{14}{subsection.7.2}%
 \contentsline {section}{\numberline {8}Complementarity Analysis}{15}{section.8}%
+\contentsline {section}{\numberline {9}Overall Rankings}{16}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Methodology}{16}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Results}{17}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Oracle Predictor}{19}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Conclusion}{21}{section.10}%

@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Bullseye Predictor vs Register-Value-Aware-Toru
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Bullseye Predictor   Register-Value-Aware-Toru Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.4889               3.3022               ↓ 5.35% better
+MR                             2.7395               2.5681               ↓ 6.26% better
+IPC                            3.5132               3.5450               ↑ 0.91% better
+Cycles                         14593783.3048        14401963.4667        ↓ 1.31% better
+BrPerCyc                       0.4271               0.4309               ↑ 0.91% better
+MispBrPerCyc                   0.0093               0.0089               ↓ 4.22% worse
+CycWPPKI                       154.6388             149.9141             ↓ 3.06% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Bullseye Predictor wins: 13 traces
+Register-Value-Aware-Toru wins: 91 traces
+Ties: 1 traces
+
+
+Biggest Improvements (Register-Value-Aware-Toru better):
+--------------------------------------------------------------------------------
+  fp_8_trace                                 7.4114 →   3.6875 (↓ 3.7239)
+  int_21_trace                              23.7590 →  21.6842 (↓ 2.0748)
+  web_7_trace                                6.2471 →   4.3005 (↓ 1.9466)
+  fp_1_trace                                15.5798 →  14.9323 (↓ 0.6475)
+  int_2_trace                                9.8611 →   9.2321 (↓ 0.6290)
+
+
+Biggest Regressions (Register-Value-Aware-Toru worse):
+--------------------------------------------------------------------------------
+  fp_12_trace                                0.8206 →   1.0294 (↑ 0.2088)
+  int_13_trace                               0.7048 →   0.8514 (↑ 0.1466)
+  fp_10_trace                                1.9399 →   1.9757 (↑ 0.0358)
+  web_11_trace                               4.6089 →   4.6440 (↑ 0.0351)
+  int_16_trace                               5.6722 →   5.7002 (↑ 0.0280)

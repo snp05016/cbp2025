@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Bullseye Predictor vs Programming Idiom Predictor-Mose
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Bullseye Predictor   Programming Idiom Predictor-Mose Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.4889               3.5453               ↑ 1.62% worse
+MR                             2.7395               2.7608               ↑ 0.78% worse
+IPC                            3.5132               3.4974               ↓ 0.45% worse
+Cycles                         14593783.3048        14667399.0000        ↑ 0.50% worse
+BrPerCyc                       0.4271               0.4248               ↓ 0.54% worse
+MispBrPerCyc                   0.0093               0.0094               ↑ 0.72% better
+CycWPPKI                       154.6388             157.2730             ↑ 1.70% worse
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Bullseye Predictor wins: 73 traces
+Programming Idiom Predictor-Mose wins: 31 traces
+Ties: 1 traces
+
+
+Biggest Improvements (Programming Idiom Predictor-Mose better):
+--------------------------------------------------------------------------------
+  int_0_trace                                5.0702 →   4.3111 (↓ 0.7591)
+  int_21_trace                              23.7590 →  23.2204 (↓ 0.5386)
+  compress_0_trace                           3.2270 →   2.7349 (↓ 0.4921)
+  fp_5_trace                                 0.9329 →   0.5128 (↓ 0.4201)
+  int_33_trace                               7.7135 →   7.4723 (↓ 0.2412)
+
+
+Biggest Regressions (Programming Idiom Predictor-Mose worse):
+--------------------------------------------------------------------------------
+  int_22_trace                               3.9788 →   5.2470 (↑ 1.2682)
+  int_1_trace                               10.3681 →  11.6182 (↑ 1.2501)
+  int_2_trace                                9.8611 →  10.8678 (↑ 1.0067)
+  web_7_trace                                6.2471 →   6.9881 (↑ 0.7410)
+  int_16_trace                               5.6722 →   6.0105 (↑ 0.3383)

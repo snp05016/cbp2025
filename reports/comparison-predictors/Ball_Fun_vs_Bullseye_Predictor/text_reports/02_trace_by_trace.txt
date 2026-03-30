@@ -1,0 +1,111 @@
+====================================================================================================
+TRACE-BY-TRACE COMPARISON: Ball Fun vs Bullseye Predictor
+====================================================================================================
+
+Trace                                    Ball Fun MPKI Bullseye Predictor MPKI Diff         Status              
+----------------------------------------------------------------------------------------------------
+int_16_trace                             8.1005       5.6722       -2.4283      ✓ Bullseye Predictor better
+int_17_trace                             6.3587       4.7592       -1.5995      ✓ Bullseye Predictor better
+web_7_trace                              7.7208       6.2471       -1.4737      ✓ Bullseye Predictor better
+int_22_trace                             5.3966       3.9788       -1.4178      ✓ Bullseye Predictor better
+int_7_trace                              5.7956       4.4556       -1.3400      ✓ Bullseye Predictor better
+int_8_trace                              7.1630       5.8786       -1.2844      ✓ Bullseye Predictor better
+web_11_trace                             5.7855       4.6089       -1.1766      ✓ Bullseye Predictor better
+int_9_trace                              4.8603       3.7132       -1.1471      ✓ Bullseye Predictor better
+int_36_trace                             3.9779       2.9622       -1.0157      ✓ Bullseye Predictor better
+web_15_trace                             6.0736       5.1000       -0.9736      ✓ Bullseye Predictor better
+web_20_trace                             4.2048       3.2389       -0.9659      ✓ Bullseye Predictor better
+web_19_trace                             6.0246       5.0903       -0.9343      ✓ Bullseye Predictor better
+web_12_trace                             4.4179       3.8667       -0.5512      ✓ Bullseye Predictor better
+web_10_trace                             3.3555       2.8169       -0.5386      ✓ Bullseye Predictor better
+web_25_trace                             6.3681       5.8386       -0.5295      ✓ Bullseye Predictor better
+int_30_trace                             12.7675      12.2596      -0.5079      ✓ Bullseye Predictor better
+web_8_trace                              5.1003       4.6136       -0.4867      ✓ Bullseye Predictor better
+int_29_trace                             12.3072      11.8209      -0.4863      ✓ Bullseye Predictor better
+web_13_trace                             3.3888       2.9499       -0.4389      ✓ Bullseye Predictor better
+web_9_trace                              2.9333       2.4984       -0.4349      ✓ Bullseye Predictor better
+int_20_trace                             2.7600       2.3513       -0.4087      ✓ Bullseye Predictor better
+web_4_trace                              4.4589       4.0569       -0.4020      ✓ Bullseye Predictor better
+fp_12_trace                              1.2140       0.8206       -0.3934      ✓ Bullseye Predictor better
+web_2_trace                              4.1788       3.7911       -0.3877      ✓ Bullseye Predictor better
+web_24_trace                             2.0490       1.6661       -0.3829      ✓ Bullseye Predictor better
+web_5_trace                              4.6806       4.3019       -0.3787      ✓ Bullseye Predictor better
+web_3_trace                              3.9470       3.5900       -0.3570      ✓ Bullseye Predictor better
+web_17_trace                             1.7308       1.4167       -0.3141      ✓ Bullseye Predictor better
+web_6_trace                              4.9189       4.6074       -0.3115      ✓ Bullseye Predictor better
+web_1_trace                              3.5288       3.2294       -0.2994      ✓ Bullseye Predictor better
+web_16_trace                             1.8571       1.5849       -0.2722      ✓ Bullseye Predictor better
+int_4_trace                              4.1305       3.8634       -0.2671      ✓ Bullseye Predictor better
+fp_9_trace                               4.5477       4.2942       -0.2535      ✓ Bullseye Predictor better
+int_33_trace                             7.9657       7.7135       -0.2522      ✓ Bullseye Predictor better
+int_28_trace                             3.6692       3.4213       -0.2479      ✓ Bullseye Predictor better
+int_32_trace                             6.9621       6.7235       -0.2386      ✓ Bullseye Predictor better
+web_21_trace                             1.7327       1.5025       -0.2302      ✓ Bullseye Predictor better
+int_35_trace                             2.4776       2.2559       -0.2217      ✓ Bullseye Predictor better
+int_13_trace                             0.9185       0.7048       -0.2137      ✓ Bullseye Predictor better
+web_23_trace                             1.1653       0.9654       -0.1999      ✓ Bullseye Predictor better
+infra_13_trace                           4.2496       4.0788       -0.1708      ✓ Bullseye Predictor better
+int_31_trace                             0.8330       0.6936       -0.1394      ✓ Bullseye Predictor better
+infra_10_trace                           5.3690       5.2366       -0.1324      ✓ Bullseye Predictor better
+infra_14_trace                           5.4178       5.2881       -0.1297      ✓ Bullseye Predictor better
+web_22_trace                             3.3822       3.2539       -0.1283      ✓ Bullseye Predictor better
+int_11_trace                             4.2187       4.0919       -0.1268      ✓ Bullseye Predictor better
+infra_15_trace                           8.4791       8.3568       -0.1223      ✓ Bullseye Predictor better
+int_18_trace                             0.8395       0.7174       -0.1221      ✓ Bullseye Predictor better
+fp_11_trace                              0.6972       0.5791       -0.1181      ✓ Bullseye Predictor better
+media_3_trace                            1.4012       1.2893       -0.1119      ✓ Bullseye Predictor better
+int_34_trace                             3.0739       2.9654       -0.1085      ✓ Bullseye Predictor better
+compress_3_trace                         8.2310       8.1241       -0.1069      ✓ Bullseye Predictor better
+fp_7_trace                               1.1295       1.0289       -0.1006      ✓ Bullseye Predictor better
+infra_12_trace                           1.0757       0.9772       -0.0985      ≈ Similar           
+media_0_trace                            1.1819       1.0855       -0.0964      ≈ Similar           
+web_0_trace                              1.4009       1.3081       -0.0928      ≈ Similar           
+web_18_trace                             2.8365       2.7449       -0.0916      ≈ Similar           
+infra_11_trace                           1.0839       0.9969       -0.0870      ≈ Similar           
+media_1_trace                            1.1588       1.0785       -0.0803      ≈ Similar           
+int_26_trace                             1.3413       1.2644       -0.0769      ≈ Similar           
+fp_3_trace                               2.0208       1.9455       -0.0753      ≈ Similar           
+infra_2_trace                            0.4876       0.4135       -0.0741      ≈ Similar           
+web_14_trace                             3.6703       3.5980       -0.0723      ≈ Similar           
+int_24_trace                             0.5673       0.4986       -0.0687      ≈ Similar           
+infra_7_trace                            1.4967       1.4282       -0.0685      ≈ Similar           
+infra_9_trace                            4.5987       4.5315       -0.0672      ≈ Similar           
+int_0_trace                              5.1331       5.0702       -0.0629      ≈ Similar           
+fp_6_trace                               0.9836       0.9236       -0.0600      ≈ Similar           
+infra_6_trace                            1.2615       1.2080       -0.0535      ≈ Similar           
+int_3_trace                              0.8721       0.8217       -0.0504      ≈ Similar           
+int_27_trace                             0.8656       0.8212       -0.0444      ≈ Similar           
+compress_0_trace                         3.2696       3.2270       -0.0426      ≈ Similar           
+int_6_trace                              2.9626       2.9258       -0.0368      ≈ Similar           
+compress_1_trace                         1.6841       1.6515       -0.0326      ≈ Similar           
+infra_4_trace                            2.4586       2.4276       -0.0310      ≈ Similar           
+compress_5_trace                         1.9284       1.8980       -0.0304      ≈ Similar           
+compress_4_trace                         1.8250       1.7948       -0.0302      ≈ Similar           
+int_23_trace                             3.4540       3.4248       -0.0292      ≈ Similar           
+compress_2_trace                         1.4847       1.4570       -0.0277      ≈ Similar           
+int_12_trace                             0.4582       0.4313       -0.0269      ≈ Similar           
+infra_3_trace                            1.0538       1.0277       -0.0261      ≈ Similar           
+infra_0_trace                            1.2782       1.2549       -0.0233      ≈ Similar           
+int_10_trace                             0.5369       0.5155       -0.0214      ≈ Similar           
+compress_6_trace                         1.8941       1.8737       -0.0204      ≈ Similar           
+int_5_trace                              2.8583       2.8380       -0.0203      ≈ Similar           
+infra_1_trace                            0.3581       0.3399       -0.0182      ≈ Similar           
+int_14_trace                             0.3952       0.3815       -0.0137      ≈ Similar           
+fp_2_trace                               2.5588       2.5453       -0.0135      ≈ Similar           
+infra_5_trace                            2.2115       2.1990       -0.0125      ≈ Similar           
+compress_7_trace                         2.0491       2.0403       -0.0088      ≈ Similar           
+int_15_trace                             0.4797       0.4719       -0.0078      ≈ Similar           
+infra_8_trace                            1.2565       1.2493       -0.0072      ≈ Similar           
+int_25_trace                             1.3214       1.3181       -0.0033      ≈ Similar           
+fp_5_trace                               0.9361       0.9329       -0.0032      ≈ Similar           
+fp_1_trace                               15.5816      15.5798      -0.0018      ≈ Similar           
+fp_0_trace                               3.2270       3.2262       -0.0008      ≈ Similar           
+fp_4_trace                               0.5742       0.5749       0.0007       ≈ Similar           
+media_2_trace                            0.5226       0.5282       0.0056       ≈ Similar           
+fp_10_trace                              1.8923       1.9399       0.0476       ≈ Similar           
+int_19_trace                             0.6642       0.7603       0.0961       ≈ Similar           
+int_2_trace                              8.7270       9.8611       1.1341       ✗ Ball Fun better   
+int_1_trace                              9.2211       10.3681      1.1470       ✗ Ball Fun better   
+fp_8_trace                               5.2985       7.4114       2.1129       ✗ Ball Fun better   
+fp_13_trace                              8.9772       12.4478      3.4706       ✗ Ball Fun better   
+int_21_trace                             15.7181      23.7590      8.0409       ✗ Ball Fun better   

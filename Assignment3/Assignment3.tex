@@ -96,7 +96,7 @@ I will do a similar analysis of these predictors as I did for the first four and
 and rank them based on their performance. 
 
 \subsection{The Oracle Predictor}
-The Oracle predictor is a theoretical construct that \textbf{represents the theoretical upper bound achievable without future knowledge}. The point of this predictor is
+The Oracle predictor is a theoretical construct that \textbf{represents the theoretical upper bound achievable using only workload-category-level advance knowledge}. The point of this predictor is
 to check the maximum possible performance of a branch predictor on the given traces. It is important to note that the Oracle predictor is not a real predictor 
 and cannot be implemented in hardware, but it serves as a useful benchmark for evaluating the performance of other predictors.
 More implementation details about the Oracle predictor can be found in the later sections of this report. 
@@ -130,7 +130,7 @@ The new features that this predictor introduces are the following:
         To solve this problem, the author introduces MODHIST which essentially only records branches whose addresses are divisible by some modulos, filtering out the "misaligned" branches and thus making the history more consistent.
         \item \textbf{RECENCYPOS: }It tracks a stack of recently executed branches using LRU policy. knowing where the branch is in this stack can be useful to correlate the outcome of the branch with its recency.
         \item \textbf{BLURRYPATH: }It records coarser memory regions instead of exact addresses. A "coarser" memory region is defined as regions of memory who have the first N bits of their address the same.
-        For example, if you take the address \textit{0x7FFF4A28} and right shift it by 4 bits you would get \textit{0x7FFF4A}, which would mean that every address that only differs in those last 4 bits would be 
+        For example, if you take the address \textit{0x7FFF4A28} and right shift it by 4 bits you would get \textit{0x7FFF4A2}, which would mean that every address that only differs in those last 4 bits would be
         considered the same "blurry" address. 
         
         You would want to track these "blurry" addresses because of 2 reasons, \textbf{first}, they have less noise. If your program takes a slightly different path through the same general 
@@ -343,7 +343,7 @@ the global history.
 
 The bullseye predictor adds a small 28KB "subsystem" on top of the TAGE-SC-L predictor. It is composed of 3 main components:
 \begin{itemize}
-        \item \textbf{H2P (Hard-to-Predict) Branch Classifier: }This component is responsible for identifying the hard-to-predict branches. This tracks every branch's execution count, MP count and running accuracy (the number of correct predictions
+        \item \textbf{H2P (Hard-to-Predict) Branch Classifier: }This component is responsible for identifying the hard-to-predict branches. This tracks every branch's execution count, misprediction count (MP count), and running accuracy (the number of correct predictions
         divided by the total number of predictions for that branch). When a branch's execution count exceeds a certain threshold and its accuracy falls below a certain number, the classifier flags the branch as an H2P branch, preventing the entire
         system from being overwhelmed by the noise of these branches and allowing it to focus on the branches that it can predict well. In practice no more than 10 branches are active at once.
         \item \textbf{Two Perceptron Predictors: } Bullseye predictor uses two perceptron predictors, both of them running in parallel with the TAGE-SC-L predictor. One of them uses local history and
@@ -526,9 +526,16 @@ This design ensures that simple, structured patterns are handled perfectly by sp
 \label{fig:pip_vs_baseline}
 \end{figure}
 
-The results show a solid overall improvement, with the predictor winning on 97 
-out of 105 traces and achieving an overall MPKI of 3.545 compared to the 
+The results show a solid overall improvement, with the predictor winning on 97
+out of 105 traces and achieving an overall MPKI of 3.545 compared to the
 baseline's 3.808, which is a 6.90\% improvement.
+
+It is worth noting that the Programming Idiom Predictor includes a
+Multiperspective Perceptron (MPP) as one of its internal components, used as a
+fallback when neither TAGE nor the idiom trackers apply. This means the PIP vs
+baseline comparison inherently includes MPP's capabilities, and any comparison
+between PIP and standalone MPP is really comparing "MPP + idiom trackers + TAGE
+enhancements" versus "MPP alone."
 
 Table \ref{tab:mose_summary} shows the overall summary statistics across all 
 key metrics.
@@ -573,7 +580,7 @@ COMPRESS & 2.7957 & 2.6599 &  4.86\% \\
 MEDIA    & 1.0661 & 1.0099 &  5.27\% \\
 INFRA    & 2.6335 & 2.5878 &  1.73\% \\
 INT      & 4.3284 & 4.3374 &  $\approx$0\% \\
-FP       & 3.5456 & 3.9243 &  $\approx$0\% \\
+FP       & 3.5456 & 3.9243 &  -10.9\% (regression) \\
 \midrule
 \textbf{Overall} & \textbf{3.8080} & \textbf{3.5453} & \textbf{6.90\%} \\
 \bottomrule
@@ -583,15 +590,19 @@ FP       & 3.5456 & 3.9243 &  $\approx$0\% \\
 \textbf{The web category sees the biggest improvement at 10.70\%}, which makes sense
 given that web workloads are full of branches tied to common programming
 patterns in parsers, string handlers and network code. The compress and media
-categories also see decent gains. The FP category shows a real regression of
-approximately 10.9\% (from 3.5456 to 3.9243 MPKI). Looking at individual trace
-results, the predictor does win on most FP traces, but the category average is
-being pulled down by a few very high MPKI traces like \texttt{fp\_1} at 15.58
-MPKI where the pattern-matching overhead may be adding noise without finding
-useful idioms. The integer category average appears flat, but this is similarly
-affected by outliers. The regressions on \texttt{infra\_8} and \texttt{infra\_5}
-are the only two traces that stand out as real losses, and without knowing the
-exact nature of these 
+categories also see decent gains.
+
+The FP category shows a real regression of 10.9\% (from 3.5456 to 3.9243 MPKI).
+This is not a measurement artifact. Looking at individual trace results, the
+predictor does win on some FP traces, but the category average is pulled down
+by several traces where the idiom trackers and pattern-matching overhead add
+mispredictions without finding useful patterns. Without ablation studies
+isolating which component causes this, it is difficult to pinpoint the exact
+mechanism, but the regression itself is genuine. The integer category average
+appears flat, but this masks variation: some traces improve while others
+regress, with the effects canceling out in aggregate. The regressions on
+\texttt{infra\_8} and \texttt{infra\_5} are the only two infrastructure traces
+that stand out as real losses, and without knowing the exact nature of these
 workloads it is difficult to say why they regress.
 
 Overall, the Programming Idiom Predictor sits between Bullseye and BALL in 
@@ -1102,7 +1113,8 @@ that pairs a strong general-purpose base like Bullseye with a targeted module
 like BALL could cover both broad branch behaviors and the specific load-dependent
 cases that history-based predictors cannot reach. \textbf{The complementarity analysis
 gives a concrete argument for this: the gains from such a combination would be
-largely additive}, because the two components are targeting different branches
+potentially close to additive, assuming no significant hardware interference between
+the two systems}, because the two components are targeting different branches
 entirely.
 \begin{thebibliography}{99}
 

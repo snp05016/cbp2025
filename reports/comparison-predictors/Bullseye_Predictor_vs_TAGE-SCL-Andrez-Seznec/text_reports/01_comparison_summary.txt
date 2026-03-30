@@ -1,0 +1,40 @@
+================================================================================
+COMPARISON: Bullseye Predictor vs TAGE-SCL-Andrez-Seznec
+================================================================================
+
+Summary Statistics:
+--------------------------------------------------------------------------------
+Metric                         Bullseye Predictor   TAGE-SCL-Andrez-Seznec Difference     
+--------------------------------------------------------------------------------
+MPKI                           3.4889               3.4400               ↓ 1.40% better
+MR                             2.7395               2.6969               ↓ 1.55% better
+IPC                            3.5132               3.5233               ↑ 0.29% better
+Cycles                         14593783.3048        14536841.7619        ↓ 0.39% better
+BrPerCyc                       0.4271               0.4283               ↑ 0.28% better
+MispBrPerCyc                   0.0093               0.0092               ↓ 1.08% worse
+CycWPPKI                       154.6388             153.2417             ↓ 0.90% better
+
+
+Trace-by-Trace Comparison (MPKI):
+--------------------------------------------------------------------------------
+Bullseye Predictor wins: 26 traces
+TAGE-SCL-Andrez-Seznec wins: 79 traces
+Ties: 0 traces
+
+
+Biggest Improvements (TAGE-SCL-Andrez-Seznec better):
+--------------------------------------------------------------------------------
+  int_21_trace                              23.7590 →  23.3263 (↓ 0.4327)
+  int_32_trace                               6.7235 →   6.3487 (↓ 0.3748)
+  compress_3_trace                           8.1241 →   7.7625 (↓ 0.3616)
+  int_30_trace                              12.2596 →  11.9056 (↓ 0.3540)
+  int_29_trace                              11.8209 →  11.4747 (↓ 0.3462)
+
+
+Biggest Regressions (TAGE-SCL-Andrez-Seznec worse):
+--------------------------------------------------------------------------------
+  int_22_trace                               3.9788 →   4.2827 (↑ 0.3039)
+  fp_12_trace                                0.8206 →   1.0969 (↑ 0.2763)
+  int_16_trace                               5.6722 →   5.8279 (↑ 0.1557)
+  int_13_trace                               0.7048 →   0.8585 (↑ 0.1537)
+  int_1_trace                               10.3681 →  10.5130 (↑ 0.1449)

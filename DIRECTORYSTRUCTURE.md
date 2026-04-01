@@ -1,6 +1,6 @@
 # cbp2025 — directory structure (what’s where)
 
-This repo is a little “pipeline-y”, so the fastest way to orient yourself is: **inputs live in `traces/` and `results/`, scripts live in `scripts/` and the repo root, and outputs land in `reports/`.**
+This repo is a little “pipeline-y”, so the fastest way to orient yourself is: **inputs live in `traces/`, `results/`, and `data/`, scripts live in `scripts/` and the repo root, and outputs land primarily in `reports/`** (with some analysis scripts defaulting to a local `subsumption_analysis/` folder unless you pass an explicit `--output-dir`).
 
 also, if you only read one thing before running stuff, read `instructions.md` first — it explains the intended run flow and where outputs show up.
 
@@ -34,6 +34,12 @@ Here’s the main layout, with the folders you’ll actually touch day-to-day.
 - `reports/`
   - the big output tree: graphs, text reports, and compiled HTML artifacts.
 
+- `data/`
+  - extra bundled inputs (more predictor CSVs under `data/results/`, plus sample traces under `data/traces/`).
+
+- `sampletraces/`
+  - tiny trace subsets for quick sanity runs.
+
 - `traces/`
   - trace bundles + documentation, organized by workload category.
 
@@ -43,8 +49,8 @@ Here’s the main layout, with the folders you’ll actually touch day-to-day.
 - `Submissions/`
   - copies of various predictor implementations (and their support headers).
 
-- `analysis/`
-  - generated CSVs and derived artifacts for deeper analysis (including subsumption).
+- `megascriptruncsvs/`
+  - archived CSV bundles produced by bulk runs.
 
 - `Assignment2/`
   - LaTeX + compiled report outputs (PDF/HTML) and the figures used in them.
@@ -70,6 +76,11 @@ Common entrypoints:
 
 - `scripts/analysis/compare_predictors.py`
   - compares all `*.csv` files under `results/` (by default) and writes to `reports/comparison-predictors/`.
+
+- `scripts/analysis/run_subsumption_analysis.py`
+  - subsumption analysis across all predictor CSVs.
+  - default output is `./subsumption_analysis/` (relative to where you run it).
+  - recommended: pass `--output-dir reports/subsumption_analysis` to keep outputs under `reports/`.
 
 - `scripts/analysis/report_generators/`
   - the individual plotting scripts that get invoked by the single-predictor pipeline.
@@ -119,8 +130,9 @@ You’ll see predictor CSVs in a couple places:
 - `data/results/`
   - another “results bundle” directory with common predictor CSVs.
 
-- `ReportGenerators/results.csv`
+- `scripts/analysis/report_generators/results.csv`
   - a standalone CSV placed with the report-generator tooling (useful as a default/sample).
+  - note: some historical runs also live under `results/*/results.csv` (e.g. `results/baseline/results.csv`).
 
 One detail that trips people up: a lot of the single-predictor plotting scripts expect a file literally named `results.csv` in the current working directory (and `instructions.md` explains how the wrapper script handles that).
 
@@ -175,25 +187,22 @@ it’s useful for reference and comparison, but it’s also the reason you’ll 
 
 ---
 
-## analysis artifacts
+## multi-predictor analysis outputs (subsumption / comparisons)
 
-- `analysis/individual/`
-  - per-predictor analysis bundles (often zipped), plus extracted working folders.
+- `reports/comparison-predictors/`
+  - default output of `scripts/analysis/compare_predictors.py`.
 
-- `analysis/subsumption/`
-  - subsumption/comparison outputs like:
-    - `combined_predictor_results.csv`
-    - `pairwise_deltas.csv`
-    - `subsumption_summary.csv`
-    - `figures/`
+- `reports/subsumption_analysis/`
+  - a common place to keep subsumption outputs (this repo already contains one).
+  - some scripts default to writing to `./subsumption_analysis/` instead; pass `--output-dir reports/subsumption_analysis` if you want everything centralized under `reports/`.
 
 - `scripts/analysis/`
-  - multi-predictor analysis scripts (`compare_predictors.py`, delta tooling, etc.).
+  - multi-predictor analysis scripts (`compare_predictors.py`, delta tooling, complementarity tooling, etc.).
 
 ---
 
 ## small notes (things you’ll notice)
 
-Some folders are intentionally “outputs” and may get large (`reports/`, `analysis/`, and sometimes `results/`).
+Some folders are intentionally “outputs” and may get large (`reports/`, `subsumption_analysis/` if you generate it, and sometimes `results/`).
 
 If you’re lost, a pretty good trick is to just search inside `reports/` for `*.png` — you’ll usually spot the folder the pipeline wrote to.

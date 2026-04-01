@@ -12,20 +12,27 @@ also: there are *two* different “pipelines”, and they output to different pl
 
 ### Where `results.csv` needs to be
 
-The scripts that `runPythonScripts.sh` calls live in:
+The analysis scripts live in:
 
 - `scripts/analysis/report_generators/`
 
 They all read a file named **`results.csv`** from the **current working directory**.
 so if you `cd` somewhere else and run them directly, make sure `results.csv` is in that directory.
 
-The driver `runPythonScripts.sh` tries to be helpful: it searches for `results.csv` in a few common places:
+`runPythonScripts.sh` is a backwards-compatible wrapper around `generateReportForPredictor.sh`.
+The **actual** driver is `generateReportForPredictor.sh`, and it tries to be helpful: it resolves a CSV to analyze, then copies it to `scripts/analysis/report_generators/results.csv` before running the Python scripts.
 
-- repo root: `./results.csv`
-- `results/results.csv`
-- `scripts/analysis/report_generators/results.csv`
+### How the CSV is discovered (when you don’t pass a path)
 
-Then it copies whatever it found into `scripts/analysis/report_generators/results.csv` (if needed) before running the Python scripts.
+If you don’t pass an explicit CSV path, `generateReportForPredictor.sh` searches (in order) for common names/locations like:
+
+- `results/<branch_predictor_name>.csv`
+- `results/<sanitized_predictor_name>.csv`
+- `results/<branch_predictor_name>-results.csv` (and a couple common variants)
+- `<branch_predictor_name>.csv` in the repo root (and variants)
+- legacy fallbacks: `./results.csv`, `results/results.csv`, `scripts/analysis/report_generators/results.csv`
+
+If your CSV doesn’t match these conventions (e.g. it’s in a subfolder, or has a custom filename), just pass it explicitly as the second argument.
 
 ### Required columns (minimum-ish)
 
@@ -51,7 +58,7 @@ If a plot crashes, it’s usually because one of these columns is missing or spe
 
 ### What generates graphs (and where they end up)
 
-All of the scripts below are invoked by `runPythonScripts.sh` (it does a `cd scripts/analysis/report_generators` first).
+All of the scripts below are invoked by the single-predictor pipeline (`generateReportForPredictor.sh`, or the `runPythonScripts.sh` wrapper). The pipeline does a `cd scripts/analysis/report_generators` first.
 graphs now always land under the **repo-root** `reports/` directory.
 
 - `scripts/analysis/report_generators/generate_graphs.py`
@@ -75,7 +82,7 @@ graphs now always land under the **repo-root** `reports/` directory.
 Text-only analysis (no graphs) also run by the pipeline:
 
 - `scripts/analysis/report_generators/baselineDifficulty.py`
-  - Writes text to the file that `runPythonScripts.sh` redirects to: `reports/<branch_predictor_name>/06_difficulty_analysis/intrinsic_hardness/baseline_difficulty_report.txt`
+  - Writes text to the file the pipeline redirects to: `reports/<branch_predictor_name>/06_difficulty_analysis/intrinsic_hardness/baseline_difficulty_report.txt`
 
 ### How to run the single-predictor pipeline
 
@@ -157,14 +164,24 @@ chmod +x runPredictorAndCompare.sh
   ```
 
 - `scripts/analysis/generate_delta_figures.py`
-  - Expects several predictor CSVs (filenames are hard-coded in `FILES`) to be in the **current working directory**.
-  - Writes: `subsumption_analysis/figures/delta_violin_summary_readable.png` (relative to where you run it).
+  - Discovers all predictor `*.csv` files under `--results-dir` (default: `results/`) and generates *pairwise* violin plots.
+  - Default output is relative to your CWD: `subsumption_analysis/figures_all_pairs/`.
 
-  Example (run from `results/` where the CSVs already exist):
+  Examples:
 
   ```bash
-  cd results
-  python3 ../scripts/analysis/generate_delta_figures.py
+  # keep outputs under reports/
+  python3 scripts/analysis/generate_delta_figures.py --output-dir reports/subsumption_analysis/figures_all_pairs
+  ```
+
+- `scripts/analysis/run_subsumption_analysis.py`
+  - Builds a combined MPKI table across predictors and runs delta-based subsumption.
+  - Default output is `./subsumption_analysis/` (relative to where you run it).
+
+  Example:
+
+  ```bash
+  python3 scripts/analysis/run_subsumption_analysis.py --output-dir reports/subsumption_analysis
   ```
 
 - `scripts/analysis/delta_curve_visualization.py`

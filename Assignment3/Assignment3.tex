@@ -95,11 +95,11 @@ In this report, I will continue my analysis of these predictors by performing a 
 I will do a similar analysis of these predictors as I did for the first four and then I will compare all 8 predictors together to draw a final conclusion
 and rank them based on their performance. 
 
-\subsection{The Oracle Predictor}
-The Oracle predictor is a theoretical construct that \textbf{represents the theoretical upper bound achievable using only workload-category-level advance knowledge}. The point of this predictor is
-to check the maximum possible performance of a branch predictor on the given traces. It is important to note that the Oracle predictor is not a real predictor 
+\subsection{The Category-Optimal Selector}
+The Category-Optimal Selector is a theoretical construct that \textbf{represents the theoretical upper bound achievable using only workload-category-level advance knowledge}. The point of this selector is
+to check the maximum possible performance of a branch predictor on the given traces. It is important to note that the Category-Optimal Selector is not a real predictor
 and cannot be implemented in hardware, but it serves as a useful benchmark for evaluating the performance of other predictors.
-More implementation details about the Oracle predictor can be found in the later sections of this report. 
+More implementation details about the Category-Optimal Selector can be found in the later sections of this report. 
 
 \section{Methodology}
 The methodology for evaluating the predictor is the same as the one used in the previous assignment. I will be using the CBP2025 traces to evaluate the performance of the predictors. I will be using the same metrics as before, namely
@@ -341,7 +341,7 @@ H2P branches appear under different global histories every time they execute. Fo
 The paper also notes that simply making TAGE bigger doesn't fix this problem, which means even an infinitely large TAGE would barely improve the prediction rates. The main problem isn't storage, but the branch's behaviour not correlating well enough with
 the global history. 
 
-The bullseye predictor adds a small 28KB "subsystem" on top of the TAGE-SC-L predictor. It is composed of 3 main components:
+The bullseye predictor adds a 28KB subsystem; to maintain the strict CBP storage limits, the underlying TAGE-SC-L tables must be scaled down accordingly. It is composed of 3 main components:
 \begin{itemize}
         \item \textbf{H2P (Hard-to-Predict) Branch Classifier: }This component is responsible for identifying the hard-to-predict branches. This tracks every branch's execution count, misprediction count (MP count), and running accuracy (the number of correct predictions
         divided by the total number of predictions for that branch). When a branch's execution count exceeds a certain threshold and its accuracy falls below a certain number, the classifier flags the branch as an H2P branch, preventing the entire
@@ -490,7 +490,7 @@ If none of these trackers can make a prediction, the system falls back to a stro
 
 The predictor is composed of 4 main components:
 \begin{itemize}
-        \item \textbf{Idiom Trackers: }These are small, highly targeted predictors that detect specific programming patterns by observing execution behaviour such as instruction operands, memory accesses, and control flow.
+        \item \textbf{Idiom Trackers: }These are small, highly targeted predictors that detect specific programming patterns by observing execution behaviour such as instruction operands, memory accesses and control flow.
         Two main trackers are used in this design:
 
         \begin{itemize}
@@ -618,7 +618,7 @@ improvement of 6.90\% is competitive with Bullseye's 8.38\%.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{bullseye_vs_mpp_delta.png}
-\caption{Delta Curve: Bullseye vs Multi-Perspective Predictor}
+\caption{Delta Curve: Bullseye Predictor vs Multi-Perspective Predictor}
 \label{fig:bullseye_vs_mpp_delta}
 \end{figure}
 
@@ -686,7 +686,7 @@ moderately hard branches spread across the code, MPP is the stronger choice.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{ball_vs_bullseye_delta.png}
-\caption{Delta Curve: BALL vs Bullseye Predictor}
+\caption{Delta Curve: BALL Predictor vs Bullseye Predictor}
 \label{fig:ball_vs_bullseye_delta}
 \end{figure}
 
@@ -746,9 +746,8 @@ threshold of 0.1 MPKI reduction over the baseline. This threshold represents
 a practically significant reduction without being so small that measurement
 noise is counted as improvement.
 
-\textbf{The most important finding is that 41 out of 105 traces fall under MPP +
-Bullseye + PIP together}. These three predictors are largely solving the same 
-problem through different mechanisms, so combining all three would not give 
+\textbf{The most important finding is that 41 out of 105 traces fall under the combined coverage of Bullseye and the PIP ensemble (which inherently includes MPP)}. These three predictors are largely solving the same
+problem through different mechanisms, so combining all three would not give
 triple the improvement on these traces.
 
 \textbf{BALL is a completely different story}. It only appears in 9 traces total, and
@@ -759,10 +758,14 @@ would give close to additive improvement because they are not competing for the
 same traces.
 
 \textbf{The 26 traces under ``None'' are also significant}. These are traces that no
-predictor could improve meaningfully, representing branches that are resistant 
-to both history-based prediction and load value prediction. This sets a 
-practical floor on how much any of these designs can improve over the baseline 
-and directly motivates the oracle analysis in the next section.
+predictor in this analysis (MPP, Bullseye, PIP, or BALL) could improve
+meaningfully, representing branches that are resistant to both history-based
+prediction and load value prediction. Note that this complementarity analysis
+only evaluates 4 of the 8 CBP 2025 predictors, so these 26 traces may still
+respond to techniques used by Register-Value-Aware, TAGE-SCL-Seznec, or
+Load-Value-Correlator. This sets a practical floor on how much these four
+specific designs can improve over the baseline and directly motivates the category-optimal
+analysis in the next section.
 
 Looking at the category breakdown, web traces are almost entirely covered by 
 MPP + Bullseye + PIP together, confirming that web workloads respond well to 
@@ -930,10 +933,17 @@ meaningful margin, with an MPKI of 3.30 compared to the next best of 3.44 and
 a CycWPPKI of 149.91 compared to 153.24. It is the strongest predictor in this 
 comparison by any measure.
 
-TAGE-SCL-Seznec takes a clear second place with a composite score of 10, also 
-finishing 2nd consistently across all metrics. The gap between 2nd and 3rd is 
-notable, MPP at score 16 and Load-Value-Correlator at 19 are reasonably 
+TAGE-SCL-Seznec takes a clear second place with a composite score of 10, also
+finishing 2nd consistently across all metrics. The gap between 2nd and 3rd is
+notable, MPP at score 16 and Load-Value-Correlator at 19 are reasonably
 close to each other but a fair distance behind the top two.
+
+Bullseye and TAGE-SC-L(Alberto-Ros) have nearly identical average cycle counts
+(14,593,783 vs 14,591,981, differing by only 1,802 cycles or 0.012\%). Despite
+this negligible performance difference, TAGE-SC-L(Alberto-Ros) ranks slightly
+better on Cycles (5th vs 6th), while Bullseye edges ahead on IPC (6th vs 5th)
+and CycWPPKI (5th vs 6th), resulting in composite scores of 27 and 28
+respectively.
 
 One interesting result in the CycWPPKI ranking is that Load-Value-Correlator 
 finishes 3rd while MPP finishes 4th, even though MPP has a lower MPKI. This is 
@@ -955,34 +965,33 @@ Every predictor beats the baseline on every metric, which confirms that all
 the designs evaluated here represent genuine improvements over the 2016 
 champion TAGE-SC-L.
 
-\subsection{Oracle Predictor}
+\subsection{Category-Optimal Selector}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.85\textwidth]{stacked_bar_winning_traces_per_predictor.png}
-\caption{Different predictors perform best on different workload categories, motivating a category-level oracle that selects the best predictor per workload type.}
+\caption{Different predictors perform best on different workload categories, motivating a category-level selector that selects the best predictor per workload type.}
 \label{fig:oracle_wins}
 \end{figure}
 
-Looking at Figure~\ref{fig:oracle_wins}, no single predictor is the best choice 
-for every trace. Different predictors win on different traces, and this holds 
-within every workload category. This is the motivation for building an oracle 
-predictor. Rather than committing to one predictor for all workloads, the idea 
-is to ask: what if we could always use the best predictor for each workload 
+Looking at Figure~\ref{fig:oracle_wins}, no single predictor is the best choice
+for every trace. Different predictors win on different traces, and this holds
+within every workload category. This is the motivation for building a category-optimal selector. Rather than committing to one predictor for all workloads, the idea
+is to ask: what if we could always use the best predictor for each workload
 category?
 
-To build the oracle, I looked at the results across all traces for each workload 
-category and identified which predictor performed best on average within that 
-group. The oracle then uses that predictor for every trace belonging to that 
-category. This is not something that could be done in a real processor since it 
-requires knowing the results ahead of time, but it gives a useful upper bound on 
+To build the selector, I looked at the results across all traces for each workload
+category and identified which predictor performed best on average within that
+group. The selector then uses that predictor for every trace belonging to that
+category. This is not something that could be done in a real processor since it
+requires knowing the results ahead of time, but it gives a useful upper bound on
 how much performance could be gained by better matching predictors to workloads.
 
 The category winners I found are shown in Table~\ref{tab:oracle_winners}.
 
 \begin{table}[H]
 \centering
-\caption{Best predictor per workload category used by the oracle. The oracle selects predictors based on lowest average CycWPPKI per category, which is the official CBP 2025 competition metric.}
+\caption{Best predictor per workload category used by the selector. The selector selects predictors based on lowest average CycWPPKI per category, which is the official CBP 2025 competition metric.}
 \label{tab:oracle_winners}
 \begin{tabular}{ll}
 \toprule
@@ -999,25 +1008,25 @@ web      & Register-Value-Aware \\
 \end{table}
 
 \textbf{Register-Value Aware wins four out of six categories}, which is consistent with
-it being the overall competition winner. The two exceptions are interesting. For 
-infra traces, the Load-Value Correlator edges it out, which suggests these 
-workloads contain a higher proportion of branches that depend on loaded memory 
-values. For media traces, MPP wins, which is the one category where its novel 
-history features give it a consistent edge over everything else. The oracle 
+it being the overall competition winner. The two exceptions are interesting. For
+infra traces, the Load-Value Correlator edges it out, which suggests these
+workloads contain a higher proportion of branches that depend on loaded memory
+values. For media traces, MPP wins, which is the one category where its novel
+history features give it a consistent edge over everything else. The selector
 captures both of these cases by switching predictors where it matters.
 
-Table~\ref{tab:oracle_results} shows the full CycWPPKI ranking with the oracle 
+Table~\ref{tab:oracle_results} shows the full CycWPPKI ranking with the selector
 included, and Table~\ref{tab:oracle_stats} shows its detailed performance summary.
 
 \begin{table}[H]
 \centering
-\caption{Overall CycWPPKI ranking including the oracle predictor}
+\caption{Overall CycWPPKI ranking including the category-optimal selector}
 \label{tab:oracle_results}
 \begin{tabular}{lrl}
 \toprule
 \textbf{Rank} & \textbf{CycWPPKI} & \textbf{Predictor} \\
 \midrule
-1st  & 149.82 & Oracle \\
+1st  & 149.82 & Category-Optimal Selector \\
 2nd  & 149.91 & Register-Value-Aware \\
 3rd  & 153.24 & TAGE-SCL-Seznec \\
 4th  & 153.81 & Load-Value Correlator (Man) \\
@@ -1033,7 +1042,7 @@ included, and Table~\ref{tab:oracle_stats} shows its detailed performance summar
 
 \begin{table}[H]
 \centering
-\caption{Oracle predictor performance summary across all 105 traces}
+\caption{Category-optimal selector performance summary across all 105 traces}
 \label{tab:oracle_stats}
 \begin{tabular}{lr}
 \toprule
@@ -1053,24 +1062,24 @@ CycWPPKI             & 149.82 \\
 \end{tabular}
 \end{table}
 
-\textbf{The gap between the oracle and Register-Value Aware is just 0.09 CycWPPKI}.
-Interestingly, the oracle's average MPKI of 3.3127 is slightly worse than
-Register-Value-Aware's 3.3022, even though the oracle beats it on CycWPPKI.
-This is because the oracle trades slightly worse MPKI for better wrong-path
+\textbf{The gap between the selector and Register-Value Aware is just 0.09 CycWPPKI}.
+Interestingly, the selector's average MPKI of 3.3127 is slightly worse than
+Register-Value-Aware's 3.3022, even though the selector beats it on CycWPPKI.
+This is because the selector trades slightly worse MPKI for better wrong-path
 cycle efficiency by selecting different predictors per category that minimize
 the cost of mispredictions rather than their raw frequency. Similarly, the
-oracle IPC of 3.5446 is marginally lower than Register-Value-Aware's 3.5450,
+selector IPC of 3.5446 is marginally lower than Register-Value-Aware's 3.5450,
 a small anomaly that reflects the same trade-off.
 
-\textbf{It is important to note that this is a category-level oracle, not a trace-level
-oracle}. A true trace-level oracle would always pick the best predictor per
+\textbf{It is important to note that this is a category-level selector, not a trace-level
+selector}. A true trace-level selector would always pick the best predictor per
 individual trace and would achieve a much lower CycWPPKI. The 0.09 gap partly
 reflects the coarseness of category-level selection, as traces within the same
 category do not all have the same optimal predictor.
 
-Even with the benefit of knowing which predictor wins each category ahead of 
+Even with the benefit of knowing which predictor wins each category ahead of
 time, there is almost nothing left to gain over simply running Register-Value
-Aware on everything. \textbf{Register-Value-Aware's margin over the oracle (0.09
+Aware on everything. \textbf{Register-Value-Aware's margin over the selector (0.09
 CycWPPKI) is approximately 37 times smaller than its margin over the next-best
 predictor (3.33 CycWPPKI)}. This shows how close Register-Value Aware already
 is to the ceiling of what category-level selection can achieve. 
@@ -1100,12 +1109,12 @@ this, BALL is genuinely orthogonal to history-based predictors like Bullseye and
 MPP. The complementarity analysis confirmed this directly: BALL's 9 winning traces 
 are almost entirely separate from the traces that any other predictor improves.
 
-The oracle analysis put a ceiling on how much is left to gain. Even with the 
-benefit of knowing the best predictor per workload category ahead of time, the 
-oracle only beats Register-Value Aware by 0.09 CycWPPKI. This tells us that 
-Register-Value Aware is already very close to the limit of what category-level 
-selection can achieve. The 26 traces that no predictor could meaningfully improve 
-represent a harder problem: branches whose outcomes have no learnable pattern in 
+The category-optimal analysis put a ceiling on how much is left to gain. Even with the
+benefit of knowing the best predictor per workload category ahead of time, the
+selector only beats Register-Value Aware by 0.09 CycWPPKI. This tells us that
+Register-Value Aware is already very close to the limit of what category-level
+selection can achieve. The 26 traces that no predictor could meaningfully improve
+represent a harder problem: branches whose outcomes have no learnable pattern in
 either history or load values.
 
 \textbf{The path forward from these results points toward hybrid designs}. A predictor

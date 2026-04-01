@@ -1,5 +1,5 @@
 \contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {subsection}{\numberline {1.1}The Oracle Predictor}{1}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.1}The Category-Optimal Selector}{1}{subsection.1.1}%
 \contentsline {section}{\numberline {2}Methodology}{1}{section.2}%
 \contentsline {section}{\numberline {3}MultiPerspective Perceptron Predictor (MPP)}{2}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Details}{2}{subsection.3.1}%
@@ -14,12 +14,12 @@
 \contentsline {section}{\numberline {6}Programming Idiom Predictor (PIP)}{10}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Details}{10}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Programming Idiom Predictor vs Baseline}{11}{subsection.6.2}%
-\contentsline {section}{\numberline {7}Delta Analysis}{12}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Bullseye vs Multi-Perspective Predictor}{12}{subsection.7.1}%
+\contentsline {section}{\numberline {7}Delta Analysis}{13}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Bullseye vs Multi-Perspective Predictor}{13}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}BALL vs Bullseye Predictor}{14}{subsection.7.2}%
 \contentsline {section}{\numberline {8}Complementarity Analysis}{15}{section.8}%
-\contentsline {section}{\numberline {9}Overall Rankings}{16}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Methodology}{16}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Results}{17}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}Oracle Predictor}{19}{subsection.9.3}%
-\contentsline {section}{\numberline {10}Conclusion}{21}{section.10}%
+\contentsline {section}{\numberline {9}Overall Rankings}{17}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Methodology}{17}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Results}{18}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Category-Optimal Selector}{20}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Conclusion}{22}{section.10}%

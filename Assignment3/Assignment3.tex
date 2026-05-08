@@ -96,13 +96,15 @@ I will do a similar analysis of these predictors as I did for the first four and
 and rank them based on their performance. 
 
 \subsection{The Category-Optimal Selector}
-The Category-Optimal Selector is a theoretical construct that \textbf{represents the theoretical upper bound achievable using only workload-category-level advance knowledge}. The point of this selector is
+The Category-Optimal Selector is a theoretical constructthat \textbf{represents the theoretical upper bound achievable using only workload-category-level advance knowledge}. The point of this selector is
 to check the maximum possible performance of a branch predictor on the given traces. It is important to note that the Category-Optimal Selector is not a real predictor
 and cannot be implemented in hardware, but it serves as a useful benchmark for evaluating the performance of other predictors.
 More implementation details about the Category-Optimal Selector can be found in the later sections of this report. 
 
 \section{Methodology}
-The methodology for evaluating the predictor is the same as the one used in the previous assignment. I will be using the CBP2025 traces to evaluate the performance of the predictors. I will be using the same metrics as before, namely
+The methodology for evaluating the predictor is the same as the one used in the previous assignment, ie I will be comparing
+the performance of each predictor against the baseline. The baseline in all these comparisons is the 2016 TAGE-SCL predictor
+submitted by Andrez Seznec. I will be using the CBP2025 traces to evaluate the performance of the predictors. I will be using the same metrics as before, namely
 \begin{itemize}
         \item Branches Per Cycles ( BrPerCyc )
         \item Misprediction Branches Per Cycles ( MispBrPerCyc )
@@ -206,7 +208,7 @@ above aims to solve this particular problem, and it seems to be doing a good job
 \label{tab:mpp_framework_summary}
 \begin{tabular}{lccc}
 \toprule
-\textbf{Framework} & \textbf{Improve/Total} & \textbf{Success Ratio (\%)} & \textbf{Total MPKI Improvement} \\
+\textbf{Framework} & \textbf{Improve/Total} & \textbf{Success Ratio (\%}) & \textbf{Total MPKI Improvement} \\
 \midrule
 Web       & 26/26 & 100.0 & -10.4414 \\
 Int       & 28/37 & 75.7  & -18.8957 \\
@@ -218,6 +220,7 @@ Compress  & 1/8   & 12.5  & -0.9672  \\
 \end{tabular}
 \end{table}
 
+\footnote{Success ratio is the percentage of traces in that category where the predictor achieved a lower MPKI than the baseline}
 The improvement in \textbf{\textit{Web\_}} traces is not as dramatic but is \textbf{remarkably consistent, having a 100\% success rate}. The precise path history of web traces becomes too specific, i.e. two slightly different web page loads produce
 completely different path histories even though their branch behaviour is very similar. This may be due to MPP's BLURRYPATH feature, which records coarser memory regions and could help it generalize better to achieve a consistent improvement across all web traces.
 
@@ -397,49 +400,46 @@ are doing their job well: the perceptron only takes over a branch when it has
 proven it can do better than TAGE-SC-L, so there is almost no risk of making 
 things worse.
 
-Table \ref{tab:bullseye_category} breaks down the average MPKI by workload 
+Table \ref{tab:bullseye_category} breaks down the number of traces improved per workload 
 category, which shows where Bullseye helps most and where it has less impact.
 
 \begin{table}[H]
 \centering
-\caption{Average MPKI by Workload Category: Baseline vs Bullseye}
+\caption{Traces Improved by Workload Category: Baseline vs Bullseye}
 \label{tab:bullseye_category}
-\begin{tabular}{lrrr}
+\begin{tabular}{lc}
 \toprule
-\textbf{Category} & \textbf{Baseline MPKI} & \textbf{Bullseye MPKI} & 
-\textbf{Improvement} \\
+\textbf{Category} & \textbf{Traces Improved / Total} \\
 \midrule
-INT      & 4.3284 & 3.5831 & 17.22\% \\
-WEB      & 3.8812 & 3.4033 & 12.31\% \\
-FP       & 3.5456 & 3.3566 &  5.33\% \\
-COMPRESS & 2.7957 & 2.7583 &  1.34\% \\
-INFRA    & 2.6335 & 2.5634 &  2.66\% \\
-MEDIA    & 1.0661 & 0.9954 &  6.63\% \\
-\midrule
-\textbf{Overall} & \textbf{3.8080} & \textbf{3.4889} & \textbf{8.38\%} \\
+INT      & 37 / 37 \\
+WEB      & 26 / 26 \\
+FP       & 13 / 14 \\
+COMPRESS & 8 / 8 \\
+INFRA    & 16 / 16 \\
+MEDIA    & 4 / 4 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The integer and web categories benefit the most. For integer workloads, \textbf{the
-improvement is 17.22\%}, which makes sense because integer code tends to have 
-complex control flow with many hard branches that consistently defeat TAGE-SC-L. 
-These are exactly the kind of branches that Bullseye's H2P Identification Table 
-(HIT) flags and routes to a dedicated perceptron. The top individual improvements 
-back this up, with \texttt{int\_16} dropping by 2.45 MPKI, \texttt{int\_17} by 
-1.64 MPKI, and \texttt{int\_8}, \texttt{int\_7} and \texttt{int\_22} all dropping 
-by over 1.0 MPKI each.
+The integer and web categories see the most consistent improvement: Bullseye improves
+all integer traces (37/37) and all web traces (26/26). This makes sense because integer
+code tends to have complex control flow with many hard branches that consistently defeat
+TAGE-SC-L. These are exactly the kind of branches that Bullseye's H2P Identification
+Table (HIT) flags and routes to a dedicated perceptron. The top individual improvements
+back this up, with \texttt{int\_16} dropping by 2.45 MPKI, \texttt{int\_17} by 1.64
+MPKI, and \texttt{int\_8}, \texttt{int\_7} and \texttt{int\_22} all dropping by
+over 1.0 MPKI each.
 
-The web category also sees strong improvement at 12.31\%. Web workloads jump 
+The web category also improves on every trace (26/26). Web workloads jump 
 across many different code regions, which produces branches that appear under 
 very different global histories each time they run. This is the exact H2P profile 
 that Bullseye is designed to catch, and \texttt{web\_7} dropping by 1.51 MPKI 
 is a good example of this.
 
-Compress and infra remain largely unchanged, which is consistent with what we 
-saw for the other predictors. These workloads have relatively low baseline MPKI 
-to begin with, so the HIT thresholds are rarely crossed and Bullseye simply 
-never activates for most of these branches. There is nothing for it to fix.
+Compress and infra also improve on every trace (8/8 and 16/16), but the improvements
+are generally small, which is consistent with what we saw for the other predictors.
+These workloads have relatively low baseline MPKI to begin with, so the HIT thresholds
+are rarely crossed and Bullseye often behaves similarly to the baseline.
 
 Table \ref{tab:bullseye_top} shows the top traces where Bullseye made the 
 biggest difference.
@@ -564,46 +564,45 @@ is \texttt{infra\_8} which gets worse by only 0.094 MPKI, and the next worst
 is \texttt{infra\_5} at 0.060 MPKI. These are small enough that they do not 
 raise serious concerns.
 
-Table \ref{tab:mose_category} shows the average MPKI per workload category.
+Table \ref{tab:mose_category} shows the number of traces improved per workload category.
 
 \begin{table}[H]
 \centering
-\caption{Average MPKI by Workload Category: Baseline vs Programming Idiom Predictor}
+\caption{Traces Improved by Workload Category: Baseline vs Programming Idiom Predictor}
 \label{tab:mose_category}
-\begin{tabular}{lrrr}
+\begin{tabular}{lc}
 \toprule
-\textbf{Category} & \textbf{Baseline MPKI} & \textbf{Programming Idiom MPKI} & 
-\textbf{Improvement} \\
+\textbf{Category} & \textbf{Traces Improved / Total} \\
 \midrule
-WEB      & 3.8812 & 3.4657 & 10.70\% \\
-COMPRESS & 2.7957 & 2.6599 &  4.86\% \\
-MEDIA    & 1.0661 & 1.0099 &  5.27\% \\
-INFRA    & 2.6335 & 2.5878 &  1.73\% \\
-INT      & 4.3284 & 4.3374 &  $\approx$0\% \\
-FP       & 3.5456 & 3.9243 &  -10.9\% (regression) \\
-\midrule
-\textbf{Overall} & \textbf{3.8080} & \textbf{3.5453} & \textbf{6.90\%} \\
+INT      & 35 / 37 \\
+WEB      & 26 / 26 \\
+FP       & 11 / 14 \\
+COMPRESS & 8 / 8 \\
+INFRA    & 14 / 16 \\
+MEDIA    & 3 / 4 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{The web category sees the biggest improvement at 10.70\%}, which makes sense
-given that web workloads are full of branches tied to common programming
-patterns in parsers, string handlers and network code. The compress and media
-categories also see decent gains.
+Web and compress are the most consistently improved categories (26/26 and 8/8 traces),
+which makes sense given that web workloads are full of branches tied to common
+programming patterns in parsers, string handlers and network code. Media also improves
+on most traces (3/4), while INT (35/37), INFRA (14/16), and FP (11/14) show a mix of
+improvements and regressions.
 
-The FP category shows a real regression of 10.9\% (from 3.5456 to 3.9243 MPKI).
-This is not a measurement artifact. Looking at individual trace results, the
-predictor does win on some FP traces, but the category average is pulled down
-by several traces where the idiom trackers and pattern-matching overhead add
-mispredictions without finding useful patterns. Without ablation studies
-isolating which component causes this, it is difficult to pinpoint the exact
-mechanism, but the regression itself is genuine. The integer category average
-appears flat, but this masks variation: some traces improve while others
-regress, with the effects canceling out in aggregate. The regressions on
-\texttt{infra\_8} and \texttt{infra\_5} are the only two infrastructure traces
-that stand out as real losses, and without knowing the exact nature of these
-workloads it is difficult to say why they regress.
+The FP category does show a genuine regression, concentrated in a few traces.
+In particular, \texttt{fp\_1} (+0.043 MPKI), \texttt{fp\_0} (+0.034 MPKI), and
+\texttt{fp\_2} (+0.017 MPKI) get worse relative to the baseline. This is not a
+measurement artifact: the regressions are consistent and trace-specific.
+Without ablation studies isolating which component causes this, it is difficult
+to pinpoint the exact mechanism, but the regression itself is real.
+
+The INT category can look flat if you only consider averages, but this masks
+variation: some traces improve while others regress, with the effects canceling
+out in aggregate. The regressions on \texttt{infra\_8} and \texttt{infra\_5} are
+the only two infrastructure traces that stand out as real losses, and without
+knowing the exact nature of these workloads it is difficult to say why they
+regress.
 
 Overall, the Programming Idiom Predictor sits between Bullseye and BALL in 
 terms of its character. It is more broadly useful than BALL, improving traces 
